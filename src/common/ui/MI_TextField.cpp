@@ -79,9 +79,17 @@ MenuCodeEnum MI_TextField::SendInput(CPlayerInput * playerInput)
     // TODO: check string conversion
     //Watch for characters typed in including delete and backspace
     SDL_KEYTYPE key = playerInput->iPressedKey;
+    //Checks if numpad enter key was pressed. Acts like normal return key.
+    if (key == SDLK_KP_ENTER) {
+        miModifyCursor->setVisible(false);
+
+        fModifying = false;
+
+        return MENU_CODE_UNSELECT_ITEM;
+    }
     if ((key >= SDLK_a && key <= SDLK_z) || key == SDLK_SPACE || (key >= SDLK_0 && key <= SDLK_9) || key == SDLK_EQUALS ||
         key == SDLK_MINUS || key == SDLK_BACKQUOTE || (key >= SDLK_LEFTBRACKET && key <= SDLK_RIGHTBRACKET) ||
-        key == SDLK_SEMICOLON || key == SDLK_QUOTE || key == SDLK_COMMA || key == SDLK_PERIOD || key == SDLK_SLASH) {
+        key == SDLK_SEMICOLON || key == SDLK_QUOTE || key == SDLK_COMMA || key == SDLK_PERIOD || key == SDLK_SLASH || (key >= SDLK_KP_DIVIDE && key <= SDLK_KP_PERIOD)) {
         if (iNumChars < iMaxChars - 1) {
             //Take care of holding shift to shift the pressed key to another character
 #ifdef USE_SDL2
@@ -111,6 +119,33 @@ MenuCodeEnum MI_TextField::SendInput(CPlayerInput * playerInput)
                     key = SDLK_GREATER;
                 } else if (key == SDLK_SLASH) {
                     key = SDLK_QUESTION;
+                }
+            }
+
+            //Check if a keypad button was pressed
+            if (key >= SDLK_KP_DIVIDE && key <= SDLK_KP_PERIOD) {
+                //Convert keypad numbers to actual numbers
+                if (key >= SDLK_KP_1 && key <= SDLK_KP_9) {
+                key -= 1073741864;
+                }
+                //Special convert for 0 since it is after 9
+                else if (key == SDLK_KP_0) {
+                    key = 48;
+                }
+                else if (key == SDLK_KP_DIVIDE) {
+                    key = SDLK_SLASH;
+                }
+                else if (key == SDLK_KP_MULTIPLY) {
+                    key = 42;
+                }
+                else if (key == SDLK_KP_MINUS) {
+                    key = SDLK_MINUS;
+                }
+                else if (key == SDLK_KP_PLUS) {
+                    key = SDLK_PLUS;
+                }
+                else if (key == SDLK_KP_PERIOD) {
+                    key = SDLK_PERIOD;
                 }
             }
 
