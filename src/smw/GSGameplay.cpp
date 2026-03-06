@@ -64,6 +64,10 @@
 #include <cmath>
 #include <cassert>
 #include <cstring>
+#include <fstream>
+#include <vector>
+#include <string>
+#include <sstream>
 
 #define COUNTDOWN_START_INDEX 4
 
@@ -1717,6 +1721,57 @@ bool updateExitPauseDialog(short iCountDownState) // true on exit
                     if (game_values.matchtype == MatchType::Tour || game_values.matchtype == MatchType::Tournament)
                         UpdateScoreBoard();
 
+                    //Adds match to game log
+                    const std::string filename = "gameLog.txt";
+
+                    std::vector<std::string> history;
+                    std::ifstream inFile(filename);
+                    std::string line;
+
+                    //Grabs the current game log history
+                    while (std::getline(inFile, line)) {
+                        if (!line.empty()) {
+                            history.push_back(line);
+                        }
+                    }
+                    inFile.close();
+
+                    //Adds the game mode to the log
+                    std::stringstream newLog;
+                    newLog << "|" << game_values.gamemode->GetModeName() << " - " << game_values.gamemode->GetGoalName() << " " << game_values.gamemode->goal << "| ";
+
+                    //Adds the score for each team/player
+                    for (int i = 0; i < score_cnt; i++) {
+                        if (g_iWinningPlayer == i) {
+                            newLog << "WINNER ";
+                        }
+
+                        if (game_values.teamcounts[i] == 1) {
+                            newLog << "Player " << game_values.teamids[i][0] + 1 << ": " << score[i]->score << " | ";
+                        }
+                        else {
+                            newLog << "Team " << i + 1 << ": " << score[i]->score << " | ";
+                        }
+                    }
+
+                    //Puts the new match at the front
+                    history.insert(history.begin(), newLog.str());
+
+                    //Only allows the past 10 matches to be stored
+                    if (constexpr int MAX_MATCHES = 10; history.size() > MAX_MATCHES) {
+                        history.resize((MAX_MATCHES));
+                    }
+
+                    std::ofstream outFile(filename, std::ios::trunc);
+
+                    //Writes out to the file
+                    for (const auto& match : history) {
+                        outFile << match << "\n";
+                    }
+
+                    outFile.close();
+
+                    //Continues end game cleanup
                     CleanUp();
                     game_values.appstate = AppState::Menu;
 
