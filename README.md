@@ -67,6 +67,7 @@ The game uses artwork and sounds from Nintendo games. We hope that this noncomme
 - The whole source code of the game is available, for free
 - uses SDL and is fully portable to windows, linux, mac, ...
 - CPU Players
+- A game log stored at supermariowar/build/gameLog.txt, or alternativly, the gameLog.txt file in the game's current directory.
 - will make you happy and gives you a fuzzy feeling
 
 ### Supported platforms
