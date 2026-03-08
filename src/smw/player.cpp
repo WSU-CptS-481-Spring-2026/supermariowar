@@ -2744,9 +2744,12 @@ void CPlayer::collision_detection_map()
 //iPlayerIdCredit is passed in if this platform was triggered by another player and crushed this player (e.g. donut block)
 PlayerKillType CPlayer::KillPlayerMapHazard(bool fForce, KillStyle style, bool fKillCarriedItem, short iPlayerIdCredit)
 {
-    if (iPlayerIdCredit >= 0 || iSuicideCreditPlayerID >= 0) {
-        return PlayerKilledPlayer(iPlayerIdCredit >= 0 ? iPlayerIdCredit : iSuicideCreditPlayerID, this, PlayerDeathStyle::Jump, KillStyle::Push, fForce, fKillCarriedItem);
-    } else {
+
+    if (iPlayerIdCredit >= 0) { //If the environment was triggered by a user, grant them the kill and use the passed in kill style
+        return PlayerKilledPlayer(iPlayerIdCredit, this, PlayerDeathStyle::Jump, style, fForce, fKillCarriedItem);
+    }else if (iSuicideCreditPlayerID >= 0) { //If the user died to the environment, but it wasn't suicide, give kill credit and use the push kill style
+        return PlayerKilledPlayer(iSuicideCreditPlayerID, this, PlayerDeathStyle::Jump, KillStyle::Push, fForce, fKillCarriedItem);
+    }else { //Handle the death otherwise
         DeathAwards();
 
         PlayerKillType iKillType = game_values.gamemode->playerkilledself(*this, style);
