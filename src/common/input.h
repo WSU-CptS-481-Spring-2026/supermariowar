@@ -3,6 +3,7 @@
 
 #include "SDL.h"
 #include <stdint.h>
+#include <array>
 
 //This set of classes takes SDL input events, sees if a
 //player configured button is pressed, and sets the output
@@ -99,7 +100,7 @@ struct COutputControl {
 
 struct CInputPlayerControl {
 	short iDevice;
-	CInputControl inputGameControls[2]; //0 == game controls, 1 == menu controls
+	std::array<CInputControl, 2> inputGameControls; //0 == game controls, 1 == menu controls
 };
 
 class CPlayerInput
@@ -116,10 +117,10 @@ class CPlayerInput
 		void Update(SDL_Event event, short iGameState);
 
 		//Points to the input controls in the global inputConfiguration class
-		CInputPlayerControl * inputControls[4];
+		std::array<CInputPlayerControl*, 4> inputControls;
 
 		//Use these structures to see what input has been pressed
-		COutputControl outputControls[4];
+		std::array<COutputControl, 4> outputControls;
 
 		SDL_KEYTYPE iPressedKey;
 };

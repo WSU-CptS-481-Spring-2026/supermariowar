@@ -18,6 +18,11 @@
 
 enum class PlatformPathType: unsigned char;
 
+template <typename T, const size_t N, const size_t M>
+using array2 = std::array<std::array<T, M>, N>;
+
+template <typename T, const size_t N, const size_t M, const size_t O>
+using array3 = std::array<std::array<std::array<T, O>, M>, N>;
 
 enum ReadType: uint8_t {
     read_type_full = 0,
@@ -126,8 +131,8 @@ struct MapHazard {
 	short ix;
 	short iy;
 
-	short iparam[NUMMAPHAZARDPARAMS];
-	float dparam[NUMMAPHAZARDPARAMS];
+	std::array<short, NUMMAPHAZARDPARAMS> iparam;
+	std::array<float, NUMMAPHAZARDPARAMS> dparam;
 };
 
 struct TilesetTile {
@@ -138,9 +143,9 @@ struct TilesetTile {
 
 struct AnimatedTile {
 	short id;
-	TilesetTile layers[4];
-	SDL_Rect rSrc[4][4];
-	SDL_Rect rAnimationSrc[2][4];
+	std::array<TilesetTile, 4> layers;
+	array2<SDL_Rect, 4, 4> rSrc;
+	array2<SDL_Rect, 4, 2> rAnimationSrc;
 	SDL_Rect rDest;
 	bool fBackgroundAnimated;
 	bool fForegroundAnimated;
@@ -253,7 +258,7 @@ class CMap
 
 		std::string szBackgroundFile;
 		short backgroundID;
-		short eyecandy[3];
+		std::array<short, 3> eyecandy;
 		short musicCategoryID;
 
 		short iNumRaceGoals = 0;
@@ -265,11 +270,11 @@ class CMap
 		void SetTileGap(short i, short j);
 		void calculatespawnareas(short iType, bool fUseTempBlocks, bool fIgnoreDeath);
 
-		TilesetTile	mapdata[MAPWIDTH][MAPHEIGHT][MAPLAYERS];
-		TileType		mapdatatop[MAPWIDTH][MAPHEIGHT];
-		MapBlock	objectdata[MAPWIDTH][MAPHEIGHT];
-		IO_Block*   blockdata[MAPWIDTH][MAPHEIGHT];
-		bool		nospawn[NUMSPAWNAREATYPES][MAPWIDTH][MAPHEIGHT];
+		array3<TilesetTile, MAPWIDTH, MAPHEIGHT, MAPLAYERS>	mapdata;
+		array2<TileType, MAPWIDTH, MAPHEIGHT>	mapdatatop;
+		array2<MapBlock, MAPWIDTH, MAPHEIGHT>	objectdata;
+		array2<IO_Block*, MAPWIDTH, MAPHEIGHT>   blockdata;
+		array3<bool, NUMSPAWNAREATYPES, MAPWIDTH, MAPHEIGHT> nospawn;
 
 		std::vector<AnimatedTile*> animatedtiles;
 
@@ -279,31 +284,31 @@ class CMap
                 std::vector<MapItem> mapitems;
                 std::vector<MapHazard>	maphazards;
 
-		SpawnArea	spawnareas[NUMSPAWNAREATYPES][MAXSPAWNAREAS];
-		short		numspawnareas[NUMSPAWNAREATYPES];
-		short		totalspawnsize[NUMSPAWNAREATYPES];
+		array2<SpawnArea, NUMSPAWNAREATYPES, MAXSPAWNAREAS>	spawnareas;
+		std::array<short, NUMSPAWNAREATYPES>	numspawnareas;
+		std::array<short, NUMSPAWNAREATYPES>	totalspawnsize;
 
-		Warp        warpdata[MAPWIDTH][MAPHEIGHT];
+		array2<Warp, MAPWIDTH, MAPHEIGHT>   warpdata;
 		short		numwarpexits = 0; //number of warp exits
-		WarpExit	warpexits[MAXWARPS];
-		short		warplocktimer[10];
-		bool		warplocked[10];
+		std::array<WarpExit, MAXWARPS>	warpexits;
+		std::array<short, 10> warplocktimer;
+		std::array<bool, 10>  warplocked;
 		short		maxConnection = 0;
 
 		SDL_Rect	tilebltrect;
 		SDL_Rect    bltrect;
 
-		SDL_Rect	drawareas[MAXDRAWAREAS];
+		std::array<SDL_Rect, MAXDRAWAREAS>	drawareas;
 		short		numdrawareas = 0;
 
 		std::array<short, 4> iSwitches;
-		std::list<IO_Block*> switchBlocks[8];
+		std::array<std::list<IO_Block*>, 8> switchBlocks;
 
 		std::array<bool, NUM_AUTO_FILTERS> fAutoFilter;
 
-		Point       racegoallocations[MAXRACEGOALS];
+		std::array<Point, MAXRACEGOALS> racegoallocations;
 
-		Point       flagbaselocations[4];
+		std::array<Point, 4> flagbaselocations;
 
 		short		iTileAnimationTimer = 0;
 		short		iTileAnimationFrame = 0;
@@ -313,10 +318,10 @@ class CMap
 		SDL_Surface * animatedTilesSurface = nullptr;
 
 		short iAnimatedTileCount = 0;
-		short iAnimatedVectorIndices[NUM_FRAMES_BETWEEN_TILE_ANIMATION + 1];
+		std::array<short, NUM_FRAMES_BETWEEN_TILE_ANIMATION + 1> iAnimatedVectorIndices;
 		SDL_Surface * animatedBackmapSurface = nullptr;
 
-		std::list<MovingPlatform*> platformdrawlayer[5];
+		std::array<std::list<MovingPlatform*>, 5> platformdrawlayer;
 
 		void AnimateTiles(short iFrame);
 		void ClearAnimatedTiles();
