@@ -79,7 +79,7 @@ class MovingPlatform
 		short iSteps;
 		short iOnStep;
 
-		SDL_Surface	* sSurface[2];
+		std::array<SDL_Surface	*, 2> sSurface;
 
 		SDL_Rect	rSrcRect;
 		SDL_Rect    rDstRect;

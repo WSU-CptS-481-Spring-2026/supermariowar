@@ -4,6 +4,8 @@
 #define RANDOM_INT(rMaxInt) RandomNumberGenerator::generator().getInteger(rMaxInt)
 #define RANDOM_BOOL() RandomNumberGenerator::generator().getBoolean()
 
+#include <array>
+
 class RandomNumberGeneratorType {
 public:
     virtual ~RandomNumberGeneratorType() = default;
@@ -49,7 +51,7 @@ public:
 class Well512RandomNumberGenerator : public RandomNumberGeneratorType {
 private:
     /* initialize state to random bits */
-    unsigned state[16];
+    std::array<unsigned, 16> state;
     /* init should also reset this to 0 */
     unsigned index;
 

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "math/Vec2.h"
+#include <array>
 
 class MovingPlatform;
 
@@ -39,8 +40,8 @@ protected:
     Vec2f m_endPos;
     float m_speed;
 
-    Vec2f m_velocity[2];
-    Vec2f m_currentPos[2];
+    std::array<Vec2f, 2> m_velocity;
+    std::array<Vec2f, 2> m_currentPos;
 };
 
 
@@ -61,8 +62,8 @@ private:
     float m_angle;
     short m_steps;
 
-    unsigned short m_currentStep[2] {0, 0};
-    Vec2f* m_goalPoint[2] {&m_startPos, &m_startPos};
+    std::array<unsigned short, 2> m_currentStep {0, 0};
+    std::array<Vec2f*, 2> m_goalPoint {&m_startPos, &m_startPos};
 };
 
 
@@ -85,8 +86,8 @@ private:
     short m_steps;
     Vec2f m_edge;
 
-    unsigned short m_currentStep[2] {0, 0};
-    Vec2f* m_goalPoint[2] {&m_startPos, &m_startPos};
+    std::array<unsigned short, 2> m_currentStep {0, 0};
+    std::array<Vec2f*, 2> m_goalPoint {&m_startPos, &m_startPos};
 };
 
 
@@ -107,7 +108,7 @@ private:
     Vec2f m_radius;
     float m_startAngle;
 
-    float m_angle[2];
+    std::array<float, 2> m_angle;
 };
 
 
