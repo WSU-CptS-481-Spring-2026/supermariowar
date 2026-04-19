@@ -3,6 +3,7 @@
 #include "eyecandy.h"
 #include "GameMode.h"
 #include "GameValues.h"
+#include "global.h"
 #include "gfx.h"
 #include "IO_Block.h"
 #include "map.h"
@@ -17,10 +18,10 @@
 #include "objects/carriable/CO_ThrowBox.h"
 #include "objects/moving/MO_Coin.h"
 
-extern CGameValues game_values;
-extern CResourceManager* rm;
 
-extern CMap* g_map;
+
+
+
 extern CEyecandyContainer eyecandy[3];
 
 extern CPlayer* GetPlayerFromGlobalID(short iGlobalID);

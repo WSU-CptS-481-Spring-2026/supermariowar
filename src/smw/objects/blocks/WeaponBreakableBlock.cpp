@@ -2,6 +2,7 @@
 
 #include "eyecandy.h"
 #include "GameValues.h"
+#include "global.h"
 #include "GlobalConstants.h"
 #include "map.h"
 #include "player.h"
@@ -15,9 +16,9 @@
 #include "objects/carriable/CO_ThrowBlock.h"
 #include "objects/carriable/CO_ThrowBox.h"
 
-extern CMap* g_map;
-extern CResourceManager* rm;
-extern CGameValues game_values;
+
+
+
 extern CEyecandyContainer eyecandy[3];
 
 B_WeaponBreakableBlock::B_WeaponBreakableBlock(gfxSprite *nspr, Vec2s pos, WeaponDamageType type)

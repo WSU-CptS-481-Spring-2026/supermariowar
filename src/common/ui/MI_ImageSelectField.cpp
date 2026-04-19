@@ -1,9 +1,10 @@
 #include "MI_ImageSelectField.h"
 
+#include "global.h"
 #include "ResourceManager.h"
 #include "ui/MI_Image.h"
 
-extern CResourceManager* rm;
+
 
 /**************************************
  * MI_ImageSelectField Class

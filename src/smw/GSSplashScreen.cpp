@@ -4,6 +4,7 @@
 #include "MapList.h"
 #include "Game.h"
 #include "GameValues.h"
+#include "global.h"
 #include "GSMenu.h"
 #include "GSGameplay.h"
 #include "eyecandy.h"
@@ -15,12 +16,12 @@ extern SDL_Surface* blitdest;
 
 extern CEyecandyContainer eyecandy[3];
 
-extern MapList *maplist;
-extern MusicList *musiclist;
-extern GraphicsList *menugraphicspacklist;
 
-extern CGameValues game_values;
-extern CResourceManager* rm;
+
+
+
+
+
 
 namespace {
 bool g_fLoadMessages = true;

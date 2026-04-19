@@ -1,6 +1,7 @@
 #include "MI_InputControlContainer.h"
 
 #include "GameValues.h"
+#include "global.h"
 #include "gfx/gfxSprite.h"
 #include "uimenu.h"
 #include "ui/MI_Button.h"
@@ -12,10 +13,10 @@
 #include <cstdlib>
 #include <cstring>
 
-extern CGameValues game_values;
-extern CResourceManager* rm;
 
-extern short joystickcount;
+
+
+
 
 
 namespace {

@@ -3,9 +3,10 @@
 #include "Game.h"
 #include "GameMode.h"
 #include "GameValues.h"
+#include "global.h"
 #include "player.h"
 
-extern CGameValues game_values;
+
 
 //------------------------------------------------------------------------------
 // class thwomp (for thwomp mode)

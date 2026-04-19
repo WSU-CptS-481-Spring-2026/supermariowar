@@ -1,6 +1,7 @@
 #include "Health.h"
 
 #include "GameValues.h"
+#include "global.h"
 #include "player.h"
 #include "RandomNumberGenerator.h"
 #include "ResourceManager.h"
@@ -8,9 +9,6 @@
 
 extern CScore *score[4];
 extern short score_cnt;
-extern CGameValues game_values;
-extern CResourceManager* rm;
-
 
 //mariowar (x lives - counting down)
 CGM_Health::CGM_Health() : CGM_Classic()

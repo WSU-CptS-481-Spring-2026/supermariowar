@@ -3,6 +3,7 @@
 #include "IO_Block.h"
 #include "Game.h"
 #include "GameValues.h"
+#include "global.h"
 #include "map.h"
 #include "player.h"
 #include "PlayerKillTypes.h"
@@ -20,13 +21,13 @@ extern short y_shake;
 
 extern short g_iCurrentDrawIndex;
 
-extern CMap* g_map;
-extern CTilesetManager* g_tilesetmanager;
+
+
 
 extern std::vector<CPlayer*> players;
 
-extern CGameValues game_values;
-extern CResourceManager* rm;
+
+
 
 enum CollisionStyle {collision_none, collision_normal, collision_overlap_left, collision_overlap_right};
 

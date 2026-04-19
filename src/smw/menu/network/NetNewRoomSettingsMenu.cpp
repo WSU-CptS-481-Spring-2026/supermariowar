@@ -1,6 +1,7 @@
 #include "NetNewRoomSettingsMenu.h"
 
 #include "GameMode.h"
+#include "global.h"
 #include "net.h"
 #include "ResourceManager.h"
 #include "menu/GameSettingsMenu.h"
@@ -13,7 +14,7 @@
 
 #include <cassert>
 
-extern CResourceManager* rm;
+
 
 
 UI_NetNewRoomSettingsMenu::UI_NetNewRoomSettingsMenu(const UI_GameSettingsMenu* gsm) : UI_Menu()

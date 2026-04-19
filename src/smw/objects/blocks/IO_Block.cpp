@@ -2,6 +2,7 @@
 
 #include "GameMode.h"
 #include "GameValues.h"
+#include "global.h"
 #include "map.h"
 #include "ObjectContainer.h"
 #include "player.h"
@@ -12,11 +13,11 @@
 #include "objects/carriable/CO_ThrowBox.h"
 #include "objects/walkingenemy/WalkingEnemy.h"
 
-extern CMap* g_map;
+
 extern CObjectContainer objectcontainer[3];
 
-extern CGameValues game_values;
-extern CResourceManager* rm;
+
+
 
 extern std::vector<CPlayer*> players;
 

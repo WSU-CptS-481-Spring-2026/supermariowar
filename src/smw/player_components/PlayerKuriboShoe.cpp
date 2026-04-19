@@ -4,12 +4,13 @@
 
 #include "eyecandy.h"
 #include "GameValues.h"
+#include "global.h"
 #include "ObjectContainer.h"
 #include "ResourceManager.h"
 #include "objects/carriable/CO_KuriboShoe.h"
 
-extern CGameValues game_values;
-extern CResourceManager* rm;
+
+
 
 extern CEyecandyContainer eyecandy[3];
 extern CObjectContainer objectcontainer[3];

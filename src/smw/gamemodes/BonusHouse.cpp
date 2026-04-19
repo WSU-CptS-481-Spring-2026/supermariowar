@@ -2,6 +2,7 @@
 
 #include "Game.h"
 #include "GameValues.h"
+#include "global.h"
 #include "ObjectContainer.h"
 #include "player.h"
 #include "RandomNumberGenerator.h"
@@ -11,9 +12,6 @@
 
 extern CObjectContainer objectcontainer[3];
 extern std::vector<CPlayer*> players;
-extern CResourceManager* rm;
-extern CGameValues game_values;
-
 
 //Bonus Mode (not really a game mode, but involves using the map so we need a mode to play)
 CGM_Bonus::CGM_Bonus() : CGameMode()

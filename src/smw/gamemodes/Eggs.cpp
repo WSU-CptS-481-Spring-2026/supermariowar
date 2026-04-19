@@ -1,6 +1,7 @@
 #include "Eggs.h"
 
 #include "GameValues.h"
+#include "global.h"
 #include "ObjectContainer.h"
 #include "player.h"
 #include "ResourceManager.h"
@@ -8,8 +9,8 @@
 #include "objects/moving/MO_Yoshi.h"
 
 extern CObjectContainer objectcontainer[3];
-extern CResourceManager* rm;
-extern CGameValues game_values;
+
+
 
 
 //Egg mode:

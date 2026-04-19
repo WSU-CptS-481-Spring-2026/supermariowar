@@ -1,10 +1,11 @@
 #include "MI_Button.h"
 
 #include "GameValues.h"
+#include "global.h"
 #include "ResourceManager.h"
 
-extern CGameValues game_values;
-extern CResourceManager* rm;
+
+
 
 
 MI_Button::MI_Button(gfxSprite * nspr, short x, short y, std::string name, short width, TextAlign align)

@@ -2,11 +2,12 @@
 
 #include "eyecandy.h"
 #include "GameValues.h"
+#include "global.h"
 #include "player.h"
 #include "objects/blocks/WeaponBreakableBlock.h"
 
 extern SpotlightManager spotlightManager;
-extern CGameValues game_values;
+
 
 //------------------------------------------------------------------------------
 // class hammer

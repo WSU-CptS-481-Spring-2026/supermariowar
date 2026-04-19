@@ -2,6 +2,7 @@
 
 #include "IO_Block.h"
 #include "GameValues.h"
+#include "global.h"
 #include "GlobalConstants.h"
 #include "Game.h"
 #include "FileIO.h"
@@ -45,12 +46,12 @@ short g_iCurrentDrawIndex = 0;
 extern SDL_Surface* screen;
 extern SDL_Surface* blitdest;
 
-extern CGameValues game_values;
-extern CMap* g_map;
-extern CTilesetManager* g_tilesetmanager;
-extern CResourceManager* rm;
 
-extern GraphicsList* gamegraphicspacklist;
+
+
+
+
+
 
 //[Direction][Frame]
 SDL_Rect g_rFlameRects[4][4] = { { {0, 0, 96, 32}, {0, 32, 96, 32}, {0, 64, 96, 32}, {0, 96, 96, 32} },

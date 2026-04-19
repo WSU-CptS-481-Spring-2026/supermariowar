@@ -1,14 +1,15 @@
 #include "CO_Flag.h"
 
 #include "GameValues.h"
+#include "global.h"
 #include "map.h"
 #include "player.h"
 #include "ResourceManager.h"
 #include "objects/moving/MO_FlagBase.h"
 
-extern CMap* g_map;
-extern CGameValues game_values;
-extern CResourceManager* rm;
+
+
+
 
 //------------------------------------------------------------------------------
 // class flag (for Capture the Flag mode)

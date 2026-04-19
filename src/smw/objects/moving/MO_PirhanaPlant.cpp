@@ -2,6 +2,7 @@
 
 #include "eyecandy.h"
 #include "GameValues.h"
+#include "global.h"
 #include "ObjectContainer.h"
 #include "player.h"
 #include "RandomNumberGenerator.h"
@@ -14,7 +15,7 @@
 extern CEyecandyContainer eyecandy[3];
 extern CObjectContainer objectcontainer[3];
 extern std::vector<CPlayer*> players;
-extern CResourceManager* rm;
+
 
 //------------------------------------------------------------------------------
 // class IO_PirhanaPlant - pirhana plant that appears on a certain frequency

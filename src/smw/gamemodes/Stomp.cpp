@@ -2,6 +2,7 @@
 
 #include "GameValues.h"
 #include "GlobalConstants.h"
+#include "global.h"
 #include "player.h"
 #include "ObjectContainer.h"
 #include "RandomNumberGenerator.h"
@@ -15,8 +16,8 @@
 
 extern CObjectContainer objectcontainer[3];
 extern std::vector<CPlayer*> players;
-extern CGameValues game_values;
-extern CResourceManager* rm;
+
+
 
 
 //Stomp mode:

@@ -3,14 +3,15 @@
 #include "IO_Block.h"
 #include "GameMode.h"
 #include "GameValues.h"
+#include "global.h"
 #include "map.h"
 #include "player.h"
 #include "ResourceManager.h"
 
-extern CMap* g_map;
 
-extern CGameValues game_values;
-extern CResourceManager* rm;
+
+
+
 
 bool PlayerCollisions::checktop(CPlayer& player)
 {

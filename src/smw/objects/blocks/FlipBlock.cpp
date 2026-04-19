@@ -2,15 +2,16 @@
 
 #include "eyecandy.h"
 #include "GameValues.h"
+#include "global.h"
 #include "map.h"
 #include "objects/moving/MovingObject.h"
 #include "objects/carriable/CO_ThrowBox.h"
 #include "player.h"
 #include "ResourceManager.h"
 
-extern CMap* g_map;
-extern CResourceManager* rm;
-extern CGameValues game_values;
+
+
+
 extern CEyecandyContainer eyecandy[3];
 
 //------------------------------------------------------------------------------

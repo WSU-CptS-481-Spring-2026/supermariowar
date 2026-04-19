@@ -5,6 +5,7 @@
 #include "GameMode.h"
 #include "GameValues.h"
 #include "GSMenu.h"
+#include "global.h"
 #include "net.h"
 #include "map.h"
 #include "MapList.h"
@@ -77,17 +78,17 @@ extern CPlayer * GetPlayerFromGlobalID(short iGlobalID);
 extern CGM_Boss_MiniGame * bossgamemode;
 extern short currentgamemode;
 
-extern CMap* g_map;
+
 
 extern std::vector<CPlayer*> players;
 extern CScore* score[4];
 extern short score_cnt;
 
-extern MapList *maplist;
-extern MusicList *musiclist;
 
-extern CGameValues game_values;
-extern CResourceManager* rm;
+
+
+
+
 
 extern short x_shake;
 extern short y_shake;

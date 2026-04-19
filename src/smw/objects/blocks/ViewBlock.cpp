@@ -1,9 +1,10 @@
 #include "ViewBlock.h"
 
+#include "global.h"
 #include "RandomNumberGenerator.h"
 #include "ResourceManager.h"
 
-extern CResourceManager* rm;
+
 
 B_ViewBlock::B_ViewBlock(gfxSprite *nspr1, Vec2s pos, bool fHidden, const short * piSettings) :
     B_PowerupBlock(nspr1, pos, 1, 32000, fHidden, piSettings)

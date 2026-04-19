@@ -6,7 +6,7 @@
 #include "FileIO.h"
 #include "TilesetManager.h"
 
-extern CTilesetManager* g_tilesetmanager;
+
 
 
 namespace {

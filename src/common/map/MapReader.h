@@ -2,6 +2,7 @@
 #define SMW_MAP_LOADER_H
 
 #include "FileIO.h"
+#include "global.h"
 
 #include <vector>
 

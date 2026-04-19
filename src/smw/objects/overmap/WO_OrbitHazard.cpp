@@ -1,11 +1,12 @@
 #include "WO_OrbitHazard.h"
 
+#include "global.h"
 #include "player.h"
 #include "ResourceManager.h"
 
 #include <cmath>
 
-extern CResourceManager* rm;
+
 
 
 //------------------------------------------------------------------------------

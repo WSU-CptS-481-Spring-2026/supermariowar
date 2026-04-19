@@ -3,6 +3,7 @@
 #include "FileList.h"
 #include "GameMode.h"
 #include "GameValues.h"
+#include "global.h"
 #include "ResourceManager.h"
 #include "path.h"
 #include "ui/MI_Button.h"
@@ -13,12 +14,12 @@
 #include "ui/MI_SelectField.h"
 #include "ui/MI_Text.h"
 
-extern CGameMode* gamemodes[GAMEMODE_LAST];
+
 extern short currentgamemode;
 
-extern CGameValues game_values;
-extern CResourceManager* rm;
-extern FiltersList* filterslist;
+
+
+
 
 namespace {
 const char* g_szAutoFilterNames[NUM_AUTO_FILTERS] {

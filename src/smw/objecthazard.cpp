@@ -1,5 +1,6 @@
 #include "objecthazard.h"
 
+#include "global.h"
 #include "map.h"
 #include "ObjectContainer.h"
 #include "ResourceManager.h"
@@ -10,8 +11,8 @@
 
 extern CObjectContainer noncolcontainer;
 extern CObjectContainer objectcontainer[3];
-extern CMap* g_map;
-extern CResourceManager* rm;
+
+
 
 
 void LoadMapHazards(bool fPreview)

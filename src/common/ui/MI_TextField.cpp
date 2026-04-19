@@ -1,13 +1,14 @@
 #include "MI_TextField.h"
 
 #include "GameValues.h"
+#include "global.h"
 #include "ResourceManager.h"
 #include "ui/MI_Image.h"
 
 #include <array>
 
-extern CGameValues game_values;
-extern CResourceManager* rm;
+
+
 
 
 namespace {

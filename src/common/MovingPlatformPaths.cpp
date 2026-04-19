@@ -2,13 +2,14 @@
 
 #include "Game.h"
 #include "GameValues.h"
+#include "global.h"
 #include "movingplatform.h"
 #include "ObjectBase.h"
 #include "player.h"
 
 #include <cmath>
 
-extern CGameValues game_values;
+
 extern std::vector<CPlayer*> players;
 
 namespace {

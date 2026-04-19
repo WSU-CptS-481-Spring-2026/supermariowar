@@ -1,10 +1,11 @@
 #include "MysteryMushroomTempPlayer.h"
 
 #include "GameValues.h"
+#include "global.h"
 #include "player.h"
 #include "objects/moving/MO_CarriedObject.h"
 
-extern CGameValues game_values;
+
 extern short scorepowerupoffsets[3][3];
 
 

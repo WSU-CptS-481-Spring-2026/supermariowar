@@ -1,6 +1,7 @@
 #include "MO_SpinAttack.h"
 
 #include "GameValues.h"
+#include "global.h"
 #include "IO_Block.h"
 #include "map.h"
 #include "player.h"
@@ -11,8 +12,8 @@
 
 extern CPlayer* GetPlayerFromGlobalID(short iGlobalID);
 
-extern CMap* g_map;
-extern CResourceManager* rm;
+
+
 
 //------------------------------------------------------------------------------
 // class spin death (spinning cape or tail)

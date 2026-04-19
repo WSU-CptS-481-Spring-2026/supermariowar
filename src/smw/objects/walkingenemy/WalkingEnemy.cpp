@@ -4,6 +4,7 @@
 #include "Game.h"
 #include "GameMode.h"
 #include "GameValues.h"
+#include "global.h"
 #include "IO_Block.h"
 #include "map.h"
 #include "movingplatform.h"
@@ -17,10 +18,10 @@
 
 extern CPlayer* GetPlayerFromGlobalID(short iGlobalID);
 
-extern CMap* g_map;
+
 extern CEyecandyContainer eyecandy[3];
-extern CGameValues game_values;
-extern CResourceManager* rm;
+
+
 
 //------------------------------------------------------------------------------
 // class walking enemy (base class for goomba and koopa)

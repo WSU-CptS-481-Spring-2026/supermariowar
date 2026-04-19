@@ -1,6 +1,7 @@
 #include "MiniBoxes.h"
 
 #include "GameValues.h"
+#include "global.h"
 #include "ObjectContainer.h"
 #include "player.h"
 #include "RandomNumberGenerator.h"
@@ -12,7 +13,7 @@
 extern short score_cnt;
 extern CScore *score[4];
 extern CObjectContainer objectcontainer[3];
-extern CResourceManager* rm;
+
 
 /*
 TODO

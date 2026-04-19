@@ -1,9 +1,10 @@
 #include "PlayerControlsMenu.h"
 
+#include "global.h"
 #include "ResourceManager.h"
 #include "ui/MI_InputControlContainer.h"
 
-extern CResourceManager* rm;
+
 
 
 UI_PlayerControlsMenu::UI_PlayerControlsMenu()

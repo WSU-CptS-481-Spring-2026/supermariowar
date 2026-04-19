@@ -2,12 +2,13 @@
 
 #include "Game.h"
 #include "GameValues.h"
+#include "global.h"
 #include "map.h"
 #include "player.h"
 #include "objects/blocks/WeaponBreakableBlock.h"
 
-extern CMap* g_map;
-extern CGameValues game_values;
+
+
 
 
 //------------------------------------------------------------------------------

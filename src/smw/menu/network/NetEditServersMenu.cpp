@@ -1,5 +1,6 @@
 #include "NetEditServersMenu.h"
 
+#include "global.h"
 #include "ResourceManager.h"
 #include "net.h"
 #include "ui/MI_Button.h"
@@ -11,7 +12,7 @@
 #include <cassert>
 #include <cstring>
 
-extern CResourceManager* rm;
+
 
 
 UI_NetEditServersMenu::UI_NetEditServersMenu()

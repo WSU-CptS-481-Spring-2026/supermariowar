@@ -1,6 +1,7 @@
 #include "Frenzy.h"
 
 #include "GameValues.h"
+#include "global.h"
 #include "ObjectContainer.h"
 #include "player.h"
 #include "RandomNumberGenerator.h"
@@ -9,9 +10,6 @@
 
 extern std::vector<CPlayer*> players;
 extern CObjectContainer objectcontainer[3];
-extern CResourceManager* rm;
-extern CGameValues game_values;
-
 
 //Fireball:
 //Frag limit death match, but powerup cards appear randomly

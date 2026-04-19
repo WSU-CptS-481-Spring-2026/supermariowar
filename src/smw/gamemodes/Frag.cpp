@@ -1,11 +1,12 @@
 #include "Frag.h"
 
 #include "GameValues.h"
+#include "global.h"
 #include "player.h"
 #include "ResourceManager.h"
 
-extern CGameValues game_values;
-extern CResourceManager* rm;
+;
+;
 
 
 //fraglimit:

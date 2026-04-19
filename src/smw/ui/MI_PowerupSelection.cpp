@@ -1,6 +1,7 @@
 #include "MI_PowerupSelection.h"
 
 #include "GameValues.h"
+#include "global.h"
 #include "ResourceManager.h"
 #include "ui/MI_Button.h"
 #include "ui/MI_Image.h"
@@ -9,8 +10,8 @@
 #include "ui/MI_Text.h"
 #include "uimenu.h"
 
-extern CResourceManager* rm;
-extern CGameValues game_values;
+
+
 
 namespace {
 //Rearrange display of powerups

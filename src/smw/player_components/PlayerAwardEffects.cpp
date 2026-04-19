@@ -2,14 +2,15 @@
 
 #include "eyecandy.h"
 #include "GameValues.h"
+#include "global.h"
 #include "objectgame.h"
 #include "player.h"
 #include "ResourceManager.h"
 
 #include <cmath>
 
-extern CGameValues game_values;
-extern CResourceManager* rm;
+
+
 
 extern CEyecandyContainer eyecandy[3];
 

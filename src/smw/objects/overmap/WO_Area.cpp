@@ -2,6 +2,7 @@
 
 #include "GameMode.h"
 #include "GameValues.h"
+#include "global.h"
 #include "map.h"
 #include "ObjectContainer.h"
 #include "player.h"
@@ -9,9 +10,9 @@
 
 extern CObjectContainer objectcontainer[3];
 extern std::vector<CPlayer*> players;
-extern CMap* g_map;
-extern CGameValues game_values;
-extern CResourceManager* rm;
+
+
+
 
 //------------------------------------------------------------------------------
 // class area (for Domination mode)

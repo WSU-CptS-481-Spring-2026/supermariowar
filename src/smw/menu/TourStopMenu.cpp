@@ -1,12 +1,13 @@
 #include "TourStopMenu.h"
 
+#include "global.h"
 #include "ResourceManager.h"
 #include "ui/MI_Button.h"
 #include "ui/MI_Image.h"
 #include "ui/MI_Text.h"
 #include "ui/MI_TourStop.h"
 
-extern CResourceManager* rm;
+
 
 UI_TourStopMenu::UI_TourStopMenu()
     : UI_Menu()

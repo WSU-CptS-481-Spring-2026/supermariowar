@@ -3,11 +3,12 @@
 #include <array>
 #include "GameMode.h"
 #include "GameValues.h"
+#include "global.h"
 #include "player.h"
 #include "ResourceManager.h"
 
-extern CGameValues game_values;
-extern CResourceManager* rm;
+
+
 
 static const std::array<PlayerPalette, 4> INVINCIBILITY_ANIMATION_STATES = {normal, invincibility_1, invincibility_2, invincibility_3};
 static const short INVINCIBILITY_TIME = 580;

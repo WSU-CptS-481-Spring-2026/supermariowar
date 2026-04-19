@@ -2,14 +2,15 @@
 
 #include "eyecandy.h"
 #include "GameValues.h"
+#include "global.h"
 #include "player.h"
 #include "ResourceManager.h"
 #include "objects/carriable/CO_ThrowBox.h"
 
 extern SpotlightManager spotlightManager;
 extern CEyecandyContainer eyecandy[3];
-extern CGameValues game_values;
-extern CResourceManager* rm;
+
+
 
 //------------------------------------------------------------------------------
 // class throwable block projectile

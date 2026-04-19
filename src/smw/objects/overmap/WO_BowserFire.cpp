@@ -1,9 +1,10 @@
 #include "WO_BowserFire.h"
 
 #include "GameValues.h"
+#include "global.h"
 #include "player.h"
 
-extern CGameValues game_values;
+
 
 extern CPlayer* GetPlayerFromGlobalID(short iGlobalID);
 

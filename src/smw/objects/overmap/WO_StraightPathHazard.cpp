@@ -2,13 +2,14 @@
 
 #include "eyecandy.h"
 #include "Game.h"
+#include "global.h"
 #include "player.h"
 #include "ResourceManager.h"
 
 #include <cmath>
 
 extern CEyecandyContainer eyecandy[3];
-extern CResourceManager* rm;
+
 
 //------------------------------------------------------------------------------
 // class OMO Straight Path Hazard - straight path fireball

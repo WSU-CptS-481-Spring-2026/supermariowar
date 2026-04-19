@@ -1,11 +1,12 @@
 #include "CO_PhantoKey.h"
 
+#include "global.h"
 #include "map.h"
 #include "player.h"
 #include "ResourceManager.h"
 
-extern CMap* g_map;
-extern CResourceManager* rm;
+
+
 
 //------------------------------------------------------------------------------
 // class phanto key (for chase mode)

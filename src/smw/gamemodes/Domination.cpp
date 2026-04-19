@@ -1,6 +1,7 @@
 #include "Domination.h"
 
 #include "GameValues.h"
+#include "global.h"
 #include "ObjectContainer.h"
 #include "player.h"
 #include "ResourceManager.h"
@@ -10,8 +11,8 @@
 extern CScore *score[4];
 extern CObjectContainer objectcontainer[3];
 extern std::vector<CPlayer*> players;
-extern CGameValues game_values;
-extern CResourceManager* rm;
+
+
 
 
 namespace {

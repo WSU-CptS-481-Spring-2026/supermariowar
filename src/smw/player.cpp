@@ -2,6 +2,7 @@
 
 #include "eyecandy.h"
 #include "GameValues.h"
+#include "global.h"
 #include "map.h"
 #include "movingplatform.h"
 #include "net.h"
@@ -36,13 +37,13 @@ extern SpotlightManager spotlightManager;
 extern CObjectContainer noncolcontainer;
 extern CObjectContainer objectcontainer[3];
 
-extern CMap* g_map;
+
 extern CEyecandyContainer eyecandy[3];
 
 extern std::vector<CPlayer*> players;
 
-extern CGameValues game_values;
-extern CResourceManager* rm;
+
+
 
 extern short x_shake;
 extern short y_shake;

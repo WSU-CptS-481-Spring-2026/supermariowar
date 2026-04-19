@@ -3,13 +3,14 @@
 #include "eyecandy.h"
 #include "GameMode.h"
 #include "GameValues.h"
+#include "global.h"
 #include "player.h"
 #include "ResourceManager.h"
 
 extern CEyecandyContainer eyecandy[3];
 
-extern CGameValues game_values;
-extern CResourceManager* rm;
+
+
 
 //------------------------------------------------------------------------------
 // class 1up powerup

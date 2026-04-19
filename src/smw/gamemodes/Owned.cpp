@@ -1,6 +1,7 @@
 #include "Owned.h"
 
 #include "GameValues.h"
+#include "global.h"
 #include "player.h"
 #include "ResourceManager.h"
 #include "Score.h"
@@ -8,8 +9,8 @@
 extern CScore *score[4];
 extern std::vector<CPlayer*> players;
 
-extern CResourceManager* rm;
-extern CGameValues game_values;
+
+
 
 
 //Owned:

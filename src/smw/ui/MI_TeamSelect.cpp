@@ -3,15 +3,16 @@
 #include "gfx.h"
 #include "Game.h"
 #include "GameValues.h"
+#include "global.h"
 #include "RandomNumberGenerator.h"
 #include "ResourceManager.h"
 #include "FileList.h"
 #include "ui/MI_Image.h"
 
-extern CGameValues game_values;
-extern CResourceManager* rm;
 
-extern SkinList *skinlist;
+
+
+
 
 /**************************************
  * MI_TeamSelect Class

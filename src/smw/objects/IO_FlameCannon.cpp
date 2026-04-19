@@ -1,12 +1,13 @@
 #include "IO_FlameCannon.h"
 
 #include "GameValues.h"
+#include "global.h"
 #include "player.h"
 #include "RandomNumberGenerator.h"
 #include "ResourceManager.h"
 
 extern SDL_Rect g_rFlameRects[4][4];
-extern CResourceManager* rm;
+
 
 
 //------------------------------------------------------------------------------

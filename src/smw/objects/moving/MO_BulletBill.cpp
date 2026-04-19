@@ -3,6 +3,7 @@
 #include "eyecandy.h"
 #include "Game.h"
 #include "GameValues.h"
+#include "global.h"
 #include "gfx.h"
 #include "ObjectContainer.h"
 #include "player.h"
@@ -12,8 +13,8 @@
 
 extern CEyecandyContainer eyecandy[3];
 extern CObjectContainer objectcontainer[3];
-extern CGameValues game_values;
-extern CResourceManager* rm;
+
+
 
 extern short LookupTeamID(short id);
 

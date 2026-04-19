@@ -2,14 +2,15 @@
 
 #include "eyecandy.h"
 #include "GameValues.h"
+#include "global.h"
 #include "player.h"
 #include "ResourceManager.h"
 #include "gamemodes/MiniPipe.h"
 
 extern CGM_Pipe_MiniGame* pipegamemode;
 extern CEyecandyContainer eyecandy[3];
-extern CGameValues game_values;
-extern CResourceManager* rm;
+
+
 
 //------------------------------------------------------------------------------
 // class pipe coin (for coin pipe minigame)

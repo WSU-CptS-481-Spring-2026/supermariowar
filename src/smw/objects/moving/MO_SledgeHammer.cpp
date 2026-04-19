@@ -2,6 +2,7 @@
 
 #include "eyecandy.h"
 #include "GameValues.h"
+#include "global.h"
 #include "ObjectContainer.h"
 #include "player.h"
 #include "RandomNumberGenerator.h"
@@ -15,7 +16,7 @@ extern CPlayer* GetPlayerFromGlobalID(short iGlobalID);
 
 extern CObjectContainer objectcontainer[3];
 extern CEyecandyContainer eyecandy[3];
-extern CResourceManager* rm;
+
 
 //------------------------------------------------------------------------------
 // class sledge hammer

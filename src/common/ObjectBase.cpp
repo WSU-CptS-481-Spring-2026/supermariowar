@@ -1,10 +1,10 @@
 #include "ObjectBase.h"
-
+#include "global.h"
 #include "GlobalConstants.h"
 #include "map.h"
 #include "gfx/gfxSprite.h"
 
-extern CMap* g_map;
+
 
 float CapFallingVelocity(float vel)
 {

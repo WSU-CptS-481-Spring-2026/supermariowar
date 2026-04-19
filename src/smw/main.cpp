@@ -18,6 +18,7 @@
 #include "FileList.h"
 #include "GameMode.h"
 #include "GameValues.h"
+#include "global.h"
 #include "map.h"
 #include "MapList.h"
 #include "net.h"
@@ -96,7 +97,6 @@ short			score_cnt;
 short g_iSwirlSpawnLocations[4][2][25];
 
 
-CGameMode			*gamemodes[GAMEMODE_LAST];
 CGM_Bonus			*bonushousemode = NULL;
 CGM_Pipe_MiniGame	*pipegamemode = NULL;
 CGM_Boss_MiniGame	*bossgamemode = NULL;
@@ -107,25 +107,25 @@ short currentgamemode = 0;
 extern SDL_Joystick     **joysticks;
 extern short            joystickcount;
 
-extern CMap* g_map;
-extern CTilesetManager* g_tilesetmanager;
 
-extern FiltersList* filterslist;
-extern MapList* maplist;
-extern SkinList* skinlist;
-extern AnnouncerList* announcerlist;
-extern MusicList* musiclist;
-extern WorldMusicList* worldmusiclist;
-extern GraphicsList* menugraphicspacklist;
-extern GraphicsList* worldgraphicspacklist;
-extern GraphicsList* gamegraphicspacklist;
-extern SoundsList* soundpacklist;
-extern TourList* tourlist;
-extern WorldList* worldlist;
 
-extern std::string RootDataDirectory;
-extern CGameValues game_values;
-extern CResourceManager* rm;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 //*************************************
 //  MAIN LOOP

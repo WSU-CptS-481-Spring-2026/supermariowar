@@ -4,6 +4,7 @@
 #include "FileList.h"
 #include "Game.h"
 #include "GameValues.h"
+#include "global.h"
 #include "RandomNumberGenerator.h"
 #include "ResourceManager.h"
 #include "uimenu.h"
@@ -12,10 +13,10 @@
 
 #include <cmath>
 
-extern CGameValues game_values;
-extern CResourceManager* rm;
+
+
 extern WorldMap g_worldmap;
-extern WorldMusicList* worldmusiclist;
+
 
 extern SDL_Surface* screen;
 extern SDL_Surface* blitdest;

@@ -1,6 +1,7 @@
 #include "NetRoomMenu.h"
 
 #include "GameValues.h"
+#include "global.h"
 #include "ResourceManager.h"
 #include "net.h"
 #include "path.h"
@@ -15,8 +16,8 @@
 #include <sstream>
 
 
-extern CResourceManager* rm;
-extern CGameValues game_values;
+
+
 
 
 UI_NetRoomMenu::UI_NetRoomMenu()

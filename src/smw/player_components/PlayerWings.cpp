@@ -2,8 +2,9 @@
 
 #include "../player.h"
 
+#include "global.h"
 #include "ResourceManager.h"
-extern CResourceManager* rm;
+
 
 void PlayerWings::reset()
 {

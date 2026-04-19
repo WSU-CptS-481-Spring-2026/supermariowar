@@ -1,12 +1,13 @@
 #include "DonutBlock.h"
 
+#include "global.h"
 #include "map.h"
 #include "movingplatform.h"
 #include "player.h"
 #include "TilesetManager.h"
 
-extern CMap* g_map;
-extern CTilesetManager* g_tilesetmanager;
+
+
 
 B_DonutBlock::B_DonutBlock(gfxSprite *nspr, Vec2s pos)
     : IO_Block(nspr, pos)

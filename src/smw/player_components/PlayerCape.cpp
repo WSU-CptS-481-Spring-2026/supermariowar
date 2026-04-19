@@ -3,13 +3,14 @@
 #include "../player.h"
 
 #include "GameValues.h"
+#include "global.h"
 #include "GlobalConstants.h"
 #include "ObjectContainer.h"
 #include "ResourceManager.h"
 #include "objects/moving/MO_SpinAttack.h"
 
-extern CGameValues game_values;
-extern CResourceManager* rm;
+
+
 
 extern CObjectContainer objectcontainer[3];
 

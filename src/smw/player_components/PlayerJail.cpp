@@ -3,13 +3,14 @@
 #include "eyecandy.h"
 #include "player.h"
 #include "GameValues.h"
+#include "global.h"
 #include "ResourceManager.h"
 
 #include <cassert>
 
 extern CEyecandyContainer eyecandy[3];
-extern CGameValues game_values;
-extern CResourceManager* rm;
+
+
 
 PlayerJail::PlayerJail()
     : owner_teamID(-1)

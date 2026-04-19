@@ -3,6 +3,7 @@
 #include "eyecandy.h"
 #include "Game.h"
 #include "GameMode.h"
+#include "global.h"
 #include "GameValues.h"
 #include "RandomNumberGenerator.h"
 #include "ResourceManager.h"
@@ -12,8 +13,8 @@
 
 #include <cmath>
 
-extern CGameValues game_values;
-extern CResourceManager* rm;
+
+
 
 
 MI_BonusWheel::MI_BonusWheel(short x, short y)

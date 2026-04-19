@@ -2,6 +2,7 @@
 
 #include "Game.h"
 #include "GameValues.h"
+#include "global.h"
 #include "ObjectContainer.h"
 #include "RandomNumberGenerator.h"
 #include "ResourceManager.h"
@@ -10,8 +11,8 @@
 #include "objects/overmap/WO_Thwomp.h"
 
 extern CObjectContainer objectcontainer[3];
-extern CResourceManager* rm;
-extern CGameValues game_values;
+
+
 
 
 //Survival Mode! - just like mario war classic, but you have

@@ -1,10 +1,11 @@
 #include "MI_StoredPowerupResetButton.h"
 
 #include "GameValues.h"
+#include "global.h"
 #include "ResourceManager.h"
 
-extern CResourceManager* rm;
-extern CGameValues game_values;
+
+
 
 
 MI_StoredPowerupResetButton::MI_StoredPowerupResetButton(gfxSprite* nspr, short x, short y, std::string name, short width, TextAlign align) :

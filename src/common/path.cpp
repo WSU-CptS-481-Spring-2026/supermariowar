@@ -1,4 +1,5 @@
 #include "path.h"
+#include "global.h"
 
 #ifdef USE_SDL2
 #include "SDL.h"
@@ -20,7 +21,7 @@
 namespace fs = std::filesystem;
 
 
-extern std::string RootDataDirectory;
+
 
 std::string SMW_Root_Data_Dir;
 

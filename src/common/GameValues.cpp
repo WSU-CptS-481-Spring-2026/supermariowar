@@ -4,6 +4,7 @@
 #include "FileList.h"
 #include "GameMode.h"
 #include "GlobalConstants.h"
+#include "global.h"
 #include "MapList.h" // req. only by WriteConfig
 #include "path.h"
 #include "Version.h"
@@ -14,20 +15,20 @@
 
 // TODO: Refactor externs
 
-extern CGameMode * gamemodes[GAMEMODE_LAST];
+// CGameMode * gamemodes[GAMEMODE_LAST];
 
-extern FiltersList *filterslist;
-extern MapList *maplist;
-extern SkinList *skinlist;
-extern AnnouncerList *announcerlist;
-extern MusicList *musiclist;
-extern WorldMusicList *worldmusiclist;
-extern GraphicsList *menugraphicspacklist;
-extern GraphicsList *worldgraphicspacklist;
-extern GraphicsList *gamegraphicspacklist;
-extern SoundsList *soundpacklist;
+// FiltersList *filterslist;
+// MapList *maplist;
+// SkinList *skinlist;
+// AnnouncerList *announcerlist;
+// MusicList *musiclist;
+// WorldMusicList *worldmusiclist;
+// GraphicsList *menugraphicspacklist;
+// GraphicsList *worldgraphicspacklist;
+// GraphicsList *gamegraphicspacklist;
+// SoundsList *soundpacklist;
 
-extern short joystickcount;
+// short joystickcount;
 
 
 //[Keyboard/Joystick][Game/Menu][NumPlayers][NumKeys]  left, right, jump, down, turbo, powerup, start, cancel
@@ -111,7 +112,7 @@ constexpr short DEFAULT_POWERUP_PRESETS[NUM_POWERUP_PRESETS][NUM_POWERUPS] {
 };
 } // namespace
 
-extern CGameValues game_values;
+
 void ifSoundOnPlay(sfxSound& sfx)
 {
     if (game_values.sound)

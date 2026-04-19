@@ -10,7 +10,7 @@
 #include <cassert>
 #include <iostream>
 
-extern CTilesetManager* g_tilesetmanager;
+
 
 
 MapReader1700::MapReader1700()

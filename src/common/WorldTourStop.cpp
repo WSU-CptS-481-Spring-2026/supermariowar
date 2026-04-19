@@ -2,6 +2,7 @@
 
 #include "GameMode.h"
 #include "GameValues.h"
+#include "global.h"
 #include "MapList.h"
 #include "RandomNumberGenerator.h"
 #include "Version.h"
@@ -10,9 +11,9 @@
 #include <cstdlib>
 #include <cstring>
 
-extern CGameMode * gamemodes[GAMEMODE_LAST];
-extern CGameValues game_values;
-extern MapList *maplist;
+
+
+
 
 
 namespace {

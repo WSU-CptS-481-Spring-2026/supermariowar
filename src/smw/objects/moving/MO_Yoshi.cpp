@@ -3,15 +3,16 @@
 #include "Game.h"
 #include "GameMode.h"
 #include "GameValues.h"
+#include "global.h"
 #include "map.h"
 #include "player.h"
 #include "RandomNumberGenerator.h"
 #include "ResourceManager.h"
 #include "objects/carriable/CO_Egg.h"
 
-extern CMap* g_map;
-extern CGameValues game_values;
-extern CResourceManager* rm;
+
+
+
 
 //------------------------------------------------------------------------------
 // class yoshi (for egg mode)

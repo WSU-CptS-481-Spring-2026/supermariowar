@@ -8,7 +8,7 @@
 
 #include <iostream>
 
-extern CTilesetManager* g_tilesetmanager;
+
 
 
 namespace {

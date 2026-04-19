@@ -2,14 +2,15 @@
 
 #include "FileList.h"
 #include "GameValues.h"
+#include "global.h"
 #include "input.h"
 #include "ResourceManager.h"
 #include "ui/MI_Image.h"
 
-extern MusicList *musiclist;
-extern WorldMusicList *worldmusiclist;
-extern CGameValues game_values;
-extern CResourceManager* rm;
+
+
+
+
 
 
 MI_PlaylistField::MI_PlaylistField(gfxSprite* nspr, short x, short y, std::string name, short width, short indent)

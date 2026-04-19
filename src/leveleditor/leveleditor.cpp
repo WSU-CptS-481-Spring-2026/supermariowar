@@ -25,6 +25,7 @@
 #include "eyecandy.h"
 #include "FPSLimiter.h"
 #include "GameMode.h"
+#include "global.h"
 #include "gfx.h"
 #include "GlobalConstants.h"
 #include "map.h"
@@ -87,16 +88,16 @@ void removeifprojectile(IO_MovingObject * object, bool playsound, bool forcedead
 #define MAPTITLESTRING "Level Editor"
 
 
-extern CMap* g_map;
-extern CTilesetManager* g_tilesetmanager;
 
-extern FiltersList *filterslist;
-extern MapList *maplist;
 
-extern CResourceManager* rm;
-extern std::string RootDataDirectory;
 
-extern CGameValues game_values;
+
+
+
+
+
+
+
 
 enum {EDITOR_EDIT, EDITOR_TILES, EDITOR_QUIT, SAVE_AS, FIND, CLEAR_MAP, EDITOR_BLOCKS, NEW_MAP, SAVE, EDITOR_WARP, EDITOR_EYECANDY, DISPLAY_HELP, EDITOR_PLATFORM, EDITOR_TILETYPE, EDITOR_BACKGROUNDS, EDITOR_MAPITEMS, EDITOR_ANIMATION, EDITOR_PROPERTIES, EDITOR_MODEITEMS, EDITOR_MAPHAZARDS};
 
@@ -191,7 +192,6 @@ int bound_to_window_h(int y) {
 }
 
 CEyecandyContainer eyecandy[3];
-CGameMode		*gamemodes[GAMEMODE_LAST];
 std::vector<CPlayer*> players;
 
 void SDLCALL musicfinished(){}

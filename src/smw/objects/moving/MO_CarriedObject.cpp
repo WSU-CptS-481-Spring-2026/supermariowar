@@ -1,10 +1,11 @@
 #include "MO_CarriedObject.h"
 
 #include "GameValues.h"
+#include "global.h"
 #include "player.h"
 #include "ResourceManager.h"
 
-extern CResourceManager* rm;
+
 
 //------------------------------------------------------------------------------
 // class CarriedObject - all objects players can carry inheirit from this class

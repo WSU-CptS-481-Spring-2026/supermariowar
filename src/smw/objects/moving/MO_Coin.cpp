@@ -3,16 +3,17 @@
 #include "eyecandy.h"
 #include "GameMode.h"
 #include "GameValues.h"
+#include "global.h"
 #include "map.h"
 #include "ObjectContainer.h"
 #include "player.h"
 #include "ResourceManager.h"
 
 extern CObjectContainer objectcontainer[3];
-extern CMap* g_map;
+
 extern CEyecandyContainer eyecandy[3];
-extern CGameValues game_values;
-extern CResourceManager* rm;
+
+
 
 //------------------------------------------------------------------------------
 // class coin (for coin mode)

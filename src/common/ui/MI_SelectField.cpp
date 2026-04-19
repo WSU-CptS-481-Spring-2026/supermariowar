@@ -1,12 +1,13 @@
 #include "MI_SelectField.h"
 
+#include "global.h"
 #include "input.h"
 #include "RandomNumberGenerator.h"
 #include "ResourceManager.h"
 #include "gfx/gfxSprite.h"
 #include "ui/MI_Image.h"
 
-extern CResourceManager* rm;
+
 
 
 template<typename T>

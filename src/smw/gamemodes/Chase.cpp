@@ -1,6 +1,7 @@
 #include "Chase.h"
 
 #include "GameValues.h"
+#include "global.h"
 #include "ObjectContainer.h"
 #include "player.h"
 #include "RandomNumberGenerator.h"
@@ -9,8 +10,8 @@
 #include "objects/overmap/WO_Phanto.h"
 
 extern CObjectContainer objectcontainer[3];
-extern CGameValues game_values;
-extern CResourceManager* rm;
+
+
 
 
 //Chase (hold a key for points while phantos chase you)

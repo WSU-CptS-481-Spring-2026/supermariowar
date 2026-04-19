@@ -1,10 +1,11 @@
 #include "PlayerCardCollection.h"
 
 #include "GameValues.h"
+#include "global.h"
 #include "player.h"
 #include "gamemodes/CardCollection.h"
 
-extern CGameValues game_values;
+
 
 void PlayerCardCollection::reset() {
     timer = 0;

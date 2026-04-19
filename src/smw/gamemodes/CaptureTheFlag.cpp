@@ -1,6 +1,7 @@
 #include "CaptureTheFlag.h"
 
 #include "GameValues.h"
+#include "global.h"
 #include "ObjectContainer.h"
 #include "player.h"
 #include "objects/carriable/CO_Flag.h"
@@ -9,8 +10,8 @@
 
 extern CObjectContainer objectcontainer[3];
 extern std::vector<CPlayer*> players;
-extern CResourceManager* rm;
-extern CGameValues game_values;
+
+
 
 
 //Capture The Flag mode - each team has a base and a flag

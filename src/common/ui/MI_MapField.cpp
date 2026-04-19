@@ -1,6 +1,7 @@
 #include "MI_MapField.h"
 
 #include "Game.h"
+#include "global.h"
 #include "input.h"
 #include "MapList.h"
 #include "ObjectContainer.h"
@@ -9,8 +10,8 @@
 
 #include <cstring>
 
-extern MapList *maplist;
-extern CResourceManager* rm;
+
+
 extern CObjectContainer objectcontainer[3];
 
 /**************************************

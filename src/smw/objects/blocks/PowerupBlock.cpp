@@ -2,6 +2,7 @@
 
 #include "GameValues.h"
 #include "GameMode.h"
+#include "global.h"
 #include "map.h"
 #include "objectgame.h"
 #include "player.h"
@@ -12,9 +13,9 @@
 
 #include <cmath>
 
-extern CMap* g_map;
-extern CGameValues game_values;
-extern CResourceManager* rm;
+
+
+
 
 //------------------------------------------------------------------------------
 // class powerup block

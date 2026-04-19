@@ -1,13 +1,14 @@
 #include "IO_BulletBillCannon.h"
 
 #include "GameValues.h"
+#include "global.h"
 #include "ObjectContainer.h"
 #include "RandomNumberGenerator.h"
 #include "ResourceManager.h"
 #include "objects/moving/MO_BulletBill.h"
 
 extern CObjectContainer objectcontainer[3];
-extern CResourceManager* rm;
+
 
 //------------------------------------------------------------------------------
 // class IO_BulletBillCannon - gets update calls and shoots bullet bills based on timer

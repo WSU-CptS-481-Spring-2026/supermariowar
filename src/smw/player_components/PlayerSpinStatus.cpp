@@ -3,7 +3,8 @@
 #include "../player.h"
 
 #include "GameValues.h"
-extern CGameValues game_values;
+#include "global.h"
+
 
 void PlayerSpinStatus::reset() {
     timer = 0;

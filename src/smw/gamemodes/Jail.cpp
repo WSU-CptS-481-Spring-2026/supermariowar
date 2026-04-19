@@ -2,6 +2,7 @@
 
 #include "eyecandy.h"
 #include "GameValues.h"
+#include "global.h"
 #include "player.h"
 #include "ResourceManager.h"
 #include "Score.h"
@@ -13,9 +14,6 @@ extern short score_cnt;
 extern std::vector<CPlayer*> players;
 
 extern CEyecandyContainer eyecandy[3];
-extern CResourceManager* rm;
-extern CGameValues game_values;
-
 
 //Owned:
 //Frag limit death match, but players get bonus frags for the number of players they have "owned"

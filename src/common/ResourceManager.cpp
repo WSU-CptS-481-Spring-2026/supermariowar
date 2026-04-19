@@ -3,19 +3,20 @@
 #include "FileList.h"
 #include "Game.h"
 #include "GameValues.h"
+#include "global.h"
 #include "TilesetManager.h"
 #include "path.h"
 #include "gfx/Color.h"
 
-extern SkinList *skinlist;
-extern GraphicsList *menugraphicspacklist;
-extern GraphicsList *worldgraphicspacklist;
-extern GraphicsList *gamegraphicspacklist;
-extern SoundsList *soundpacklist;
+
+
+
+
+
 
 extern CTilesetManager  *g_tilesetmanager;
 
-extern CGameValues game_values;
+
 
 
 bool CResourceManager::LoadMenuSkin(short playerID, short skinID, short colorID, bool fLoadBothDirections)

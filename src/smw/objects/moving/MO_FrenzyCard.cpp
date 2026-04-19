@@ -3,6 +3,7 @@
 #include "GameMode.h"
 #include "Game.h"
 #include "GameValues.h"
+#include "global.h"
 #include "map.h"
 #include "ObjectContainer.h"
 #include "player.h"
@@ -12,9 +13,9 @@
 #include "objects/carriable/CO_Shell.h"
 
 extern CObjectContainer objectcontainer[3];
-extern CMap* g_map;
-extern CGameValues game_values;
-extern CResourceManager* rm;
+
+
+
 
 //------------------------------------------------------------------------------
 // class frenzycard (for fire frenzy mode)

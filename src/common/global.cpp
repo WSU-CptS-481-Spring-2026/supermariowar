@@ -1,46 +1,4 @@
-#include "FileList.h"
-#include "GameValues.h"
-#include "gfx.h"
-#include "map.h"
-#include "MapList.h"
-#include "path.h"
-#include "ResourceManager.h"
-#include "TilesetManager.h"
-
-#include <cstdio>
-#include <algorithm>
-#include <array>
-
-// main game directory, read from command line argument
-#ifdef __ANDROID__
-std::string RootDataDirectory = GetHomeDirectory() + "data";
-#else
-std::string RootDataDirectory = GetRootDirectory() + "data";
-#endif
-
-CResourceManager *rm;
-CGameValues game_values;
-
-FiltersList *filterslist;  //Filters list must be initiallized before maps list because it is used in maplist constructor
-MapList *maplist;
-SkinList *skinlist;
-AnnouncerList *announcerlist;
-MusicList *musiclist;
-WorldMusicList *worldmusiclist;
-GraphicsList *menugraphicspacklist;
-GraphicsList *worldgraphicspacklist;
-GraphicsList *gamegraphicspacklist;
-SoundsList *soundpacklist;
-TourList *tourlist;
-WorldList *worldlist;
-
-CMap      *g_map;
-CTilesetManager *g_tilesetmanager;
-
-//Joystick-Init
-SDL_Joystick **joysticks = NULL;
-short joystickcount = 0;
-
+#include "global.h"
 
 //Koopa Bros Weapons
 //Mushrooms Only

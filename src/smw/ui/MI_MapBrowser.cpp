@@ -2,6 +2,7 @@
 
 #include "Game.h"
 #include "GameValues.h"
+#include "global.h"
 #include "map.h"
 #include "MapList.h"
 #include "path.h"
@@ -9,10 +10,10 @@
 
 #include "SDL_image.h"
 
-extern CGameValues game_values;
-extern CResourceManager* rm;
-extern CMap* g_map;
-extern MapList* maplist;
+
+
+
+
 
 extern SDL_Surface* blitdest;
 

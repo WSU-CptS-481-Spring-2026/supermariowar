@@ -1,11 +1,12 @@
 #include "TeamSelectMenu.h"
 
+#include "global.h"
 #include "ResourceManager.h"
 #include "ui/MI_Image.h"
 #include "ui/MI_TeamSelect.h"
 #include "ui/MI_Text.h"
 
-extern CResourceManager* rm;
+
 
 
 UI_TeamSelectMenu::UI_TeamSelectMenu()

@@ -1,11 +1,12 @@
 #include "MI_PlayerSelect.h"
 
 #include "GameValues.h"
+#include "global.h"
 #include "ResourceManager.h"
 #include "ui/MI_Image.h"
 
-extern CResourceManager* rm;
-extern CGameValues game_values;
+
+
 
 
 MI_PlayerSelect::MI_PlayerSelect(gfxSprite * nspr, short x, short y, std::string name, short width, short indent)

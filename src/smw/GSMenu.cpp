@@ -3,6 +3,7 @@
 #include "FileList.h"
 #include "Game.h"
 #include "GameValues.h"
+#include "global.h"
 #include "GSGameplay.h"
 #include "net.h"
 #include "map.h"
@@ -82,33 +83,33 @@ extern WorldMap g_worldmap;
 
 extern void LoadCurrentMapBackground();
 
-extern CMap* g_map;
+
 
 extern CScore *score[4];
 extern short score_cnt;
 
-extern CGameMode * gamemodes[GAMEMODE_LAST];
+
 extern CGM_Bonus * bonushousemode;
 extern CGM_Pipe_MiniGame * pipegamemode;
 extern CGM_Boss_MiniGame * bossgamemode;
 extern CGM_Boxes_MiniGame * boxesgamemode;
 extern short currentgamemode;
 
-extern CResourceManager* rm;
-extern CGameValues game_values;
 
-extern FiltersList *filterslist;
-extern MapList *maplist;
-extern SkinList *skinlist;
-extern AnnouncerList *announcerlist;
-extern MusicList *musiclist;
-extern WorldMusicList *worldmusiclist;
-extern GraphicsList *menugraphicspacklist;
-extern GraphicsList *worldgraphicspacklist;
-extern GraphicsList *gamegraphicspacklist;
-extern SoundsList *soundpacklist;
-extern TourList *tourlist;
-extern WorldList *worldlist;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // std::uniue_ptr requires that the special member function have access
 // to the complete types.

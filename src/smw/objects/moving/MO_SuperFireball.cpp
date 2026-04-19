@@ -3,12 +3,13 @@
 #include "eyecandy.h"
 #include "Game.h"
 #include "GameValues.h"
+#include "global.h"
 #include "player.h"
 #include "RandomNumberGenerator.h"
 #include "ResourceManager.h"
 
 extern CEyecandyContainer eyecandy[3];
-extern CResourceManager* rm;
+
 
 //------------------------------------------------------------------------------
 // class super fireball

@@ -2,13 +2,14 @@
 
 #include "Game.h"
 #include "GameValues.h"
+#include "global.h"
 #include "player.h"
 #include "RandomNumberGenerator.h"
 #include "ResourceManager.h"
 #include "gamemodes/Chase.h"
 
-extern CGameValues game_values;
-extern CResourceManager* rm;
+
+
 
 //------------------------------------------------------------------------------
 // class Phanto (for phanto mode)

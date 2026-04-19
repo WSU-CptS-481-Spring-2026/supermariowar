@@ -1,12 +1,13 @@
 #include "CO_Star.h"
 
 #include "GameValues.h"
+#include "global.h"
 #include "player.h"
 #include "ResourceManager.h"
 #include "gamemodes/Star.h"
 
-extern CGameValues game_values;
-extern CResourceManager* rm;
+
+
 
 //------------------------------------------------------------------------------
 // class star (for star mode)

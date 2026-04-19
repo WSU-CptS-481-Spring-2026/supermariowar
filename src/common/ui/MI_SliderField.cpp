@@ -1,10 +1,11 @@
 #include "MI_SliderField.h"
 
+#include "global.h"
 #include "input.h"
 #include "ResourceManager.h"
 #include "ui/MI_Image.h"
 
-extern CResourceManager* rm;
+
 
 /**************************************
  * MI_SliderField Class

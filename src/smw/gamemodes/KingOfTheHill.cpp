@@ -1,13 +1,12 @@
 #include "KingOfTheHill.h"
 
+#include "global.h"
 #include "ObjectContainer.h"
 #include "player.h"
 #include "ResourceManager.h"
 #include "objects/overmap/WO_KingOfTheHillZone.h"
 
 extern CObjectContainer objectcontainer[3];
-extern CResourceManager* rm;
-
 
 //King of the Hill (Control an area for a certain amount of time)
 CGM_KingOfTheHill::CGM_KingOfTheHill() : CGM_Domination()

@@ -1,12 +1,13 @@
 #include "MI_AnnouncerField.h"
 
 #include "FileList.h"
+#include "global.h"
 #include "input.h"
 #include "path.h"
 #include "ResourceManager.h"
 #include "ui/MI_Image.h"
 
-extern CResourceManager* rm;
+
 
 
 MI_AnnouncerField::MI_AnnouncerField(gfxSprite* nspr, short x, short y, std::string name, short width, short indent, SimpleFileList * pList)

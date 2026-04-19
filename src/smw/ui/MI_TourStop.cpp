@@ -1,6 +1,7 @@
 #include "MI_TourStop.h"
 
 #include "GameValues.h"
+#include "global.h"
 #include "ResourceManager.h"
 #include "WorldTourStop.h"
 #include "gamemodes/MiniBoss.h"
@@ -13,10 +14,10 @@
 #include "ui/MI_SelectField.h"
 #include "ui/MI_Text.h"
 
-extern CGameValues game_values;
-extern CResourceManager* rm;
 
-extern CGameMode* gamemodes[GAMEMODE_LAST];
+
+
+
 extern CGM_Pipe_MiniGame* pipegamemode;
 extern CGM_Boss_MiniGame* bossgamemode;
 extern CGM_Boxes_MiniGame* boxesgamemode;

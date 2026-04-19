@@ -2,6 +2,7 @@
 
 #include "eyecandy.h"
 #include "GameValues.h"
+#include "global.h"
 #include "ObjectContainer.h"
 #include "player.h"
 #include "ResourceManager.h"
@@ -10,8 +11,8 @@
 extern CPlayer* GetPlayerFromGlobalID(short iGlobalID);
 extern SpotlightManager spotlightManager;
 extern CObjectContainer objectcontainer[3];
-extern CGameValues game_values;
-extern CResourceManager* rm;
+
+
 
 //------------------------------------------------------------------------------
 // class bomb

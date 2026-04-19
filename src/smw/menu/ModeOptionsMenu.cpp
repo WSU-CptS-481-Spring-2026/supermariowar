@@ -2,6 +2,7 @@
 
 #include "GameMode.h"
 #include "GameValues.h"
+#include "global.h"
 #include "ResourceManager.h"
 #include "ui/MI_Button.h"
 #include "ui/MI_FrenzyModeOptions.h"
@@ -9,8 +10,8 @@
 #include "ui/MI_PowerupSlider.h"
 #include "ui/MI_Text.h"
 
-extern CGameValues game_values;
-extern CResourceManager* rm;
+
+
 
 
 UI_ModeOptionsMenu::UI_ModeOptionsMenu()

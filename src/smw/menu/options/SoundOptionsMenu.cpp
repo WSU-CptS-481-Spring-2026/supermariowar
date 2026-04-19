@@ -2,6 +2,7 @@
 
 #include "FileList.h"
 #include "GameValues.h"
+#include "global.h"
 #include "ResourceManager.h"
 #include "ui/MI_AnnouncerField.h"
 #include "ui/MI_Button.h"
@@ -12,13 +13,13 @@
 #include "ui/MI_SliderField.h"
 #include "ui/MI_Text.h"
 
-extern CResourceManager* rm;
-extern CGameValues game_values;
 
-extern AnnouncerList* announcerlist;
-extern MusicList* musiclist;
-extern WorldMusicList* worldmusiclist;
-extern SoundsList* soundpacklist;
+
+
+
+
+
+
 
 UI_SoundOptionsMenu::UI_SoundOptionsMenu()
     : UI_Menu()

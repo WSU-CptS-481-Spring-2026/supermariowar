@@ -2,6 +2,7 @@
 
 #include "FileList.h"
 #include "GameValues.h"
+#include "global.h"
 #include "ResourceManager.h"
 #include "path.h"
 #include "ui/MI_Button.h"
@@ -10,11 +11,11 @@
 #include "ui/MI_Text.h"
 #include "ui/MI_WorldPreviewDisplay.h"
 
-extern CGameValues game_values;
-extern CResourceManager* rm;
 
-extern TourList* tourlist;
-extern WorldList* worldlist;
+
+
+
+
 
 UI_MatchSelectionMenu::UI_MatchSelectionMenu()
     : UI_Menu()

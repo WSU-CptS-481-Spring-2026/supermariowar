@@ -1,14 +1,15 @@
 #include "Classic.h"
 
 #include "GameValues.h"
+#include "global.h"
 #include "player.h"
 #include "ResourceManager.h"
 #include "Score.h"
 
 extern CScore *score[4];
 extern short score_cnt;
-extern CGameValues game_values;
-extern CResourceManager* rm;
+
+
 
 
 //mariowar (x lives - counting down)

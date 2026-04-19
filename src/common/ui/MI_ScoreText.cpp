@@ -1,8 +1,9 @@
 #include "MI_ScoreText.h"
 
+#include "global.h"
 #include "ResourceManager.h"
 
-extern CResourceManager* rm;
+
 
 
 MI_ScoreText::MI_ScoreText(short x, short y)

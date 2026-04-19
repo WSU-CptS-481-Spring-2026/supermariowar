@@ -2,6 +2,7 @@
 
 #include "Game.h"
 #include "GameValues.h"
+#include "global.h"
 #include "map.h"
 #include "MapList.h"
 #include "ObjectContainer.h"
@@ -15,11 +16,11 @@
 
 #include <cstring>
 
-extern CGameValues game_values;
-extern CResourceManager* rm;
 
-extern CMap* g_map;
-extern MapList *maplist;
+
+
+
+
 
 extern SDL_Surface* blitdest;
 extern CObjectContainer noncolcontainer;

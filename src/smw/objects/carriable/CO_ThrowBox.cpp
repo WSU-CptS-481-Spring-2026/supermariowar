@@ -2,14 +2,15 @@
 
 #include "eyecandy.h"
 #include "GameValues.h"
+#include "global.h"
 #include "objectgame.h"
 #include "player.h"
 #include "ResourceManager.h"
 
 extern SpotlightManager spotlightManager;
 extern CEyecandyContainer eyecandy[3];
-extern CGameValues game_values;
-extern CResourceManager* rm;
+
+
 
 //------------------------------------------------------------------------------
 // class throwable box - can be used as a shield, thrown at a player, or holds items

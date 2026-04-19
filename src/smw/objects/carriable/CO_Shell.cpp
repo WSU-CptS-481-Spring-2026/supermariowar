@@ -2,6 +2,7 @@
 
 #include "eyecandy.h"
 #include "GameValues.h"
+#include "global.h"
 #include "map.h"
 #include "player.h"
 #include "RandomNumberGenerator.h"
@@ -12,10 +13,10 @@
 extern CPlayer* GetPlayerFromGlobalID(short iGlobalID);
 
 extern SpotlightManager spotlightManager;
-extern CMap* g_map;
+
 extern CEyecandyContainer eyecandy[3];
-extern CGameValues game_values;
-extern CResourceManager* rm;
+
+
 
 //------------------------------------------------------------------------------
 // class shell projectile

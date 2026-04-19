@@ -1,6 +1,7 @@
 #include "MiniPipe.h"
 
 #include "GameValues.h"
+#include "global.h"
 #include "ObjectContainer.h"
 #include "player.h"
 #include "RandomNumberGenerator.h"
@@ -11,8 +12,8 @@
 
 extern short score_cnt;
 extern CObjectContainer objectcontainer[3];
-extern CResourceManager* rm;
-extern CGameValues game_values;
+
+
 
 
 //Pipe Bonus Mini Game (used in world mode)

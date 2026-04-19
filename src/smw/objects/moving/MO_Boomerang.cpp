@@ -3,6 +3,7 @@
 #include "eyecandy.h"
 #include "GameplayStyles.h"
 #include "GameValues.h"
+#include "global.h"
 #include "player.h"
 #include "RandomNumberGenerator.h"
 #include "ResourceManager.h"
@@ -12,8 +13,8 @@ extern CPlayer* GetPlayerFromGlobalID(short iGlobalID);
 
 extern SpotlightManager spotlightManager;
 extern CEyecandyContainer eyecandy[3];
-extern CGameValues game_values;
-extern CResourceManager* rm;
+
+
 
 //------------------------------------------------------------------------------
 // class boomerang

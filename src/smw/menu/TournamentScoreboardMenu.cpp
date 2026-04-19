@@ -1,11 +1,12 @@
 #include "TournamentScoreboardMenu.h"
 
+#include "global.h"
 #include "ResourceManager.h"
 #include "ui/MI_Button.h"
 #include "ui/MI_Image.h"
 #include "ui/MI_TournamentScoreboard.h"
 
-extern CResourceManager* rm;
+
 
 UI_TournamentScoreboardMenu::UI_TournamentScoreboardMenu()
     : UI_Menu()

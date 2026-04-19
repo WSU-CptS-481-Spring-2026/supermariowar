@@ -1,5 +1,6 @@
 #include "NetServersMenu.h"
 
+#include "global.h"
 #include "ResourceManager.h"
 #include "net.h"
 #include "ui/MI_Button.h"
@@ -8,7 +9,7 @@
 #include "ui/MI_TextField.h"
 #include "ui/NetworkListScroll.h"
 
-extern CResourceManager* rm;
+
 
 
 UI_NetServersMenu::UI_NetServersMenu()

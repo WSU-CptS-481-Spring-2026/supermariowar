@@ -21,6 +21,7 @@
 #include "FileList.h"
 #include "GameMode.h"
 #include "GameValues.h"
+#include "global.h"
 #include "map.h"
 #include "MapList.h"
 #include "menu/ModeOptionsMenu.h"
@@ -150,7 +151,7 @@ WorldVehicle g_wvVehicleStamp;
 gfxSprite		spr_warplock;
 short			x_shake = 0;
 short			y_shake = 0;
-extern CGameValues game_values;
+
 
 void CPlayer::flipsidesifneeded() {}
 bool CPlayer::isInvincible() const { return false; }
@@ -226,18 +227,6 @@ sfxSound		sfx_mip;
 sfxSound		sfx_transform;
 
 gfxSprite		**spr_player[4];
-CGameMode		*gamemodes[GAMEMODE_LAST];
-
-extern FiltersList *filterslist;
-extern MapList* maplist;
-extern GraphicsList *menugraphicspacklist;
-extern GraphicsList *gamegraphicspacklist;
-
-extern CMap* g_map;
-extern CTilesetManager* g_tilesetmanager;
-
-extern CResourceManager* rm;
-extern std::string RootDataDirectory;
 
 gfxSprite		spr_overlay, spr_overlayhole;
 
@@ -293,7 +282,7 @@ void AddWarpToTile(short iCol, short iRow, short iType);
 void RemoveWarpFromTile(short iCol, short iRow);
 
 extern WorldMap g_worldmap;
-extern WorldList *worldlist;
+
 void loadcurrentworld();
 int savecurrentworld();
 int findcurrentstring();

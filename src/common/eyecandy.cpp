@@ -2,6 +2,7 @@
 
 #include "Game.h"
 #include "GameValues.h"
+#include "global.h"
 #include "IO_Block.h"
 #include "map.h"
 #include "RandomNumberGenerator.h"
@@ -13,10 +14,10 @@
 
 extern CEyecandyContainer eyecandy[3];
 
-extern CMap* g_map;
 
-extern CResourceManager* rm;
-extern CGameValues game_values;
+
+
+
 
 /*extern SDL_Rect rectSuperStompLeftSrc[8];
 extern SDL_Rect rectSuperStompRightSrc[8];

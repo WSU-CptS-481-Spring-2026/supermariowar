@@ -4,6 +4,7 @@
 #include "GameMode.h"
 #include "GameModeSettings.h"
 #include "GameValues.h"
+#include "global.h"
 #include "FileList.h"
 #include "path.h"
 #include "player.h"
@@ -33,15 +34,15 @@
 NetworkHandler networkHandler;
 Networking netplay;
 
-extern CGameValues game_values;
+
 extern std::vector<CPlayer*> players;
 
 // used for setting netplay player skins
-extern SkinList *skinlist;
-extern CResourceManager* rm;
+
+
 
 extern short currentgamemode;
-extern CGameMode * gamemodes[GAMEMODE_LAST];
+
 
 short backup_playercontrol[4];
 

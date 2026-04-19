@@ -1,8 +1,9 @@
 #include "MI_ChatMessageBox.h"
 
+#include "global.h"
 #include "ResourceManager.h"
 
-extern CResourceManager* rm;
+
 
 
 MI_ChatMessageBox::MI_ChatMessageBox(short x, short y, short width, short numlines)

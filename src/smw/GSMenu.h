@@ -2,6 +2,7 @@
 #define GAMESTATE_MENU_H
 
 #include "GameState.h"
+#include "global.h"
 
 #include <memory>
 #include <vector>

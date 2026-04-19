@@ -2,6 +2,7 @@
 
 #include "FileList.h"
 #include "GameValues.h"
+#include "global.h"
 #include "linfunc.h"
 #include "map.h"
 #include "path.h"
@@ -18,9 +19,9 @@
 #include <sys/stat.h>  // FIXME
 #endif
 
-extern CMap* g_map;
-extern FiltersList* filterslist;
-extern CGameValues game_values;
+
+
+
 
 
 namespace {

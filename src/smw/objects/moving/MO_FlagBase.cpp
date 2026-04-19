@@ -2,6 +2,7 @@
 
 #include "GameMode.h"
 #include "GameValues.h"
+#include "global.h"
 #include "map.h"
 #include "ObjectContainer.h"
 #include "player.h"
@@ -12,9 +13,9 @@
 #include <cmath>
 
 extern CObjectContainer objectcontainer[3];
-extern CMap* g_map;
-extern CGameValues game_values;
-extern CResourceManager* rm;
+
+
+
 
 //------------------------------------------------------------------------------
 // class flag base (for CTF mode)

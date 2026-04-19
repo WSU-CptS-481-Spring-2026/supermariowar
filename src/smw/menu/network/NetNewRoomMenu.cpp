@@ -1,5 +1,6 @@
 #include "NetNewRoomMenu.h"
 
+#include "global.h"
 #include "ResourceManager.h"
 #include "net.h"
 #include "ui/MI_Button.h"
@@ -9,7 +10,7 @@
 
 #include <cstring>
 
-extern CResourceManager* rm;
+
 
 
 UI_NetNewRoomMenu::UI_NetNewRoomMenu()

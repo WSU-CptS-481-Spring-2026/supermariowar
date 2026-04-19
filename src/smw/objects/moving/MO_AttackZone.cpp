@@ -1,6 +1,7 @@
 #include "MO_AttackZone.h"
 
 #include "GameValues.h"
+#include "global.h"
 #include "player.h"
 #include "ResourceManager.h"
 #include "objects/carriable/CO_Shell.h"
@@ -9,8 +10,8 @@
 
 extern CPlayer* GetPlayerFromGlobalID(short iGlobalID);
 
-extern CGameValues game_values;
-extern CResourceManager* rm;
+
+
 
 //------------------------------------------------------------------------------
 // attack zone(invisible area that kills objects and players)

@@ -1,13 +1,14 @@
 #include "FPSLimiter.h"
 
 #include "GameValues.h"
+#include "global.h"
 #include "ResourceManager.h"
 
 #include "SDL.h"
 
 
-extern CGameValues game_values;
-extern CResourceManager* rm;
+
+
 
 
 FPSLimiter::FPSLimiter()

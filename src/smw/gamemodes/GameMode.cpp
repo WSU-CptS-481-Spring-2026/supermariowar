@@ -2,6 +2,7 @@
 
 #include "eyecandy.h"
 #include "GameValues.h"
+#include "global.h"
 #include "net.h"
 #include "ObjectContainer.h"
 #include "player.h"
@@ -18,10 +19,6 @@ extern CObjectContainer objectcontainer[3];
 extern CEyecandyContainer eyecandy[3];
 
 extern std::vector<CPlayer*> players;
-
-extern CResourceManager* rm;
-extern CGameValues game_values;
-
 
 void RemovePlayersButTeam(short teamid)
 {

@@ -3,6 +3,7 @@
 #include "eyecandy.h"
 #include "Game.h"
 #include "GameValues.h"
+#include "global.h"
 #include "RandomNumberGenerator.h"
 #include "ResourceManager.h"
 #include "Score.h"
@@ -13,8 +14,8 @@
 
 #include <cmath>
 
-extern CGameValues game_values;
-extern CResourceManager* rm;
+
+
 extern CScore* score[4];
 
 namespace {

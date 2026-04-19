@@ -2,10 +2,11 @@
 
 #include "eyecandy.h"
 #include "GameValues.h"
+#include "global.h"
 #include "player.h"
 
 extern SpotlightManager spotlightManager;
-extern CGameValues game_values;
+
 
 //------------------------------------------------------------------------------
 // class Ice Blast

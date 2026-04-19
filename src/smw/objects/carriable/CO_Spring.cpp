@@ -1,12 +1,13 @@
 #include "CO_Spring.h"
 
 #include "GameValues.h"
+#include "global.h"
 #include "map.h"
 #include "player.h"
 #include "ResourceManager.h"
 
-extern CMap* g_map;
-extern CResourceManager* rm;
+
+
 
 //------------------------------------------------------------------------------
 // class spring

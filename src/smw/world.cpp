@@ -2,6 +2,7 @@
 
 #include "FileList.h"
 #include "GameValues.h"
+#include "global.h"
 #include "linfunc.h"
 #include "path.h"
 #include "RandomNumberGenerator.h"
@@ -26,10 +27,10 @@ WorldMap g_worldmap(0, 0);
 
 extern SDL_Surface* blitdest;
 
-extern CGameValues game_values;
-extern CResourceManager* rm;
 
-extern SkinList *skinlist;
+
+
+
 
 
 namespace {

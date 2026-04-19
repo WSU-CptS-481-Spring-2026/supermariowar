@@ -1,14 +1,15 @@
 #include "MO_Podobo.h"
 
 #include "GameValues.h"
+#include "global.h"
 #include "player.h"
 #include "ResourceManager.h"
 #include "objects/carriable/CO_Shell.h"
 #include "objects/carriable/CO_ThrowBlock.h"
 #include "objects/moving/MO_BulletBill.h"
 
-extern CGameValues game_values;
-extern CResourceManager* rm;
+
+
 
 //------------------------------------------------------------------------------
 // class podobo (for survival mode)

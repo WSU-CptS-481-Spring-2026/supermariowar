@@ -3,15 +3,16 @@
 #include "eyecandy.h"
 #include "Game.h"
 #include "GameValues.h"
+#include "global.h"
 #include "map.h"
 #include "RandomNumberGenerator.h"
 #include "ResourceManager.h"
 
-extern CMap* g_map;
+
 extern CEyecandyContainer eyecandy[3];
 
-extern CGameValues game_values;
-extern CResourceManager* rm;
+
+
 
 //------------------------------------------------------------------------------
 // secret powerup

@@ -1,6 +1,7 @@
 #ifndef NETWORK_H
 #define NETWORK_H
 
+#include "global.h"
 #include "input.h"
 #include "network/NetworkLayer.h"
 #include "ProtocolDefinitions.h"

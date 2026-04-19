@@ -2,6 +2,7 @@
 
 #include "eyecandy.h"
 #include "GameValues.h"
+#include "global.h"
 #include "ObjectContainer.h"
 #include "player.h"
 #include "RandomNumberGenerator.h"
@@ -17,8 +18,8 @@ extern CEyecandyContainer eyecandy[3];
 
 extern std::vector<CPlayer*> players;
 
-extern CResourceManager* rm;
-extern CGameValues game_values;
+
+
 
 
 CGM_Star::CGM_Star() : CGM_TimeLimit()

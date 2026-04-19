@@ -2,6 +2,7 @@
 
 #include "eyecandy.h"
 #include "GameValues.h"
+#include "global.h"
 #include "player.h"
 #include "ResourceManager.h"
 #include "Score.h"
@@ -11,8 +12,8 @@ extern short score_cnt;
 
 extern CEyecandyContainer eyecandy[3];
 
-extern CGameValues game_values;
-extern CResourceManager* rm;
+
+
 
 
 //tag mode (leper mode suggestion from ziotok)
