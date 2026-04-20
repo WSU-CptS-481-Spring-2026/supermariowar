@@ -144,6 +144,7 @@ public:
     WorldMap(short w, short h);
     WorldMap(const std::string& path, short iTileSize);
     void ConfigureTileSize(short tilesize);
+    static std::ifstream OpenWorldFile(const std::string& path);
 
     WorldMap(const WorldMap&) = delete;
     WorldMap& operator=(const WorldMap&) = delete;

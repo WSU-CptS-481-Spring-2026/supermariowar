@@ -375,9 +375,7 @@ WorldMap::WorldMap(const std::string& path, short tilesize)
 
     worldName = stripPathAndExtension(path);
 
-    std::ifstream file(path);
-    if (!file)
-        throw std::runtime_error("Could not open the world file");
+    std::ifstream file = OpenWorldFile(path);
 
     std::string line;
     short iReadType = 0;
@@ -684,6 +682,15 @@ void WorldMap::ConfigureTileSize(short tilesize) {
         iTileSizeShift = 3;
         iTileSheet = 2;
     }
+}
+
+std::ifstream WorldMap::OpenWorldFile(const std::string & path)
+{
+    std::ifstream file(path);
+    if (!file)
+        throw std::runtime_error("Could not open the world file");
+
+    return file;
 }
 
 void WorldMap::SetTileConnections(short iCol, short iRow)
