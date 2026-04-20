@@ -149,6 +149,7 @@ public:
     static std::ifstream OpenWorldFile(const std::string& path);
     static bool TrashLine(const std::string& line);
     static void GetVersion(const std::string& line, Version& version);
+    void GetWorldHeight(const std::string& line);
 
     WorldMap(const WorldMap&) = delete;
     WorldMap& operator=(const WorldMap&) = delete;

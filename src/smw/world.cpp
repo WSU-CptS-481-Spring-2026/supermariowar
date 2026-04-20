@@ -399,17 +399,8 @@ WorldMap::WorldMap(const std::string& path, short tilesize)
             iWidth = std::stoi(line);
             iReadType = 3;
         } else if (iReadType == 3) { //world height
-            iHeight = std::stoi(line);
+            GetWorldHeight(line);
             iReadType = 4;
-
-            tiles = decltype(tiles)(iWidth, iHeight);
-
-            short iDrawSurfaceTiles = iWidth * iHeight;
-
-            if (iDrawSurfaceTiles > 456)
-                iDrawSurfaceTiles = 456; //19 * 24 = 456 max tiles in world surface
-
-            iTilesPerCycle = iDrawSurfaceTiles / 8;
         } else if (iReadType == 4) { //background water
             std::list<std::string_view> tokens = tokenize(line, ',');
             if (tokens.size() < iWidth)
@@ -702,6 +693,20 @@ void WorldMap::GetVersion(const std::string& line, Version& version) {
     version.minor = popNextInt(tokens);
     version.patch = popNextInt(tokens);
     version.build = popNextInt(tokens);
+}
+
+void WorldMap::GetWorldHeight(const std::string& line)
+{
+    iHeight = std::stoi(line);
+
+    tiles = decltype(tiles)(iWidth, iHeight);
+
+    short iDrawSurfaceTiles = iWidth * iHeight;
+
+    if (iDrawSurfaceTiles > 456)
+        iDrawSurfaceTiles = 456; //19 * 24 = 456 max tiles in world surface
+
+    iTilesPerCycle = iDrawSurfaceTiles / 8;
 }
 
 void WorldMap::SetTileConnections(short iCol, short iRow)
