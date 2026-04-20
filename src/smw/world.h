@@ -143,6 +143,7 @@ class WorldMap {
 public:
     WorldMap(short w, short h);
     WorldMap(const std::string& path, short iTileSize);
+    void ConfigureTileSize(short tilesize);
 
     WorldMap(const WorldMap&) = delete;
     WorldMap& operator=(const WorldMap&) = delete;

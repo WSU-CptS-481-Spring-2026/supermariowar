@@ -371,18 +371,7 @@ WorldMap::WorldMap(const std::string& path, short tilesize)
 {
     ResetDrawCycle();
 
-    iTileSize = tilesize;
-
-    if (iTileSize == TILESIZE) {
-        iTileSizeShift = 5;
-        iTileSheet = 0;
-    } else if (iTileSize == PREVIEWTILESIZE) {
-        iTileSizeShift = 4;
-        iTileSheet = 1;
-    } else if (iTileSize == THUMBTILESIZE) {
-        iTileSizeShift = 3;
-        iTileSheet = 2;
-    }
+    ConfigureTileSize(tilesize);
 
     worldName = stripPathAndExtension(path);
 
@@ -680,6 +669,21 @@ RETURN:
         throw std::runtime_error("Invalid world file");
 
     ResetTourStops();  // FIXME
+}
+
+void WorldMap::ConfigureTileSize(short tilesize) {
+    iTileSize = tilesize;
+
+    if (iTileSize == TILESIZE) {
+        iTileSizeShift = 5;
+        iTileSheet = 0;
+    } else if (iTileSize == PREVIEWTILESIZE) {
+        iTileSizeShift = 4;
+        iTileSheet = 1;
+    } else if (iTileSize == THUMBTILESIZE) {
+        iTileSizeShift = 3;
+        iTileSheet = 2;
+    }
 }
 
 void WorldMap::SetTileConnections(short iCol, short iRow)
