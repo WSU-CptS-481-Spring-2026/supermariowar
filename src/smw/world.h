@@ -7,6 +7,8 @@
 #include "math/Vec2.h"
 #include "util/Grid.h"
 
+#include <functional>
+#include <list>
 #include <string>
 #include <vector>
 
@@ -150,6 +152,8 @@ public:
     static bool TrashLine(const std::string& line);
     static void GetVersion(const std::string& line, Version& version);
     void GetWorldHeight(const std::string& line);
+    bool TokenTileHelper(const std::string& line, short row, std::function<void(WorldMapTile&, std::list<std::string_view>&)> helper);
+    bool BackgroundWaterHelper(const std::string& line, short iMapTileReadRow);
 
     WorldMap(const WorldMap&) = delete;
     WorldMap& operator=(const WorldMap&) = delete;

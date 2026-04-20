@@ -402,14 +402,9 @@ WorldMap::WorldMap(const std::string& path, short tilesize)
             GetWorldHeight(line);
             iReadType = 4;
         } else if (iReadType == 4) { //background water
-            std::list<std::string_view> tokens = tokenize(line, ',');
-            if (tokens.size() < iWidth)
-                goto RETURN;
 
-            for (short iMapTileReadCol = 0; iMapTileReadCol < iWidth; iMapTileReadCol++) {
-                WorldMapTile& tile = tiles.at(iMapTileReadCol, iMapTileReadRow);
-                tile.iBackgroundWater = popNextInt(tokens);
-            }
+            if (!BackgroundWaterHelper(line, iMapTileReadRow))
+                goto RETURN;
 
             if (++iMapTileReadRow == iHeight) {
                 iReadType = 5;
@@ -707,6 +702,28 @@ void WorldMap::GetWorldHeight(const std::string& line)
         iDrawSurfaceTiles = 456; //19 * 24 = 456 max tiles in world surface
 
     iTilesPerCycle = iDrawSurfaceTiles / 8;
+}
+
+bool WorldMap::TokenTileHelper(const std::string& line, short iMapTileReadRow, std::function<void(WorldMapTile&, std::list<std::string_view>&)> helper)
+{
+    std::list<std::string_view> tokens = tokenize(line, ',');
+
+    if (tokens.size() < iWidth)
+        return false;
+
+    for (short iMapTileReadCol = 0; iMapTileReadCol < iWidth; iMapTileReadCol++) {
+        WorldMapTile& tile = tiles.at(iMapTileReadCol, iMapTileReadRow);
+        helper(tile, tokens);
+    }
+
+    return true;
+}
+
+bool WorldMap::BackgroundWaterHelper(const std::string& line, short iMapTileReadRow)
+{
+    return TokenTileHelper(line, iMapTileReadRow, [](WorldMapTile& tile, std::list<std::string_view> &tokens) {
+        tile.iBackgroundWater = popNextInt(tokens);
+    });
 }
 
 void WorldMap::SetTileConnections(short iCol, short iRow)
