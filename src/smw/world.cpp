@@ -371,11 +371,11 @@ WorldMap::WorldMap(const std::string& path, short tilesize)
 {
     ResetDrawCycle();
 
-    ConfigureTileSize(tilesize);
+    ConfigureTileSize(tilesize); //configures the tile size
 
     worldName = stripPathAndExtension(path);
 
-    std::ifstream file = OpenWorldFile(path);
+    std::ifstream file = OpenWorldFile(path); //opens the world file
 
     std::string line;
     short iReadType = 0;
@@ -386,10 +386,7 @@ WorldMap::WorldMap(const std::string& path, short tilesize)
     short iNumVehicles = 0;
 
     while (std::getline(file, line)) {
-        if (line.empty())
-            continue;
-
-        if (line[0] == '#' || line[0] == '\r' || line[0] == ' ' || line[0] == '\t')
+        if (TrashLine(line)) //determines if we need to skip (trash) the current line
             continue;
 
         if (iReadType == 0) { //Read version number
@@ -691,6 +688,17 @@ std::ifstream WorldMap::OpenWorldFile(const std::string & path)
         throw std::runtime_error("Could not open the world file");
 
     return file;
+}
+
+bool WorldMap::TrashLine(const std::string& line)
+{
+    if (line.empty())
+        return true;
+    else {
+        const char grab = line[0];
+
+        return grab == '#' || grab == '\r' || grab == ' ' || grab == '\t';
+    }
 }
 
 void WorldMap::SetTileConnections(short iCol, short iRow)
