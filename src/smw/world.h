@@ -2,6 +2,8 @@
 #define WORLD_H
 
 #include "SDL.h"
+#include "Version.h"
+
 #include "math/Vec2.h"
 #include "util/Grid.h"
 
@@ -146,6 +148,7 @@ public:
     void ConfigureTileSize(short tilesize);
     static std::ifstream OpenWorldFile(const std::string& path);
     static bool TrashLine(const std::string& line);
+    static void GetVersion(const std::string& line, Version& version);
 
     WorldMap(const WorldMap&) = delete;
     WorldMap& operator=(const WorldMap&) = delete;

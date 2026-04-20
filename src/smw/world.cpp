@@ -390,11 +390,7 @@ WorldMap::WorldMap(const std::string& path, short tilesize)
             continue;
 
         if (iReadType == 0) { //Read version number
-            std::list<std::string_view> tokens = tokenize(line, '.');
-            version.major = popNextInt(tokens);
-            version.minor = popNextInt(tokens);
-            version.patch = popNextInt(tokens);
-            version.build = popNextInt(tokens);
+            GetVersion(line, version);
             iReadType = 1;
         } else if (iReadType == 1) { //music category
             iMusicCategory = static_cast<WorldMusicCategory>(std::stoi(line));  // FIXME
@@ -696,9 +692,16 @@ bool WorldMap::TrashLine(const std::string& line)
         return true;
     else {
         const char grab = line[0];
-
         return grab == '#' || grab == '\r' || grab == ' ' || grab == '\t';
     }
+}
+
+void WorldMap::GetVersion(const std::string& line, Version& version) {
+    std::list<std::string_view> tokens = tokenize(line, '.');
+    version.major = popNextInt(tokens);
+    version.minor = popNextInt(tokens);
+    version.patch = popNextInt(tokens);
+    version.build = popNextInt(tokens);
 }
 
 void WorldMap::SetTileConnections(short iCol, short iRow)
