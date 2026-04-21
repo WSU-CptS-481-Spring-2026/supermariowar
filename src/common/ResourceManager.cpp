@@ -68,6 +68,7 @@ void CResourceManager::LoadAllSprites() {
 
     LoadPowerupSprites(graphicspack);
 
+    LoadProjectileSprites(graphicspack);
 
     gfx_loadimage(spr_tileanimation[0], convertPath("gfx/packs/tilesets/tile_animation.png", graphicspack), false);
     gfx_loadimage(spr_tileanimation[1], convertPath("gfx/packs/tilesets/tile_animation_preview.png", graphicspack), false);
@@ -78,7 +79,6 @@ void CResourceManager::LoadAllSprites() {
     gfx_loadimage(spr_unknowntile[1], convertPath("gfx/packs/tilesets/unknown_tile_preview.png", graphicspack), false);
     gfx_loadimage(spr_unknowntile[2], convertPath("gfx/packs/tilesets/unknown_tile_thumbnail.png", graphicspack), false);
 
-    gfx_loadimage(spr_statue, convertPath("gfx/packs/projectiles/statue.png", graphicspack), true);
 
 
     gfx_loadimage(spr_scorehearts, convertPath("gfx/packs/menu/score_hearts.png", graphicspack), false);
@@ -116,7 +116,6 @@ void CResourceManager::LoadAllSprites() {
 
     gfx_loadimage(spr_sledgebrothers, convertPath("gfx/packs/modeobjects/sledgebrothers.png", graphicspack), true);
 
-    gfx_loadimage(spr_bulletbill, convertPath("gfx/packs/projectiles/bulletbill.png", graphicspack), false);
     gfx_loadimage(spr_chicken, convertPath("gfx/packs/modeobjects/chicken.png", graphicspack), 160, true);
     gfx_loadimage(spr_racegoal, convertPath("gfx/packs/modeobjects/racegoal.png", graphicspack), false);
     gfx_loadimage(spr_pipegamebonus, convertPath("gfx/packs/modeobjects/pipeminigamebonuses.png", graphicspack), true);
@@ -126,13 +125,6 @@ void CResourceManager::LoadAllSprites() {
 
     gfx_loadimage(spr_bonuschest, convertPath("gfx/packs/modeobjects/bonuschest.png", graphicspack), true);
 
-    gfx_loadimage(spr_fireball, convertPath("gfx/packs/projectiles/fireball.png", graphicspack), true);
-    gfx_loadimage(spr_hammer, convertPath("gfx/packs/projectiles/hammer.png", graphicspack), true);
-    gfx_loadimage(spr_iceblast, convertPath("gfx/packs/projectiles/wandblast.png", graphicspack), true);
-    gfx_loadimage(spr_boomerang, convertPath("gfx/packs/projectiles/boomerang.png", graphicspack), true);
-    gfx_loadimage(spr_shell, convertPath("gfx/packs/projectiles/shell.png", graphicspack), true);
-    gfx_loadimage(spr_blueblock, convertPath("gfx/packs/projectiles/throwblock.png", graphicspack), true);
-    gfx_loadimage(spr_bomb, convertPath("gfx/packs/projectiles/bomb.png", graphicspack), true);
 
     gfx_loadimage(spr_superfireball, convertPath("gfx/packs/modeobjects/superfire.png", graphicspack), true);
     gfx_loadimage(spr_sledgehammer, convertPath("gfx/packs/modeobjects/sledgehammer.png", graphicspack), true);
@@ -301,6 +293,21 @@ void CResourceManager::LoadPowerupSprites(const std::string& graphicspack)
 
     gfx_loadimage(spr_storedpowerupsmall, convertPath("gfx/packs/powerups/small.png", graphicspack), true);
     gfx_loadimage(spr_storedpoweruplarge, convertPath("gfx/packs/powerups/large.png", graphicspack), false);
+}
+
+void CResourceManager::LoadProjectileSprites(const std::string& graphicspack)
+{
+    gfx_loadimage(spr_statue, convertPath("gfx/packs/projectiles/statue.png", graphicspack), true);
+
+    gfx_loadimage(spr_bulletbill, convertPath("gfx/packs/projectiles/bulletbill.png", graphicspack), false);
+
+    gfx_loadimage(spr_fireball, convertPath("gfx/packs/projectiles/fireball.png", graphicspack), true);
+    gfx_loadimage(spr_hammer, convertPath("gfx/packs/projectiles/hammer.png", graphicspack), true);
+    gfx_loadimage(spr_iceblast, convertPath("gfx/packs/projectiles/wandblast.png", graphicspack), true);
+    gfx_loadimage(spr_boomerang, convertPath("gfx/packs/projectiles/boomerang.png", graphicspack), true);
+    gfx_loadimage(spr_shell, convertPath("gfx/packs/projectiles/shell.png", graphicspack), true);
+    gfx_loadimage(spr_blueblock, convertPath("gfx/packs/projectiles/throwblock.png", graphicspack), true);
+    gfx_loadimage(spr_bomb, convertPath("gfx/packs/projectiles/bomb.png", graphicspack), true);
 }
 
 bool CResourceManager::LoadMenuGraphics()
