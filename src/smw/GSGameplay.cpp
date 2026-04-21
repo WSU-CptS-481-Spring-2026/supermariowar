@@ -506,11 +506,11 @@ void GameplayState::initRunGame()
 // RUNNING
 //
 
-short CountAliveTeams(short * lastteam)
+short CountAliveTeams(short* lastteam)
 {
     short findlastteam = 0;
-
     bool teamalive[4] = {false, false, false, false};
+
     for (CPlayer* player : players) {
         if (!player->isdead())
             teamalive[player->teamID] = true;
@@ -518,18 +518,15 @@ short CountAliveTeams(short * lastteam)
 
     short numteams = 0;
     for (short k = 0; k < 4; k++) {
-        if (teamalive[k]) {
-            findlastteam = k;
-            numteams++;
-        }
+        if (!teamalive[k])
+            continue;
+
+        findlastteam = k;
+        numteams++;
     }
 
-    if (lastteam != NULL) {
-        if (numteams == 1)
-            *lastteam = findlastteam;
-        else
-            *lastteam = -1;
-    }
+    if (lastteam != nullptr)
+        *lastteam = (numteams == 1) ? findlastteam : -1;
 
     return numteams;
 }
