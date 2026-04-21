@@ -123,6 +123,11 @@ class CPlayerInput
                 void MouseMotionHandler(SDL_Event& event, short iGameState, short iPlayer, CInputControl* inputControl, COutputControl* outputControl, bool& fFound);
                 void MouseButtonDownHandler(SDL_Event& event, short iGameState, short iPlayer, CInputControl* inputControl, COutputControl* outputControl, bool& fFound);
                 void MouseButtonUpHandler(SDL_Event& event, short iGameState, short iPlayer, CInputControl* inputControl, COutputControl* outputControl, bool& fFound);
+                void JoystickHandler(SDL_Event& event, short iGameState, short iPlayer, CInputControl* inputControl, COutputControl* outputControl, short iDeviceID, bool& fFound);
+                void JoyHatMotionHandler(SDL_Event& event, short iGameState, short iPlayer, CInputControl* inputControl, COutputControl* outputControl, short iDeviceID, bool& fFound);
+                void JoyButtonDownHandler(SDL_Event& event, short iGameState, short iPlayer, CInputControl* inputControl, COutputControl* outputControl, short iDeviceID, bool& fFound);
+                void JoyButtonUpHandler(SDL_Event& event, short iGameState, short iPlayer, CInputControl* inputControl, COutputControl* outputControl, short iDeviceID, bool& fFound);
+                void JoyAxisHandler(SDL_Event& event, short iGameState, short iPlayer, CInputControl* inputControl, COutputControl* outputControl, short iDeviceID, bool& fFound);
 
                 // Points to the input controls in the global inputConfiguration class
 		CInputPlayerControl * inputControls[4];
