@@ -5,10 +5,6 @@
 #include "player.h"
 #include "ResourceManager.h"
 
-;
-;
-
-
 //fraglimit:
 
 CGM_Frag::CGM_Frag() : CGameMode()

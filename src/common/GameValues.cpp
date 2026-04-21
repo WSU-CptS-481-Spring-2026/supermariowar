@@ -13,24 +13,6 @@
 #include <stdio.h>
 #include <stdexcept>
 
-// TODO: Refactor externs
-
-// CGameMode * gamemodes[GAMEMODE_LAST];
-
-// FiltersList *filterslist;
-// MapList *maplist;
-// SkinList *skinlist;
-// AnnouncerList *announcerlist;
-// MusicList *musiclist;
-// WorldMusicList *worldmusiclist;
-// GraphicsList *menugraphicspacklist;
-// GraphicsList *worldgraphicspacklist;
-// GraphicsList *gamegraphicspacklist;
-// SoundsList *soundpacklist;
-
-// short joystickcount;
-
-
 //[Keyboard/Joystick][Game/Menu][NumPlayers][NumKeys]  left, right, jump, down, turbo, powerup, start, cancel
 SDL_KEYTYPE controlkeys[2][2][4][NUM_KEYS] = { { { {SDLK_LEFT, SDLK_RIGHT, SDLK_UP, SDLK_DOWN, SDLK_RCTRL, SDLK_RSHIFT, SDLK_RETURN, SDLK_ESCAPE},
             {SDLK_a, SDLK_d, SDLK_w, SDLK_s, SDLK_e, SDLK_q, SDLK_UNKNOWN, SDLK_UNKNOWN},
