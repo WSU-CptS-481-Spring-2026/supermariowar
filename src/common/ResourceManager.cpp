@@ -76,15 +76,7 @@ void CResourceManager::LoadAllSprites() {
 
     LoadAwardSprites(graphicspack);
 
-    gfx_loadimage(spr_tileanimation[0], convertPath("gfx/packs/tilesets/tile_animation.png", graphicspack), false);
-    gfx_loadimage(spr_tileanimation[1], convertPath("gfx/packs/tilesets/tile_animation_preview.png", graphicspack), false);
-    gfx_loadimage(spr_tileanimation[2], convertPath("gfx/packs/tilesets/tile_animation_thumbnail.png", graphicspack), false);
-
-
-    gfx_loadimage(spr_unknowntile[0], convertPath("gfx/packs/tilesets/unknown_tile.png", graphicspack), false);
-    gfx_loadimage(spr_unknowntile[1], convertPath("gfx/packs/tilesets/unknown_tile_preview.png", graphicspack), false);
-    gfx_loadimage(spr_unknowntile[2], convertPath("gfx/packs/tilesets/unknown_tile_thumbnail.png", graphicspack), false);
-
+    LoadTileSetSprites(graphicspack);
 
 
 
@@ -327,6 +319,17 @@ void CResourceManager::LoadAwardSprites(const std::string& graphicspack)
     gfx_loadimage(spr_awardkillsinrow, convertPath("gfx/packs/awards/killsinrownumbers.png", graphicspack), true);
 
     gfx_loadimage(spr_powerupselector, convertPath("gfx/packs/awards/award.png", graphicspack), false);
+}
+
+void CResourceManager::LoadTileSetSprites(const std::string& graphicspack)
+{
+    gfx_loadimage(spr_tileanimation[0], convertPath("gfx/packs/tilesets/tile_animation.png", graphicspack), false);
+    gfx_loadimage(spr_tileanimation[1], convertPath("gfx/packs/tilesets/tile_animation_preview.png", graphicspack), false);
+    gfx_loadimage(spr_tileanimation[2], convertPath("gfx/packs/tilesets/tile_animation_thumbnail.png", graphicspack), false);
+
+    gfx_loadimage(spr_unknowntile[0], convertPath("gfx/packs/tilesets/unknown_tile.png", graphicspack), false);
+    gfx_loadimage(spr_unknowntile[1], convertPath("gfx/packs/tilesets/unknown_tile_preview.png", graphicspack), false);
+    gfx_loadimage(spr_unknowntile[2], convertPath("gfx/packs/tilesets/unknown_tile_thumbnail.png", graphicspack), false);
 }
 
 bool CResourceManager::LoadMenuGraphics()

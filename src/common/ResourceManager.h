@@ -32,8 +32,9 @@ private:
         void LoadModeObjectSprites(const std::string& graphicspack);
     void LoadHazardSprites(const std::string& graphicspack);
         void LoadAwardSprites(const std::string& graphicspack);
+    void LoadTileSetSprites(const std::string& graphicspack);
 
-    public:
+public:
 
 	gfxSprite		** spr_player[4];	//all player sprites
 	gfxSprite		** spr_shyguy[4];
