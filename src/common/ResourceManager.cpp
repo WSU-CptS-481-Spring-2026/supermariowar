@@ -87,9 +87,6 @@ void CResourceManager::LoadAllSprites() {
 
 
 
-    gfx_loadimage(spr_scorehearts, convertPath("gfx/packs/menu/score_hearts.png", graphicspack), false);
-    gfx_loadimage(spr_scorecards, convertPath("gfx/packs/menu/score_cards.png", graphicspack), false);
-    gfx_loadimage(spr_scorecoins, convertPath("gfx/packs/menu/score_coins.png", graphicspack), false);
 
     gfx_loadimage(spr_scoretext, convertPath("gfx/packs/fonts/score.png", graphicspack), false);
     gfx_loadimage(spr_racetext, convertPath("gfx/packs/fonts/race.png", graphicspack), false);
@@ -102,9 +99,9 @@ void CResourceManager::LoadAllSprites() {
 
 void CResourceManager::LoadMenuSprites(const std::string& graphicspack)
 {
-    gfx_loadimage(menu_survival, convertPath("gfx/packs/modeobjects/menu_survival.png", graphicspack), false);
-    gfx_loadimage(menu_stomp, convertPath("gfx/packs/modeobjects/menu_stomp.png", graphicspack), false);
-    gfx_loadimage(menu_egg, convertPath("gfx/packs/modeobjects/menu_egg.png", graphicspack), false);
+    gfx_loadimage(spr_scorehearts, convertPath("gfx/packs/menu/score_hearts.png", graphicspack), false);
+    gfx_loadimage(spr_scorecards, convertPath("gfx/packs/menu/score_cards.png", graphicspack), false);
+    gfx_loadimage(spr_scorecoins, convertPath("gfx/packs/menu/score_coins.png", graphicspack), false);
 }
 
 void CResourceManager::LoadEyeCandySprites(const std::string& graphicspack)
@@ -247,6 +244,10 @@ void CResourceManager::LoadProjectileSprites(const std::string& graphicspack)
 
 void CResourceManager::LoadModeObjectSprites(const std::string& graphicspack)
 {
+    gfx_loadimage(menu_survival, convertPath("gfx/packs/modeobjects/menu_survival.png", graphicspack), false);
+    gfx_loadimage(menu_stomp, convertPath("gfx/packs/modeobjects/menu_stomp.png", graphicspack), false);
+    gfx_loadimage(menu_egg, convertPath("gfx/packs/modeobjects/menu_egg.png", graphicspack), false);
+
     gfx_loadimage(spr_egg, convertPath("gfx/packs/modeobjects/egg.png", graphicspack), true);
     gfx_loadimage(spr_eggnumbers, convertPath("gfx/packs/modeobjects/eggnumbers.png", graphicspack), true);
     gfx_loadimage(spr_star, convertPath("gfx/packs/modeobjects/star.png", graphicspack), true);
