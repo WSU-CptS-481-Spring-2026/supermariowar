@@ -475,14 +475,15 @@ bool CResourceManager::LoadGameSounds()
 
     LoadItemSounds(soundpack);
 
+    LoadPowerUpSounds(soundpack);
+
     sfx_mip.init(convertPath("sfx/packs/mip.wav", soundpack));
     sfx_deathsound.init(convertPath("sfx/packs/death.wav", soundpack));
 
-    sfx_invinciblemusic.init(convertPath("sfx/packs/invincible.wav", soundpack));
+
 
     sfx_sprout.init(convertPath("sfx/packs/sprout.wav", soundpack));
-    sfx_collectpowerup.init(convertPath("sfx/packs/collectpowerup.wav", soundpack));
-    sfx_collectfeather.init(convertPath("sfx/packs/feather.wav", soundpack));
+
 
 
 
@@ -493,7 +494,7 @@ bool CResourceManager::LoadGameSounds()
     sfx_timewarning.init(convertPath("sfx/packs/timewarning.wav", soundpack));
     sfx_hit.init(convertPath("sfx/packs/hit.wav", soundpack));
     sfx_chicken.init(convertPath("sfx/packs/chicken.wav", soundpack));
-    sfx_transform.init(convertPath("sfx/packs/transform.wav", soundpack));
+
     sfx_yoshi.init(convertPath("sfx/packs/yoshi.wav", soundpack));
     sfx_pause.init(convertPath("sfx/packs/pause.wav", soundpack));
 
@@ -504,14 +505,14 @@ bool CResourceManager::LoadGameSounds()
 
 
     sfx_flyingsound.init(convertPath("sfx/packs/slowdown.wav", soundpack));
-    sfx_storedpowerupsound.init(convertPath("sfx/packs/storedpowerup.wav", soundpack));
+
 
     sfx_racesound.init(convertPath("sfx/packs/race.wav", soundpack));
     sfx_bulletbillsound.init(convertPath("sfx/packs/bulletbill.wav", soundpack));
-    sfx_boomerang.init(convertPath("sfx/packs/boomerang.wav", soundpack));
+
     sfx_spit.init(convertPath("sfx/packs/spit.wav", soundpack));
-    sfx_starwarning.init(convertPath("sfx/packs/starwarning.wav", soundpack));
-    sfx_powerdown.init(convertPath("sfx/packs/powerdown.wav", soundpack));
+
+
     sfx_switchpress.init(convertPath("sfx/packs/switchpress.wav", soundpack));
     sfx_superspring.init(convertPath("sfx/packs/superspring.wav", soundpack));
 
@@ -554,4 +555,17 @@ void CResourceManager::LoadItemSounds(const std::string& soundpack)
     sfx_coin.init(convertPath("sfx/packs/coin.wav", soundpack));
     sfx_bobombsound.init(convertPath("sfx/packs/bob-omb.wav", soundpack));
     sfx_slowdownmusic.init(convertPath("sfx/packs/clock.wav", soundpack));
+}
+
+void CResourceManager::LoadPowerUpSounds(const std::string& soundpack)
+{
+    sfx_invinciblemusic.init(convertPath("sfx/packs/invincible.wav", soundpack));
+    sfx_collectpowerup.init(convertPath("sfx/packs/collectpowerup.wav", soundpack));
+    sfx_collectfeather.init(convertPath("sfx/packs/feather.wav", soundpack));
+    sfx_transform.init(convertPath("sfx/packs/transform.wav", soundpack));
+    sfx_powerdown.init(convertPath("sfx/packs/powerdown.wav", soundpack));
+    sfx_boomerang.init(convertPath("sfx/packs/boomerang.wav", soundpack));
+    sfx_starwarning.init(convertPath("sfx/packs/starwarning.wav", soundpack));
+    sfx_storedpowerupsound.init(convertPath("sfx/packs/storedpowerup.wav", soundpack));
+
 }
