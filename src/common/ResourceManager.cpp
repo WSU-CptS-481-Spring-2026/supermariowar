@@ -72,6 +72,8 @@ void CResourceManager::LoadAllSprites() {
 
     LoadModeObjectSprites(graphicspack);
 
+    LoadHazardSprites(graphicspack);
+
     gfx_loadimage(spr_tileanimation[0], convertPath("gfx/packs/tilesets/tile_animation.png", graphicspack), false);
     gfx_loadimage(spr_tileanimation[1], convertPath("gfx/packs/tilesets/tile_animation_preview.png", graphicspack), false);
     gfx_loadimage(spr_tileanimation[2], convertPath("gfx/packs/tilesets/tile_animation_thumbnail.png", graphicspack), false);
@@ -92,27 +94,6 @@ void CResourceManager::LoadAllSprites() {
 
 
 
-    gfx_loadimage(spr_hazard_fireball[0], convertPath("gfx/packs/hazards/fireball.png", graphicspack), true);
-    gfx_loadimage(spr_hazard_fireball[1], convertPath("gfx/packs/hazards/fireball_preview.png", graphicspack), true);
-    gfx_loadimage(spr_hazard_fireball[2], convertPath("gfx/packs/hazards/fireball_thumbnail.png", graphicspack), true);
-
-    gfx_loadimage(spr_hazard_rotodisc[0], convertPath("gfx/packs/hazards/rotodisc.png", graphicspack), true);
-    gfx_loadimage(spr_hazard_rotodisc[1], convertPath("gfx/packs/hazards/rotodisc_preview.png", graphicspack), true);
-    gfx_loadimage(spr_hazard_rotodisc[2], convertPath("gfx/packs/hazards/rotodisc_thumbnail.png", graphicspack), true);
-
-    gfx_loadimage(spr_hazard_bulletbill[0], convertPath("gfx/packs/hazards/bulletbill.png", graphicspack), false);
-    gfx_loadimage(spr_hazard_bulletbill[1], convertPath("gfx/packs/hazards/bulletbill_preview.png", graphicspack), false);
-    gfx_loadimage(spr_hazard_bulletbill[2], convertPath("gfx/packs/hazards/bulletbill_thumbnail.png", graphicspack), false);
-
-    gfx_loadimage(spr_hazard_flame[0], convertPath("gfx/packs/hazards/flame.png", graphicspack), true);
-    gfx_loadimage(spr_hazard_flame[1], convertPath("gfx/packs/hazards/flame_preview.png", graphicspack), true);
-    gfx_loadimage(spr_hazard_flame[2], convertPath("gfx/packs/hazards/flame_thumbnail.png", graphicspack), true);
-
-    gfx_loadimage(spr_hazard_pirhanaplant[0], convertPath("gfx/packs/hazards/pirhanaplant.png", graphicspack), true);
-    gfx_loadimage(spr_hazard_pirhanaplant[1], convertPath("gfx/packs/hazards/pirhanaplant_preview.png", graphicspack), true);
-    gfx_loadimage(spr_hazard_pirhanaplant[2], convertPath("gfx/packs/hazards/pirhanaplant_thumbnail.png", graphicspack), true);
-
-    gfx_loadimage(spr_hazard_bulletbilldead, convertPath("gfx/packs/hazards/bulletbilldead.png", graphicspack), false);
 
 
     gfx_loadimage(spr_award, convertPath("gfx/packs/awards/killsinrow.png", graphicspack), 128, true);
@@ -315,6 +296,31 @@ void CResourceManager::LoadModeObjectSprites(const std::string& graphicspack)
 
     gfx_loadimage(spr_flagbases, convertPath("gfx/packs/modeobjects/flagbases.png", graphicspack), 160, true);
     gfx_loadimage(spr_ownedtags, convertPath("gfx/packs/modeobjects/ownedtags.png", graphicspack), 160, true);
+}
+
+void CResourceManager::LoadHazardSprites(const std::string& graphicspack)
+{
+    gfx_loadimage(spr_hazard_fireball[0], convertPath("gfx/packs/hazards/fireball.png", graphicspack), true);
+    gfx_loadimage(spr_hazard_fireball[1], convertPath("gfx/packs/hazards/fireball_preview.png", graphicspack), true);
+    gfx_loadimage(spr_hazard_fireball[2], convertPath("gfx/packs/hazards/fireball_thumbnail.png", graphicspack), true);
+
+    gfx_loadimage(spr_hazard_rotodisc[0], convertPath("gfx/packs/hazards/rotodisc.png", graphicspack), true);
+    gfx_loadimage(spr_hazard_rotodisc[1], convertPath("gfx/packs/hazards/rotodisc_preview.png", graphicspack), true);
+    gfx_loadimage(spr_hazard_rotodisc[2], convertPath("gfx/packs/hazards/rotodisc_thumbnail.png", graphicspack), true);
+
+    gfx_loadimage(spr_hazard_bulletbill[0], convertPath("gfx/packs/hazards/bulletbill.png", graphicspack), false);
+    gfx_loadimage(spr_hazard_bulletbill[1], convertPath("gfx/packs/hazards/bulletbill_preview.png", graphicspack), false);
+    gfx_loadimage(spr_hazard_bulletbill[2], convertPath("gfx/packs/hazards/bulletbill_thumbnail.png", graphicspack), false);
+
+    gfx_loadimage(spr_hazard_flame[0], convertPath("gfx/packs/hazards/flame.png", graphicspack), true);
+    gfx_loadimage(spr_hazard_flame[1], convertPath("gfx/packs/hazards/flame_preview.png", graphicspack), true);
+    gfx_loadimage(spr_hazard_flame[2], convertPath("gfx/packs/hazards/flame_thumbnail.png", graphicspack), true);
+
+    gfx_loadimage(spr_hazard_pirhanaplant[0], convertPath("gfx/packs/hazards/pirhanaplant.png", graphicspack), true);
+    gfx_loadimage(spr_hazard_pirhanaplant[1], convertPath("gfx/packs/hazards/pirhanaplant_preview.png", graphicspack), true);
+    gfx_loadimage(spr_hazard_pirhanaplant[2], convertPath("gfx/packs/hazards/pirhanaplant_thumbnail.png", graphicspack), true);
+
+    gfx_loadimage(spr_hazard_bulletbilldead, convertPath("gfx/packs/hazards/bulletbilldead.png", graphicspack), false);
 }
 
 bool CResourceManager::LoadMenuGraphics()
