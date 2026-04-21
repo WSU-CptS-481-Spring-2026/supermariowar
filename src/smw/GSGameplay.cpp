@@ -280,40 +280,48 @@ short GetModeIconIndexFromMode(short iMode)
     return iMode;
 }
 
+//Helper Function
+namespace {
+bool shouldCreatePlayer(short iPlayer)
+{
+    return (game_values.singleplayermode == -1 || game_values.singleplayermode == iPlayer) &&
+           game_values.playercontrol[iPlayer] > 0;
+}
+
+CPlayerAI* createPlayerAI(short iPlayer)
+{
+    if (game_values.playercontrol[iPlayer] == 2)
+        return new CPlayerAI();
+
+    return nullptr;
+}
+}
+
 //
 // INIT
 //
 void GameplayState::createPlayers()
 {
-    //Create players for this game
+    // Create players for this game
     for (short iPlayer = 0; iPlayer < 4; iPlayer++) {
         respawnCount[iPlayer] = 0;
 
-        if (game_values.singleplayermode == -1 || game_values.singleplayermode == iPlayer) {
-            if (game_values.playercontrol[iPlayer] > 0) {
-                short teamid, subteamid;
-                LookupTeamID(iPlayer, &teamid, &subteamid);
+        if (!shouldCreatePlayer(iPlayer))
+            continue;
 
-                CPlayerAI * ai = NULL;
-                if (game_values.playercontrol[iPlayer] == 2)
-                    ai = new CPlayerAI();
+        short teamid, subteamid;
+        LookupTeamID(iPlayer, &teamid, &subteamid);
 
-                players.emplace_back(new CPlayer(iPlayer, players.size(), teamid, subteamid, game_values.colorids[iPlayer], rm->spr_player[iPlayer], score[teamid], &(respawnCount[iPlayer]), ai));
-            } else if (!game_values.keeppowerup) {
-                //Reset off player's stored powerups if they are not playing
-                game_values.storedpowerups[iPlayer] = -1;
-            }
-        }
-
-        //If the gamemode allows stored powerups, then assign the game stored slot to the powerup this player has
-        if (game_values.gamemode->HasStoredPowerups())
-            game_values.gamepowerups[iPlayer] = game_values.storedpowerups[iPlayer];
-        else {
-            game_values.gamepowerups[iPlayer] = -1;
-        }
-
-        game_values.bulletbilltimer[iPlayer] = 0;
-        game_values.bulletbillspawntimer[iPlayer] = 0;
+        players.emplace_back(new CPlayer(
+            iPlayer,
+            players.size(),
+            teamid,
+            subteamid,
+            game_values.colorids[iPlayer],
+            rm->spr_player[iPlayer],
+            score[teamid],
+            &(respawnCount[iPlayer]),
+            createPlayerAI(iPlayer)));
     }
 }
 
