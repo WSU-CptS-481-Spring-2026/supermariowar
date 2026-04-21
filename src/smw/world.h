@@ -170,6 +170,7 @@ public:
     WorldMap& operator=(WorldMap&&) = default;
 
     bool Save(const std::string& szPath) const;
+    void WriteTile(FILE* file, std::function<int(const WorldMapTile&)> grabber) const;
 
     void Resize(short iWidth, short iHeight);
     void Clear();

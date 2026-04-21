@@ -842,94 +842,22 @@ bool WorldMap::Save(const std::string& szPath) const
     fprintf(file, "%d\n\n", iHeight);
 
     fprintf(file, "#Sprite Water Layer\n");
-
-    for (short iMapTileReadRow = 0; iMapTileReadRow < iHeight; iMapTileReadRow++) {
-        for (short iMapTileReadCol = 0; iMapTileReadCol < iWidth; iMapTileReadCol++) {
-            const WorldMapTile& tile = tiles.at(iMapTileReadCol, iMapTileReadRow);
-            fprintf(file, "%d", tile.iBackgroundWater);
-
-            if (iMapTileReadCol == iWidth - 1)
-                fprintf(file, "\n");
-            else
-                fprintf(file, ",");
-        }
-    }
-    fprintf(file, "\n");
+    WriteTile(file, [](const WorldMapTile& t){return t.iBackgroundWater; });
 
     fprintf(file, "#Sprite Background Layer\n");
-
-    for (short iMapTileReadRow = 0; iMapTileReadRow < iHeight; iMapTileReadRow++) {
-        for (short iMapTileReadCol = 0; iMapTileReadCol < iWidth; iMapTileReadCol++) {
-            const WorldMapTile& tile = tiles.at(iMapTileReadCol, iMapTileReadRow);
-            fprintf(file, "%d", tile.iBackgroundSprite);
-
-            if (iMapTileReadCol == iWidth - 1)
-                fprintf(file, "\n");
-            else
-                fprintf(file, ",");
-        }
-    }
-    fprintf(file, "\n");
+    WriteTile(file, [](const WorldMapTile& t){return t.iBackgroundSprite; });
 
     fprintf(file, "#Sprite Foreground Layer\n");
-
-    for (short iMapTileReadRow = 0; iMapTileReadRow < iHeight; iMapTileReadRow++) {
-        for (short iMapTileReadCol = 0; iMapTileReadCol < iWidth; iMapTileReadCol++) {
-            const WorldMapTile& tile = tiles.at(iMapTileReadCol, iMapTileReadRow);
-            fprintf(file, "%d", tile.iForegroundSprite);
-
-            if (iMapTileReadCol == iWidth - 1)
-                fprintf(file, "\n");
-            else
-                fprintf(file, ",");
-        }
-    }
-    fprintf(file, "\n");
+    WriteTile(file, [](const WorldMapTile& t){return t.iForegroundSprite; });
 
     fprintf(file, "#Connections\n");
-
-    for (short iMapTileReadRow = 0; iMapTileReadRow < iHeight; iMapTileReadRow++) {
-        for (short iMapTileReadCol = 0; iMapTileReadCol < iWidth; iMapTileReadCol++) {
-            const WorldMapTile& tile = tiles.at(iMapTileReadCol, iMapTileReadRow);
-            fprintf(file, "%d", tile.iConnectionType);
-
-            if (iMapTileReadCol == iWidth - 1)
-                fprintf(file, "\n");
-            else
-                fprintf(file, ",");
-        }
-    }
-    fprintf(file, "\n");
+    WriteTile(file, [](const WorldMapTile& t){return t.iConnectionType; });
 
     fprintf(file, "#Tile Types (Stages, Doors, Start Tiles)\n");
-
-    for (short iMapTileReadRow = 0; iMapTileReadRow < iHeight; iMapTileReadRow++) {
-        for (short iMapTileReadCol = 0; iMapTileReadCol < iWidth; iMapTileReadCol++) {
-            const WorldMapTile& tile = tiles.at(iMapTileReadCol, iMapTileReadRow);
-            fprintf(file, "%d", tile.iType);
-
-            if (iMapTileReadCol == iWidth - 1)
-                fprintf(file, "\n");
-            else
-                fprintf(file, ",");
-        }
-    }
-    fprintf(file, "\n");
+    WriteTile(file, [](const WorldMapTile& t){return t.iType; });
 
     fprintf(file, "#Vehicle Boundaries\n");
-
-    for (short iMapTileReadRow = 0; iMapTileReadRow < iHeight; iMapTileReadRow++) {
-        for (short iMapTileReadCol = 0; iMapTileReadCol < iWidth; iMapTileReadCol++) {
-            const WorldMapTile& tile = tiles.at(iMapTileReadCol, iMapTileReadRow);
-            fprintf(file, "%d", tile.iVehicleBoundary);
-
-            if (iMapTileReadCol == iWidth - 1)
-                fprintf(file, "\n");
-            else
-                fprintf(file, ",");
-        }
-    }
-    fprintf(file, "\n");
+    WriteTile(file, [](const WorldMapTile& t){return t.iVehicleBoundary; });
 
     fprintf(file, "#Stages\n");
     fprintf(file, "#Stage Type 0,Map,Mode,Goal,Points,Bonus List(Max 10),Name,End World, then mode settings (see sample tour file for details)\n");
@@ -1002,6 +930,22 @@ bool WorldMap::Save(const std::string& szPath) const
 #endif
 
     return true;
+}
+
+void WorldMap::WriteTile(FILE* file, std::function<int(const WorldMapTile&)> grabber) const
+{
+    for (short iMapTileReadRow = 0; iMapTileReadRow < iHeight; iMapTileReadRow++) {
+        for (short iMapTileReadCol = 0; iMapTileReadCol < iWidth; iMapTileReadCol++) {
+            const WorldMapTile& tile = tiles.at(iMapTileReadCol, iMapTileReadRow);
+            fprintf(file, "%d", grabber(tile));
+
+            if (iMapTileReadCol == iWidth - 1)
+                fprintf(file, "\n");
+            else
+                fprintf(file, ",");
+        }
+    }
+    fprintf(file, "\n");
 }
 
 void WorldMap::Clear()
