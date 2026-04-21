@@ -21,8 +21,9 @@ public:
 	bool LoadGameGraphics();
 
 	bool LoadGameSounds();
+        void LoadPlayerSounds(const std::string& soundpack);
 
-private:
+    private:
 	void LoadAllSprites();
     void LoadMenuSprites(const std::string& graphicspack);
         void LoadEyeCandySprites(const std::string& graphicspack);

@@ -469,17 +469,17 @@ bool CResourceManager::LoadGameSounds()
 
     std::string soundpack = soundpacklist->currentPath().string();
 
+    LoadPlayerSounds(soundpack);
+
     sfx_mip.init(convertPath("sfx/packs/mip.wav", soundpack));
     sfx_deathsound.init(convertPath("sfx/packs/death.wav", soundpack));
-    sfx_jump.init(convertPath("sfx/packs/jump.wav", soundpack));
-    sfx_skid.init(convertPath("sfx/packs/skid.wav", soundpack));
-    sfx_capejump.init(convertPath("sfx/packs/capejump.wav", soundpack));
+
     sfx_invinciblemusic.init(convertPath("sfx/packs/invincible.wav", soundpack));
     sfx_extraguysound.init(convertPath("sfx/packs/1up.wav", soundpack));
     sfx_sprout.init(convertPath("sfx/packs/sprout.wav", soundpack));
     sfx_collectpowerup.init(convertPath("sfx/packs/collectpowerup.wav", soundpack));
     sfx_collectfeather.init(convertPath("sfx/packs/feather.wav", soundpack));
-    sfx_tailspin.init(convertPath("sfx/packs/tail.wav", soundpack));
+
     sfx_storepowerup.init(convertPath("sfx/packs/storeitem.wav", soundpack));
     sfx_breakblock.init(convertPath("sfx/packs/breakblock.wav", soundpack));
     sfx_bump.init(convertPath("sfx/packs/bump.wav", soundpack));
@@ -501,7 +501,7 @@ bool CResourceManager::LoadGameSounds()
     sfx_slowdownmusic.init(convertPath("sfx/packs/clock.wav", soundpack));
     sfx_flyingsound.init(convertPath("sfx/packs/slowdown.wav", soundpack));
     sfx_storedpowerupsound.init(convertPath("sfx/packs/storedpowerup.wav", soundpack));
-    sfx_kicksound.init(convertPath("sfx/packs/kick.wav", soundpack));
+
     sfx_racesound.init(convertPath("sfx/packs/race.wav", soundpack));
     sfx_bulletbillsound.init(convertPath("sfx/packs/bulletbill.wav", soundpack));
     sfx_boomerang.init(convertPath("sfx/packs/boomerang.wav", soundpack));
@@ -510,7 +510,7 @@ bool CResourceManager::LoadGameSounds()
     sfx_powerdown.init(convertPath("sfx/packs/powerdown.wav", soundpack));
     sfx_switchpress.init(convertPath("sfx/packs/switchpress.wav", soundpack));
     sfx_superspring.init(convertPath("sfx/packs/superspring.wav", soundpack));
-    sfx_stun.init(convertPath("sfx/packs/stun.wav", soundpack));
+
     sfx_inventory.init(convertPath("sfx/packs/inventory.wav", soundpack));
     sfx_worldmove.init(convertPath("sfx/packs/mapmove.wav", soundpack));
     sfx_treasurechest.init(convertPath("sfx/packs/treasurechest.wav", soundpack));
@@ -522,4 +522,14 @@ bool CResourceManager::LoadGameSounds()
 
     game_values.soundcapable = true;
     return true;
+}
+
+void CResourceManager::LoadPlayerSounds(const std::string& soundpack)
+{
+    sfx_jump.init(convertPath("sfx/packs/jump.wav", soundpack));
+    sfx_skid.init(convertPath("sfx/packs/skid.wav", soundpack));
+    sfx_capejump.init(convertPath("sfx/packs/capejump.wav", soundpack));
+    sfx_tailspin.init(convertPath("sfx/packs/tail.wav", soundpack));
+    sfx_kicksound.init(convertPath("sfx/packs/kick.wav", soundpack));
+    sfx_stun.init(convertPath("sfx/packs/stun.wav", soundpack));
 }
