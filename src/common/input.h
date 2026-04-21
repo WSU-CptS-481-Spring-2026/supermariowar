@@ -114,8 +114,9 @@ class CPlayerInput
 		void ResetKeys();
 		//Updates what commands the user is sending
 		void Update(SDL_Event event, short iGameState);
+                bool GetPlayerControlInput(short iPlayer, short iGameState, CInputControl*& inputControl, COutputControl*& outputControl, short& iDeviceID);
 
-		//Points to the input controls in the global inputConfiguration class
+                // Points to the input controls in the global inputConfiguration class
 		CInputPlayerControl * inputControls[4];
 
 		//Use these structures to see what input has been pressed

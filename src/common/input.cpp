@@ -68,27 +68,12 @@ void CPlayerInput::Update(SDL_Event event, short iGameState)
 {
 	bool fFound = false;
     for (short iPlayer = -1; iPlayer < MAX_PLAYERS; iPlayer++) {
-		CInputControl * inputControl;
-		COutputControl * outputControl;
-		short iDeviceID = DEVICE_KEYBOARD;
+	CInputControl * inputControl;
+	COutputControl * outputControl;
+	short iDeviceID = DEVICE_KEYBOARD;
 
-		//Allow keyboard input from player 1 at all times (even when he is configured to use joystick)
-        if (iPlayer == -1) {
-            if (iGameState == 1 && inputControls[0]->iDevice != DEVICE_KEYBOARD) {
-				inputControl = &game_values.inputConfiguration[0][0].inputGameControls[1];
-				outputControl = &outputControls[0];
-				iDeviceID = game_values.inputConfiguration[0][0].iDevice;
-            } else {
-				continue;
-			}
-        } else {
-			if (!inputControls[iPlayer])
-				continue;
-
-			inputControl = &inputControls[iPlayer]->inputGameControls[iGameState];
-			outputControl = &outputControls[iPlayer];
-			iDeviceID = inputControls[iPlayer]->iDevice;
-		}
+        if (!GetPlayerControlInput(iPlayer, iGameState, inputControl, outputControl, iDeviceID))
+            continue;
 
         if (iDeviceID == DEVICE_KEYBOARD) {
             if (SDL_KEYDOWN == event.type) {
@@ -320,4 +305,27 @@ void CPlayerInput::Update(SDL_Event event, short iGameState)
 		//if (fFound)
 			//break;
 	}
+}
+
+bool CPlayerInput::GetPlayerControlInput(short iPlayer, short iGameState, CInputControl*& inputControl, COutputControl*& outputControl, short& iDeviceID)
+{
+    //Allow keyboard input from player 1 at all times (even when he is configured to use joystick)
+    if (iPlayer == -1) {
+        if (iGameState == 1 && inputControls[0]->iDevice != DEVICE_KEYBOARD) {
+            inputControl = &game_values.inputConfiguration[0][0].inputGameControls[1];
+            outputControl = &outputControls[0];
+            iDeviceID = game_values.inputConfiguration[0][0].iDevice;
+            return true;
+        }
+
+        return false;
+    }
+
+    if (!inputControls[iPlayer])
+        return false;
+
+    inputControl = &inputControls[iPlayer]->inputGameControls[iGameState];
+    outputControl = &outputControls[iPlayer];
+    iDeviceID = inputControls[iPlayer]->iDevice;
+    return true;
 }
