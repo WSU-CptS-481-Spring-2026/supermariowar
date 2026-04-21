@@ -481,7 +481,7 @@ bool CResourceManager::LoadGameSounds()
     sfx_collectfeather.init(convertPath("sfx/packs/feather.wav", soundpack));
 
     sfx_storepowerup.init(convertPath("sfx/packs/storeitem.wav", soundpack));
-    sfx_breakblock.init(convertPath("sfx/packs/breakblock.wav", soundpack));
+
     sfx_bump.init(convertPath("sfx/packs/bump.wav", soundpack));
     sfx_coin.init(convertPath("sfx/packs/coin.wav", soundpack));
     sfx_fireball.init(convertPath("sfx/packs/fireball.wav", soundpack));
@@ -494,10 +494,10 @@ bool CResourceManager::LoadGameSounds()
     sfx_pause.init(convertPath("sfx/packs/pause.wav", soundpack));
     sfx_bobombsound.init(convertPath("sfx/packs/bob-omb.wav", soundpack));
     sfx_areatag.init(convertPath("sfx/packs/dcoin.wav", soundpack));
-    sfx_cannon.init(convertPath("sfx/packs/cannon.wav", soundpack));
+
     sfx_burnup.init(convertPath("sfx/packs/burnup.wav", soundpack));
-    sfx_pipe.init(convertPath("sfx/packs/warp.wav", soundpack));
-    sfx_thunder.init(convertPath("sfx/packs/thunder.wav", soundpack));
+
+
     sfx_slowdownmusic.init(convertPath("sfx/packs/clock.wav", soundpack));
     sfx_flyingsound.init(convertPath("sfx/packs/slowdown.wav", soundpack));
     sfx_storedpowerupsound.init(convertPath("sfx/packs/storedpowerup.wav", soundpack));
@@ -514,7 +514,7 @@ bool CResourceManager::LoadGameSounds()
     sfx_inventory.init(convertPath("sfx/packs/inventory.wav", soundpack));
     sfx_worldmove.init(convertPath("sfx/packs/mapmove.wav", soundpack));
     sfx_treasurechest.init(convertPath("sfx/packs/treasurechest.wav", soundpack));
-    sfx_flamecannon.init(convertPath("sfx/packs/flamecannon.wav", soundpack));
+
     sfx_wand.init(convertPath("sfx/packs/wand.wav", soundpack));
     sfx_enterstage.init(convertPath("sfx/packs/enter-stage.wav", soundpack));
     sfx_gameover.init(convertPath("sfx/packs/gameover.wav", soundpack));
@@ -532,4 +532,13 @@ void CResourceManager::LoadPlayerSounds(const std::string& soundpack)
     sfx_tailspin.init(convertPath("sfx/packs/tail.wav", soundpack));
     sfx_kicksound.init(convertPath("sfx/packs/kick.wav", soundpack));
     sfx_stun.init(convertPath("sfx/packs/stun.wav", soundpack));
+}
+
+void CResourceManager::LoadEnvironmentSounds(const std::string& soundpack)
+{
+    sfx_breakblock.init(convertPath("sfx/packs/breakblock.wav", soundpack));
+    sfx_pipe.init(convertPath("sfx/packs/warp.wav", soundpack));
+    sfx_thunder.init(convertPath("sfx/packs/thunder.wav", soundpack));
+    sfx_cannon.init(convertPath("sfx/packs/cannon.wav", soundpack));
+    sfx_flamecannon.init(convertPath("sfx/packs/flamecannon.wav", soundpack));
 }

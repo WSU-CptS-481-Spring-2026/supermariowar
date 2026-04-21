@@ -22,6 +22,7 @@ public:
 
 	bool LoadGameSounds();
         void LoadPlayerSounds(const std::string& soundpack);
+        void LoadEnvironmentSounds(const std::string& soundpack);
 
     private:
 	void LoadAllSprites();
