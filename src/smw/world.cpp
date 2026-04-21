@@ -411,63 +411,27 @@ WorldMap::WorldMap(const std::string& path, short tilesize)
                 iMapTileReadRow = 0;
             }
         } else if (iReadType == 5) { //background sprites
-            std::list<std::string_view> tokens = tokenize(line, ',');
-            if (tokens.size() < iWidth)
+
+            if (!BackgroundSpritesHelper(line, iMapTileReadRow))
                 goto RETURN;
-
-            for (short iMapTileReadCol = 0; iMapTileReadCol < iWidth; iMapTileReadCol++) {
-                WorldMapTile& tile = tiles.at(iMapTileReadCol, iMapTileReadRow);
-                tile.iBackgroundSprite = popNextInt(tokens);
-                tile.fAnimated = (tile.iBackgroundSprite % WORLD_BACKGROUND_SPRITE_SET_SIZE) != 1;
-
-                tile.iID = iMapTileReadRow * iWidth + iMapTileReadCol;
-                tile.iCol = iMapTileReadCol;
-                tile.iRow = iMapTileReadRow;
-            }
 
             if (++iMapTileReadRow == iHeight) {
                 iReadType = 6;
                 iMapTileReadRow = 0;
             }
         } else if (iReadType == 6) { //foreground sprites
-            std::list<std::string_view> tokens = tokenize(line, ',');
-            if (tokens.size() < iWidth)
+
+            if (!ForegroundSpritesHelper(line, iMapTileReadRow))
                 goto RETURN;
-
-            for (short iMapTileReadCol = 0; iMapTileReadCol < iWidth; iMapTileReadCol++) {
-                WorldMapTile& tile = tiles.at(iMapTileReadCol, iMapTileReadRow);
-                tile.iForegroundSprite = popNextInt(tokens);
-
-                short iForegroundSprite = tile.iForegroundSprite;
-
-                //Animated parts of paths
-                if (!tile.fAnimated && iForegroundSprite >= 0 && iForegroundSprite <= 8 * WORLD_PATH_SPRITE_SET_SIZE) {
-                    short iForeground = iForegroundSprite % WORLD_PATH_SPRITE_SET_SIZE;
-                    tile.fAnimated = iForeground >= 3 && iForeground <= 10;
-                }
-
-                //Animated 1-100 stages
-                if (!tile.fAnimated)
-                    tile.fAnimated = iForegroundSprite >= WORLD_FOREGROUND_STAGE_OFFSET && iForegroundSprite <= WORLD_FOREGROUND_STAGE_OFFSET + 399;
-
-                //Animated foreground tiles
-                if (!tile.fAnimated)
-                    tile.fAnimated = iForegroundSprite >= WORLD_FOREGROUND_SPRITE_ANIMATED_OFFSET && iForegroundSprite <= WORLD_FOREGROUND_SPRITE_ANIMATED_OFFSET + 29;
-            }
 
             if (++iMapTileReadRow == iHeight) {
                 iReadType = 7;
                 iMapTileReadRow = 0;
             }
         } else if (iReadType == 7) { //path connections
-            std::list<std::string_view> tokens = tokenize(line, ',');
-            if (tokens.size() < iWidth)
-                goto RETURN;
 
-            for (short iMapTileReadCol = 0; iMapTileReadCol < iWidth; iMapTileReadCol++) {
-                WorldMapTile& tile = tiles.at(iMapTileReadCol, iMapTileReadRow);
-                tile.iConnectionType = popNextInt(tokens);
-            }
+            if (!PathConnectionsHelper(line, iMapTileReadRow))
+                goto RETURN;
 
             if (++iMapTileReadRow == iHeight) {
                 iReadType = 8;
@@ -484,37 +448,18 @@ WorldMap::WorldMap(const std::string& path, short tilesize)
                 }
             }
         } else if (iReadType == 8) { //stages
-            std::list<std::string_view> tokens = tokenize(line, ',');
-            if (tokens.size() < iWidth)
+
+            if (!StageTypeHelper(line, iMapTileReadRow))
                 goto RETURN;
-
-            for (short iMapTileReadCol = 0; iMapTileReadCol < iWidth; iMapTileReadCol++) {
-                WorldMapTile& tile = tiles.at(iMapTileReadCol, iMapTileReadRow);
-                tile.iType = popNextInt(tokens);
-                tile.iWarp = -1;
-
-                if (tile.iType == 1) {
-                    iStartX = iMapTileReadCol;
-                    iStartY = iMapTileReadRow;
-                    player.SetPosition(iStartX, iStartY);
-                }
-
-                tile.iCompleted = tile.iType <= 5 ? -1 : -2;
-            }
 
             if (++iMapTileReadRow == iHeight) {
                 iReadType = 9;
                 iMapTileReadRow = 0;
             }
         } else if (iReadType == 9) { //vehicle boundaries
-            std::list<std::string_view> tokens = tokenize(line, ',');
-            if (tokens.size() < iWidth)
-                goto RETURN;
 
-            for (short iMapTileReadCol = 0; iMapTileReadCol < iWidth; iMapTileReadCol++) {
-                WorldMapTile& tile = tiles.at(iMapTileReadCol, iMapTileReadRow);
-                tile.iVehicleBoundary = popNextInt(tokens);
-            }
+            if (!VehicleBoundaryHelper(line, iMapTileReadRow))
+                goto RETURN;
 
             if (++iMapTileReadRow == iHeight)
                 iReadType = 10;
@@ -704,7 +649,7 @@ void WorldMap::GetWorldHeight(const std::string& line)
     iTilesPerCycle = iDrawSurfaceTiles / 8;
 }
 
-bool WorldMap::TokenTileHelper(const std::string& line, short iMapTileReadRow, std::function<void(WorldMapTile&, std::list<std::string_view>&)> helper)
+bool WorldMap::TokenTileHelper(const std::string& line, short iMapTileReadRow, std::function<void(WorldMapTile&, short, short, std::list<std::string_view>&)> helper)
 {
     std::list<std::string_view> tokens = tokenize(line, ',');
 
@@ -713,7 +658,7 @@ bool WorldMap::TokenTileHelper(const std::string& line, short iMapTileReadRow, s
 
     for (short iMapTileReadCol = 0; iMapTileReadCol < iWidth; iMapTileReadCol++) {
         WorldMapTile& tile = tiles.at(iMapTileReadCol, iMapTileReadRow);
-        helper(tile, tokens);
+        helper(tile, iMapTileReadCol, iMapTileReadRow, tokens);
     }
 
     return true;
@@ -721,8 +666,73 @@ bool WorldMap::TokenTileHelper(const std::string& line, short iMapTileReadRow, s
 
 bool WorldMap::BackgroundWaterHelper(const std::string& line, short iMapTileReadRow)
 {
-    return TokenTileHelper(line, iMapTileReadRow, [](WorldMapTile& tile, std::list<std::string_view> &tokens) {
+    return TokenTileHelper(line, iMapTileReadRow, [](WorldMapTile& tile, short, short, std::list<std::string_view> &tokens) {
         tile.iBackgroundWater = popNextInt(tokens);
+    });
+}
+
+bool WorldMap::BackgroundSpritesHelper(const std::string& line, short iMapTileReadRow)
+{
+    return TokenTileHelper(line, iMapTileReadRow, [&](WorldMapTile& tile, short col, short row, std::list<std::string_view>& tokens) {
+        tile.iBackgroundSprite = popNextInt(tokens);
+        tile.fAnimated = (tile.iBackgroundSprite % WORLD_BACKGROUND_SPRITE_SET_SIZE) != 1;
+
+        tile.iID = row * iWidth + tile.iCol;
+        tile.iCol = col;
+        tile.iRow = row;
+    });
+}
+
+bool WorldMap::ForegroundSpritesHelper(const std::string& line, short iMapTileReadRow)
+{
+    return TokenTileHelper(line, iMapTileReadRow, [](WorldMapTile& tile, short, short, std::list<std::string_view>& tokens) {
+        tile.iForegroundSprite = popNextInt(tokens);
+
+        short iForegroundSprite = tile.iForegroundSprite;
+
+        //Animated parts of paths
+        if (!tile.fAnimated && iForegroundSprite >= 0 && iForegroundSprite <= 8 * WORLD_PATH_SPRITE_SET_SIZE) {
+            short iForeground = iForegroundSprite % WORLD_PATH_SPRITE_SET_SIZE;
+            tile.fAnimated = iForeground >= 3 && iForeground <= 10;
+        }
+
+        //Animated 1-100 stages
+        if (!tile.fAnimated)
+            tile.fAnimated = iForegroundSprite >= WORLD_FOREGROUND_STAGE_OFFSET && iForegroundSprite <= WORLD_FOREGROUND_STAGE_OFFSET + 399;
+
+        //Animated foreground tiles
+        if (!tile.fAnimated)
+            tile.fAnimated = iForegroundSprite >= WORLD_FOREGROUND_SPRITE_ANIMATED_OFFSET && iForegroundSprite <= WORLD_FOREGROUND_SPRITE_ANIMATED_OFFSET + 29;
+    });
+}
+
+bool WorldMap::PathConnectionsHelper(const std::string& line, short iMapTileReadRow)
+{
+    return TokenTileHelper(line, iMapTileReadRow, [](WorldMapTile& tile, short, short, std::list<std::string_view>& tokens) {
+        tile.iConnectionType = popNextInt(tokens);
+    });
+}
+
+bool WorldMap::StageTypeHelper(const std::string& line, short iMapTileReadRow)
+{
+    return TokenTileHelper(line, iMapTileReadRow, [&](WorldMapTile& tile, short col, short row, std::list<std::string_view>& tokens) {
+        tile.iType = popNextInt(tokens);
+        tile.iWarp = -1;
+
+        if (tile.iType == 1) {
+            iStartX = col;
+            iStartY = row;
+            player.SetPosition(iStartX, iStartY);
+        }
+
+        tile.iCompleted = tile.iType <= 5 ? -1 : -2;
+    });
+}
+
+bool WorldMap::VehicleBoundaryHelper(const std::string& line, short iMapTileReadRow)
+{
+    return TokenTileHelper(line, iMapTileReadRow, [](WorldMapTile& tile, short, short, std::list<std::string_view>& tokens) {
+        tile.iVehicleBoundary = popNextInt(tokens);
     });
 }
 

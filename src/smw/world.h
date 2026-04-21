@@ -152,8 +152,13 @@ public:
     static bool TrashLine(const std::string& line);
     static void GetVersion(const std::string& line, Version& version);
     void GetWorldHeight(const std::string& line);
-    bool TokenTileHelper(const std::string& line, short row, std::function<void(WorldMapTile&, std::list<std::string_view>&)> helper);
+    bool TokenTileHelper(const std::string& line, short row, std::function<void(WorldMapTile&, short, short, std::list<std::string_view>&)> helper);
     bool BackgroundWaterHelper(const std::string& line, short iMapTileReadRow);
+    bool BackgroundSpritesHelper(const std::string& line, short iMapTileReadRow);
+    bool ForegroundSpritesHelper(const std::string& line, short iMapTileReadRow);
+    bool PathConnectionsHelper(const std::string& line, short iMapTileReadRow);
+    bool StageTypeHelper(const std::string& line, short iMapTileReadRow);
+    bool VehicleBoundaryHelper(const std::string& line, short iMapTileReadRow);
 
     WorldMap(const WorldMap&) = delete;
     WorldMap& operator=(const WorldMap&) = delete;
