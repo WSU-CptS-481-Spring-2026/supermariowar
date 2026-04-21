@@ -841,23 +841,7 @@ bool WorldMap::Save(const std::string& szPath) const
     fprintf(file, "#Height\n");
     fprintf(file, "%d\n\n", iHeight);
 
-    fprintf(file, "#Sprite Water Layer\n");
-    WriteTile(file, [](const WorldMapTile& t){return t.iBackgroundWater; });
-
-    fprintf(file, "#Sprite Background Layer\n");
-    WriteTile(file, [](const WorldMapTile& t){return t.iBackgroundSprite; });
-
-    fprintf(file, "#Sprite Foreground Layer\n");
-    WriteTile(file, [](const WorldMapTile& t){return t.iForegroundSprite; });
-
-    fprintf(file, "#Connections\n");
-    WriteTile(file, [](const WorldMapTile& t){return t.iConnectionType; });
-
-    fprintf(file, "#Tile Types (Stages, Doors, Start Tiles)\n");
-    WriteTile(file, [](const WorldMapTile& t){return t.iType; });
-
-    fprintf(file, "#Vehicle Boundaries\n");
-    WriteTile(file, [](const WorldMapTile& t){return t.iVehicleBoundary; });
+    WriteAllTiles(file);
 
     fprintf(file, "#Stages\n");
     WriteStages(file);
@@ -894,6 +878,27 @@ void WorldMap::WriteTile(FILE* file, std::function<int(const WorldMapTile&)> gra
         }
     }
     fprintf(file, "\n");
+}
+
+void WorldMap::WriteAllTiles(FILE* file) const
+{
+    fprintf(file, "#Sprite Water Layer\n");
+    WriteTile(file, [](const WorldMapTile& t){return t.iBackgroundWater; });
+
+    fprintf(file, "#Sprite Background Layer\n");
+    WriteTile(file, [](const WorldMapTile& t){return t.iBackgroundSprite; });
+
+    fprintf(file, "#Sprite Foreground Layer\n");
+    WriteTile(file, [](const WorldMapTile& t){return t.iForegroundSprite; });
+
+    fprintf(file, "#Connections\n");
+    WriteTile(file, [](const WorldMapTile& t){return t.iConnectionType; });
+
+    fprintf(file, "#Tile Types (Stages, Doors, Start Tiles)\n");
+    WriteTile(file, [](const WorldMapTile& t){return t.iType; });
+
+    fprintf(file, "#Vehicle Boundaries\n");
+    WriteTile(file, [](const WorldMapTile& t){return t.iVehicleBoundary; });
 }
 
 void WorldMap::WriteStages(FILE* file)

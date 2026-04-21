@@ -171,6 +171,7 @@ public:
 
     bool Save(const std::string& szPath) const;
     void WriteTile(FILE* file, std::function<int(const WorldMapTile&)> grabber) const;
+    void WriteAllTiles(FILE* file) const;
     static void WriteStages(FILE* file);
     void WriteWarps(FILE* file) const;
     void WriteVehicles(FILE* file) const;
