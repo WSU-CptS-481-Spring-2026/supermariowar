@@ -508,32 +508,8 @@ WorldMap::WorldMap(const std::string& path, short tilesize)
             if (vehicles.size() >= iNumVehicles)
                 iReadType = 16;
         } else if (iReadType == 16) { //initial bonus items
-            std::list<std::string_view> tokens = tokenize(line, ',');
 
-            iNumInitialBonuses = 0;
-
-            while (!tokens.empty()) {
-                std::string_view token = popNext(tokens);
-                if (token.empty())
-                    break;
-
-                //0 indicates no initial bonuses
-                if (token[0] == '0')
-                    break;
-
-                short iBonusOffset = 0;
-                if (token[0] == 'w' || token[0] == 'W')
-                    iBonusOffset += NUM_POWERUPS;
-
-                short iBonus = toInt(token.substr(1)) + iBonusOffset;
-                if (iBonus < 0 || iBonus >= NUM_POWERUPS + NUM_WORLD_POWERUPS)
-                    iBonus = 0;
-
-                if (iNumInitialBonuses < 32)
-                    iInitialBonuses[iNumInitialBonuses++] = iBonus;
-                else
-                    iInitialBonuses[31] = iBonus;
-            }
+            InitialBonusItemsHelper(line);
 
             iReadType = 17;
         }
@@ -757,6 +733,36 @@ void WorldMap::VehiclesHelper(const std::string& line)
 
     vehicles.emplace_back(WorldVehicle());
     vehicles.back().Init(iCol, iRow, iStage, iSprite, iMinMoves, iMaxMoves, fSpritePaces, iInitialDirection, iBoundary, iTileSize);
+}
+
+void WorldMap::InitialBonusItemsHelper(const std::string& line)
+{
+    std::list<std::string_view> tokens = tokenize(line, ',');
+
+    iNumInitialBonuses = 0;
+
+    while (!tokens.empty()) {
+        std::string_view token = popNext(tokens);
+        if (token.empty())
+            break;
+
+        //0 indicates no initial bonuses
+        if (token[0] == '0')
+            break;
+
+        short iBonusOffset = 0;
+        if (token[0] == 'w' || token[0] == 'W')
+            iBonusOffset += NUM_POWERUPS;
+
+        short iBonus = toInt(token.substr(1)) + iBonusOffset;
+        if (iBonus < 0 || iBonus >= NUM_POWERUPS + NUM_WORLD_POWERUPS)
+            iBonus = 0;
+
+        if (iNumInitialBonuses < 32)
+            iInitialBonuses[iNumInitialBonuses++] = iBonus;
+        else
+            iInitialBonuses[31] = iBonus;
+    }
 }
 
 void WorldMap::SetTileConnections(short iCol, short iRow)
