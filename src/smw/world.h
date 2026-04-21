@@ -188,6 +188,8 @@ public:
     void ResetDrawCycle();
     void DrawMapToSurface(SDL_Surface* surface) const;
     void DrawMapToSurface(short iCycleIndex, bool fFullRefresh, SDL_Surface* surface, short iMapDrawOffsetCol, short iMapDrawOffsetRow, short iAnimationFrame);
+    void DrawBackgroundTileHelper(short iBackgroundWater, short iBackgroundSprite, short iBackgroundStyleOffset, short iAnimationFrame, SDL_Rect r, SDL_Surface* surface) const;
+    void DrawForegroundTileHelper(WorldMapTile tile, SDL_Rect r, SDL_Surface* surface, short iForegroundSprite, short iAnimationFrame) const;
 
     void GetWorldSize(short * w, short * h) const {
         *w = iWidth;
