@@ -477,25 +477,17 @@ bool CResourceManager::LoadGameSounds()
 
     LoadPowerUpSounds(soundpack);
 
+    LoadGamemodeSounds(soundpack);
+
     sfx_mip.init(convertPath("sfx/packs/mip.wav", soundpack));
     sfx_deathsound.init(convertPath("sfx/packs/death.wav", soundpack));
-
-
-
     sfx_sprout.init(convertPath("sfx/packs/sprout.wav", soundpack));
-
-
-
-
     sfx_bump.init(convertPath("sfx/packs/bump.wav", soundpack));
-
     sfx_fireball.init(convertPath("sfx/packs/fireball.wav", soundpack));
     sfx_springjump.init(convertPath("sfx/packs/springjump.wav", soundpack));
-    sfx_timewarning.init(convertPath("sfx/packs/timewarning.wav", soundpack));
-    sfx_hit.init(convertPath("sfx/packs/hit.wav", soundpack));
-    sfx_chicken.init(convertPath("sfx/packs/chicken.wav", soundpack));
 
-    sfx_yoshi.init(convertPath("sfx/packs/yoshi.wav", soundpack));
+    sfx_hit.init(convertPath("sfx/packs/hit.wav", soundpack));
+
     sfx_pause.init(convertPath("sfx/packs/pause.wav", soundpack));
 
     sfx_areatag.init(convertPath("sfx/packs/dcoin.wav", soundpack));
@@ -507,7 +499,7 @@ bool CResourceManager::LoadGameSounds()
     sfx_flyingsound.init(convertPath("sfx/packs/slowdown.wav", soundpack));
 
 
-    sfx_racesound.init(convertPath("sfx/packs/race.wav", soundpack));
+
     sfx_bulletbillsound.init(convertPath("sfx/packs/bulletbill.wav", soundpack));
 
     sfx_spit.init(convertPath("sfx/packs/spit.wav", soundpack));
@@ -518,11 +510,11 @@ bool CResourceManager::LoadGameSounds()
 
     sfx_inventory.init(convertPath("sfx/packs/inventory.wav", soundpack));
     sfx_worldmove.init(convertPath("sfx/packs/mapmove.wav", soundpack));
-    sfx_treasurechest.init(convertPath("sfx/packs/treasurechest.wav", soundpack));
+
 
     sfx_wand.init(convertPath("sfx/packs/wand.wav", soundpack));
-    sfx_enterstage.init(convertPath("sfx/packs/enter-stage.wav", soundpack));
-    sfx_gameover.init(convertPath("sfx/packs/gameover.wav", soundpack));
+
+
     sfx_pickup.init(convertPath("sfx/packs/pickup.wav", soundpack));
 
     game_values.soundcapable = true;
@@ -568,4 +560,15 @@ void CResourceManager::LoadPowerUpSounds(const std::string& soundpack)
     sfx_starwarning.init(convertPath("sfx/packs/starwarning.wav", soundpack));
     sfx_storedpowerupsound.init(convertPath("sfx/packs/storedpowerup.wav", soundpack));
 
+}
+
+void CResourceManager::LoadGamemodeSounds(const std::string& soundpack)
+{
+    sfx_gameover.init(convertPath("sfx/packs/gameover.wav", soundpack));
+    sfx_enterstage.init(convertPath("sfx/packs/enter-stage.wav", soundpack));
+    sfx_racesound.init(convertPath("sfx/packs/race.wav", soundpack));
+    sfx_timewarning.init(convertPath("sfx/packs/timewarning.wav", soundpack));
+    sfx_chicken.init(convertPath("sfx/packs/chicken.wav", soundpack));
+    sfx_yoshi.init(convertPath("sfx/packs/yoshi.wav", soundpack));
+    sfx_treasurechest.init(convertPath("sfx/packs/treasurechest.wav", soundpack));
 }
