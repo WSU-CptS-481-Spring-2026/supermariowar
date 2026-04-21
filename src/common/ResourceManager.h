@@ -26,6 +26,8 @@ public:
         void LoadItemSounds(const std::string& soundpack);
         void LoadPowerUpSounds(const std::string& soundpack);
         void LoadGamemodeSounds(const std::string& soundpack);
+        void LoadInteractSounds(const std::string& soundpack);
+        void LoadMiscSounds(const std::string& soundpack);
 
     private:
 	void LoadAllSprites();

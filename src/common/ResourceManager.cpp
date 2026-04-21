@@ -479,43 +479,9 @@ bool CResourceManager::LoadGameSounds()
 
     LoadGamemodeSounds(soundpack);
 
-    sfx_mip.init(convertPath("sfx/packs/mip.wav", soundpack));
-    sfx_deathsound.init(convertPath("sfx/packs/death.wav", soundpack));
-    sfx_sprout.init(convertPath("sfx/packs/sprout.wav", soundpack));
-    sfx_bump.init(convertPath("sfx/packs/bump.wav", soundpack));
-    sfx_fireball.init(convertPath("sfx/packs/fireball.wav", soundpack));
-    sfx_springjump.init(convertPath("sfx/packs/springjump.wav", soundpack));
+    LoadInteractSounds(soundpack);
 
-    sfx_hit.init(convertPath("sfx/packs/hit.wav", soundpack));
-
-    sfx_pause.init(convertPath("sfx/packs/pause.wav", soundpack));
-
-    sfx_areatag.init(convertPath("sfx/packs/dcoin.wav", soundpack));
-
-    sfx_burnup.init(convertPath("sfx/packs/burnup.wav", soundpack));
-
-
-
-    sfx_flyingsound.init(convertPath("sfx/packs/slowdown.wav", soundpack));
-
-
-
-    sfx_bulletbillsound.init(convertPath("sfx/packs/bulletbill.wav", soundpack));
-
-    sfx_spit.init(convertPath("sfx/packs/spit.wav", soundpack));
-
-
-    sfx_switchpress.init(convertPath("sfx/packs/switchpress.wav", soundpack));
-    sfx_superspring.init(convertPath("sfx/packs/superspring.wav", soundpack));
-
-    sfx_inventory.init(convertPath("sfx/packs/inventory.wav", soundpack));
-    sfx_worldmove.init(convertPath("sfx/packs/mapmove.wav", soundpack));
-
-
-    sfx_wand.init(convertPath("sfx/packs/wand.wav", soundpack));
-
-
-    sfx_pickup.init(convertPath("sfx/packs/pickup.wav", soundpack));
+    LoadMiscSounds(soundpack);
 
     game_values.soundcapable = true;
     return true;
@@ -571,4 +537,31 @@ void CResourceManager::LoadGamemodeSounds(const std::string& soundpack)
     sfx_chicken.init(convertPath("sfx/packs/chicken.wav", soundpack));
     sfx_yoshi.init(convertPath("sfx/packs/yoshi.wav", soundpack));
     sfx_treasurechest.init(convertPath("sfx/packs/treasurechest.wav", soundpack));
+}
+
+void CResourceManager::LoadInteractSounds(const std::string& soundpack)
+{
+    sfx_deathsound.init(convertPath("sfx/packs/death.wav", soundpack));
+    sfx_bump.init(convertPath("sfx/packs/bump.wav", soundpack));
+    sfx_springjump.init(convertPath("sfx/packs/springjump.wav", soundpack));
+    sfx_hit.init(convertPath("sfx/packs/hit.wav", soundpack));
+    sfx_burnup.init(convertPath("sfx/packs/burnup.wav", soundpack));
+    sfx_spit.init(convertPath("sfx/packs/spit.wav", soundpack));
+    sfx_switchpress.init(convertPath("sfx/packs/switchpress.wav", soundpack));
+    sfx_superspring.init(convertPath("sfx/packs/superspring.wav", soundpack));
+    sfx_pickup.init(convertPath("sfx/packs/pickup.wav", soundpack));
+}
+
+void CResourceManager::LoadMiscSounds(const std::string& soundpack)
+{
+    sfx_mip.init(convertPath("sfx/packs/mip.wav", soundpack));
+    sfx_sprout.init(convertPath("sfx/packs/sprout.wav", soundpack));
+    sfx_fireball.init(convertPath("sfx/packs/fireball.wav", soundpack));
+    sfx_pause.init(convertPath("sfx/packs/pause.wav", soundpack));
+    sfx_areatag.init(convertPath("sfx/packs/dcoin.wav", soundpack));
+    sfx_flyingsound.init(convertPath("sfx/packs/slowdown.wav", soundpack));
+    sfx_bulletbillsound.init(convertPath("sfx/packs/bulletbill.wav", soundpack));
+    sfx_inventory.init(convertPath("sfx/packs/inventory.wav", soundpack));
+    sfx_worldmove.init(convertPath("sfx/packs/mapmove.wav", soundpack));
+    sfx_wand.init(convertPath("sfx/packs/wand.wav", soundpack));
 }
