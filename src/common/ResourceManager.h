@@ -24,6 +24,7 @@ public:
 
 private:
 	void LoadAllSprites();
+    void LoadMenuSprites(const std::string& graphicspack);
 
 public:
 

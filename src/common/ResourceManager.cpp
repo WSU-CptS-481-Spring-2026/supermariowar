@@ -60,9 +60,7 @@ void CResourceManager::LoadAllSprites() {
         LoadFullSkin(spr_bobomb[k], bobombPath, k);
     }
 
-    gfx_loadimage(menu_survival, convertPath("gfx/packs/modeobjects/menu_survival.png", graphicspack), false);
-    gfx_loadimage(menu_stomp, convertPath("gfx/packs/modeobjects/menu_stomp.png", graphicspack), false);
-    gfx_loadimage(menu_egg, convertPath("gfx/packs/modeobjects/menu_egg.png", graphicspack), false);
+    LoadMenuSprites(graphicspack);
 
     gfx_loadimage(spr_clouds, convertPath("gfx/packs/eyecandy/cloud.png", graphicspack), 255, true);
     gfx_loadimage(spr_ghosts, convertPath("gfx/packs/eyecandy/ghost.png", graphicspack), 128, true);
@@ -271,6 +269,13 @@ void CResourceManager::LoadAllSprites() {
     gfx_loadimage(spr_powerupselector, convertPath("gfx/packs/awards/award.png", graphicspack), false);
 
     gfx_loadimage(spr_abovearrows, convertPath("gfx/packs/eyecandy/abovearrows.png", graphicspack), true);
+}
+
+void CResourceManager::LoadMenuSprites(const std::string& graphicspack)
+{
+    gfx_loadimage(menu_survival, convertPath("gfx/packs/modeobjects/menu_survival.png", graphicspack), false);
+    gfx_loadimage(menu_stomp, convertPath("gfx/packs/modeobjects/menu_stomp.png", graphicspack), false);
+    gfx_loadimage(menu_egg, convertPath("gfx/packs/modeobjects/menu_egg.png", graphicspack), false);
 }
 
 bool CResourceManager::LoadMenuGraphics()
