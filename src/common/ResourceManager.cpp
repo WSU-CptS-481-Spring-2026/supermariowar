@@ -74,6 +74,8 @@ void CResourceManager::LoadAllSprites() {
 
     LoadHazardSprites(graphicspack);
 
+    LoadAwardSprites(graphicspack);
+
     gfx_loadimage(spr_tileanimation[0], convertPath("gfx/packs/tilesets/tile_animation.png", graphicspack), false);
     gfx_loadimage(spr_tileanimation[1], convertPath("gfx/packs/tilesets/tile_animation_preview.png", graphicspack), false);
     gfx_loadimage(spr_tileanimation[2], convertPath("gfx/packs/tilesets/tile_animation_thumbnail.png", graphicspack), false);
@@ -96,15 +98,6 @@ void CResourceManager::LoadAllSprites() {
 
 
 
-    gfx_loadimage(spr_award, convertPath("gfx/packs/awards/killsinrow.png", graphicspack), 128, true);
-    gfx_loadimage(spr_awardsolid, convertPath("gfx/packs/awards/killsinrow.png", graphicspack), true);
-    gfx_loadimage(spr_awardsouls, convertPath("gfx/packs/awards/souls.png", graphicspack), true);
-    gfx_loadimage(spr_awardsoulspawn, convertPath("gfx/packs/awards/soulspawn.png", graphicspack), true);
-
-    gfx_loadimage(spr_awardkillsinrow, convertPath("gfx/packs/awards/killsinrownumbers.png", graphicspack), true);
-
-
-    gfx_loadimage(spr_powerupselector, convertPath("gfx/packs/awards/award.png", graphicspack), false);
 }
 
 void CResourceManager::LoadMenuSprites(const std::string& graphicspack)
@@ -321,6 +314,18 @@ void CResourceManager::LoadHazardSprites(const std::string& graphicspack)
     gfx_loadimage(spr_hazard_pirhanaplant[2], convertPath("gfx/packs/hazards/pirhanaplant_thumbnail.png", graphicspack), true);
 
     gfx_loadimage(spr_hazard_bulletbilldead, convertPath("gfx/packs/hazards/bulletbilldead.png", graphicspack), false);
+}
+
+void CResourceManager::LoadAwardSprites(const std::string& graphicspack)
+{
+    gfx_loadimage(spr_award, convertPath("gfx/packs/awards/killsinrow.png", graphicspack), 128, true);
+    gfx_loadimage(spr_awardsolid, convertPath("gfx/packs/awards/killsinrow.png", graphicspack), true);
+    gfx_loadimage(spr_awardsouls, convertPath("gfx/packs/awards/souls.png", graphicspack), true);
+    gfx_loadimage(spr_awardsoulspawn, convertPath("gfx/packs/awards/soulspawn.png", graphicspack), true);
+
+    gfx_loadimage(spr_awardkillsinrow, convertPath("gfx/packs/awards/killsinrownumbers.png", graphicspack), true);
+
+    gfx_loadimage(spr_powerupselector, convertPath("gfx/packs/awards/award.png", graphicspack), false);
 }
 
 bool CResourceManager::LoadMenuGraphics()
