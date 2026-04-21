@@ -70,6 +70,8 @@ void CResourceManager::LoadAllSprites() {
 
     LoadProjectileSprites(graphicspack);
 
+    LoadModeObjectSprites(graphicspack);
+
     gfx_loadimage(spr_tileanimation[0], convertPath("gfx/packs/tilesets/tile_animation.png", graphicspack), false);
     gfx_loadimage(spr_tileanimation[1], convertPath("gfx/packs/tilesets/tile_animation_preview.png", graphicspack), false);
     gfx_loadimage(spr_tileanimation[2], convertPath("gfx/packs/tilesets/tile_animation_thumbnail.png", graphicspack), false);
@@ -89,45 +91,6 @@ void CResourceManager::LoadAllSprites() {
     gfx_loadimage(spr_racetext, convertPath("gfx/packs/fonts/race.png", graphicspack), false);
 
 
-    gfx_loadimage(spr_egg, convertPath("gfx/packs/modeobjects/egg.png", graphicspack), true);
-    gfx_loadimage(spr_eggnumbers, convertPath("gfx/packs/modeobjects/eggnumbers.png", graphicspack), true);
-    gfx_loadimage(spr_star, convertPath("gfx/packs/modeobjects/star.png", graphicspack), true);
-    gfx_loadimage(spr_flags, convertPath("gfx/packs/modeobjects/flags.png", graphicspack), true);
-    gfx_loadimage(spr_frenzycards, convertPath("gfx/packs/modeobjects/frenzycards.png", graphicspack), true);
-    gfx_loadimage(spr_collectcards, convertPath("gfx/packs/modeobjects/collectcards.png", graphicspack), true);
-
-    gfx_loadimage(spr_yoshi, convertPath("gfx/packs/modeobjects/yoshi.png", graphicspack), true);
-    gfx_loadimage(spr_coin, convertPath("gfx/packs/modeobjects/coin.png", graphicspack), true);
-    gfx_loadimage(spr_thwomp, convertPath("gfx/packs/modeobjects/thwomp.png", graphicspack), true);
-    gfx_loadimage(spr_podobo, convertPath("gfx/packs/modeobjects/podobo.png", graphicspack), false);
-    gfx_loadimage(spr_bowserfire, convertPath("gfx/packs/modeobjects/bowserfire.png", graphicspack), false);
-    gfx_loadimage(spr_areas, convertPath("gfx/packs/modeobjects/areas.png", graphicspack), false);
-    gfx_loadimage(spr_kingofthehillarea, convertPath("gfx/packs/modeobjects/kingofthehill.png", graphicspack), 128, false);
-    gfx_loadimage(spr_jail, convertPath("gfx/packs/modeobjects/jail.png", graphicspack), 160, true);
-    gfx_loadimage(spr_goomba, convertPath("gfx/packs/modeobjects/goomba.png", graphicspack), true);
-    gfx_loadimage(spr_koopa, convertPath("gfx/packs/modeobjects/koopa.png", graphicspack), true);
-    gfx_loadimage(spr_buzzybeetle, convertPath("gfx/packs/modeobjects/buzzybeetle.png", graphicspack), true);
-    gfx_loadimage(spr_spiny, convertPath("gfx/packs/modeobjects/spiny.png", graphicspack), true);
-    gfx_loadimage(spr_paragoomba, convertPath("gfx/packs/modeobjects/paragoomba.png", graphicspack), true);
-    gfx_loadimage(spr_parakoopa, convertPath("gfx/packs/modeobjects/parakoopa.png", graphicspack), true);
-    gfx_loadimage(spr_redparakoopa, convertPath("gfx/packs/modeobjects/redparakoopa.png", graphicspack), true);
-    gfx_loadimage(spr_redkoopa, convertPath("gfx/packs/modeobjects/redkoopa.png", graphicspack), true);
-    gfx_loadimage(spr_cheepcheep, convertPath("gfx/packs/modeobjects/cheepcheep.png", graphicspack), true);
-
-    gfx_loadimage(spr_sledgebrothers, convertPath("gfx/packs/modeobjects/sledgebrothers.png", graphicspack), true);
-
-    gfx_loadimage(spr_chicken, convertPath("gfx/packs/modeobjects/chicken.png", graphicspack), 160, true);
-    gfx_loadimage(spr_racegoal, convertPath("gfx/packs/modeobjects/racegoal.png", graphicspack), false);
-    gfx_loadimage(spr_pipegamebonus, convertPath("gfx/packs/modeobjects/pipeminigamebonuses.png", graphicspack), true);
-
-    gfx_loadimage(spr_phanto, convertPath("gfx/packs/modeobjects/phanto.png", graphicspack), true);
-    gfx_loadimage(spr_phantokey, convertPath("gfx/packs/modeobjects/key.png", graphicspack), true);
-
-    gfx_loadimage(spr_bonuschest, convertPath("gfx/packs/modeobjects/bonuschest.png", graphicspack), true);
-
-
-    gfx_loadimage(spr_superfireball, convertPath("gfx/packs/modeobjects/superfire.png", graphicspack), true);
-    gfx_loadimage(spr_sledgehammer, convertPath("gfx/packs/modeobjects/sledgehammer.png", graphicspack), true);
 
     gfx_loadimage(spr_hazard_fireball[0], convertPath("gfx/packs/hazards/fireball.png", graphicspack), true);
     gfx_loadimage(spr_hazard_fireball[1], convertPath("gfx/packs/hazards/fireball_preview.png", graphicspack), true);
@@ -159,8 +122,6 @@ void CResourceManager::LoadAllSprites() {
 
     gfx_loadimage(spr_awardkillsinrow, convertPath("gfx/packs/awards/killsinrownumbers.png", graphicspack), true);
 
-    gfx_loadimage(spr_flagbases, convertPath("gfx/packs/modeobjects/flagbases.png", graphicspack), 160, true);
-    gfx_loadimage(spr_ownedtags, convertPath("gfx/packs/modeobjects/ownedtags.png", graphicspack), 160, true);
 
     gfx_loadimage(spr_powerupselector, convertPath("gfx/packs/awards/award.png", graphicspack), false);
 }
@@ -308,6 +269,52 @@ void CResourceManager::LoadProjectileSprites(const std::string& graphicspack)
     gfx_loadimage(spr_shell, convertPath("gfx/packs/projectiles/shell.png", graphicspack), true);
     gfx_loadimage(spr_blueblock, convertPath("gfx/packs/projectiles/throwblock.png", graphicspack), true);
     gfx_loadimage(spr_bomb, convertPath("gfx/packs/projectiles/bomb.png", graphicspack), true);
+}
+
+void CResourceManager::LoadModeObjectSprites(const std::string& graphicspack)
+{
+    gfx_loadimage(spr_egg, convertPath("gfx/packs/modeobjects/egg.png", graphicspack), true);
+    gfx_loadimage(spr_eggnumbers, convertPath("gfx/packs/modeobjects/eggnumbers.png", graphicspack), true);
+    gfx_loadimage(spr_star, convertPath("gfx/packs/modeobjects/star.png", graphicspack), true);
+    gfx_loadimage(spr_flags, convertPath("gfx/packs/modeobjects/flags.png", graphicspack), true);
+    gfx_loadimage(spr_frenzycards, convertPath("gfx/packs/modeobjects/frenzycards.png", graphicspack), true);
+    gfx_loadimage(spr_collectcards, convertPath("gfx/packs/modeobjects/collectcards.png", graphicspack), true);
+
+    gfx_loadimage(spr_yoshi, convertPath("gfx/packs/modeobjects/yoshi.png", graphicspack), true);
+    gfx_loadimage(spr_coin, convertPath("gfx/packs/modeobjects/coin.png", graphicspack), true);
+    gfx_loadimage(spr_thwomp, convertPath("gfx/packs/modeobjects/thwomp.png", graphicspack), true);
+    gfx_loadimage(spr_podobo, convertPath("gfx/packs/modeobjects/podobo.png", graphicspack), false);
+    gfx_loadimage(spr_bowserfire, convertPath("gfx/packs/modeobjects/bowserfire.png", graphicspack), false);
+    gfx_loadimage(spr_areas, convertPath("gfx/packs/modeobjects/areas.png", graphicspack), false);
+    gfx_loadimage(spr_kingofthehillarea, convertPath("gfx/packs/modeobjects/kingofthehill.png", graphicspack), 128, false);
+    gfx_loadimage(spr_jail, convertPath("gfx/packs/modeobjects/jail.png", graphicspack), 160, true);
+    gfx_loadimage(spr_goomba, convertPath("gfx/packs/modeobjects/goomba.png", graphicspack), true);
+    gfx_loadimage(spr_koopa, convertPath("gfx/packs/modeobjects/koopa.png", graphicspack), true);
+    gfx_loadimage(spr_buzzybeetle, convertPath("gfx/packs/modeobjects/buzzybeetle.png", graphicspack), true);
+    gfx_loadimage(spr_spiny, convertPath("gfx/packs/modeobjects/spiny.png", graphicspack), true);
+    gfx_loadimage(spr_paragoomba, convertPath("gfx/packs/modeobjects/paragoomba.png", graphicspack), true);
+    gfx_loadimage(spr_parakoopa, convertPath("gfx/packs/modeobjects/parakoopa.png", graphicspack), true);
+    gfx_loadimage(spr_redparakoopa, convertPath("gfx/packs/modeobjects/redparakoopa.png", graphicspack), true);
+    gfx_loadimage(spr_redkoopa, convertPath("gfx/packs/modeobjects/redkoopa.png", graphicspack), true);
+    gfx_loadimage(spr_cheepcheep, convertPath("gfx/packs/modeobjects/cheepcheep.png", graphicspack), true);
+
+    gfx_loadimage(spr_sledgebrothers, convertPath("gfx/packs/modeobjects/sledgebrothers.png", graphicspack), true);
+
+    gfx_loadimage(spr_chicken, convertPath("gfx/packs/modeobjects/chicken.png", graphicspack), 160, true);
+    gfx_loadimage(spr_racegoal, convertPath("gfx/packs/modeobjects/racegoal.png", graphicspack), false);
+    gfx_loadimage(spr_pipegamebonus, convertPath("gfx/packs/modeobjects/pipeminigamebonuses.png", graphicspack), true);
+
+    gfx_loadimage(spr_phanto, convertPath("gfx/packs/modeobjects/phanto.png", graphicspack), true);
+    gfx_loadimage(spr_phantokey, convertPath("gfx/packs/modeobjects/key.png", graphicspack), true);
+
+    gfx_loadimage(spr_bonuschest, convertPath("gfx/packs/modeobjects/bonuschest.png", graphicspack), true);
+
+
+    gfx_loadimage(spr_superfireball, convertPath("gfx/packs/modeobjects/superfire.png", graphicspack), true);
+    gfx_loadimage(spr_sledgehammer, convertPath("gfx/packs/modeobjects/sledgehammer.png", graphicspack), true);
+
+    gfx_loadimage(spr_flagbases, convertPath("gfx/packs/modeobjects/flagbases.png", graphicspack), 160, true);
+    gfx_loadimage(spr_ownedtags, convertPath("gfx/packs/modeobjects/ownedtags.png", graphicspack), 160, true);
 }
 
 bool CResourceManager::LoadMenuGraphics()
