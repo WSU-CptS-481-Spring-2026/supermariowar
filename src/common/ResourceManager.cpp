@@ -64,18 +64,8 @@ void CResourceManager::LoadAllSprites() {
 
     LoadEyeCandySprites(graphicspack);
 
+    LoadBlockSprites(graphicspack);
 
-
-    gfx_loadimage(spr_noteblock, convertPath("gfx/packs/blocks/noteblock.png", graphicspack), false);
-    gfx_loadimage(spr_breakableblock, convertPath("gfx/packs/blocks/breakableblock.png", graphicspack), false);
-    gfx_loadimage(spr_powerupblock, convertPath("gfx/packs/blocks/powerupblock.png", graphicspack), false);
-    gfx_loadimage(spr_donutblock, convertPath("gfx/packs/blocks/donutblock.png", graphicspack), false);
-    gfx_loadimage(spr_flipblock, convertPath("gfx/packs/blocks/flipblock.png", graphicspack), false);
-    gfx_loadimage(spr_bounceblock, convertPath("gfx/packs/blocks/bounceblock.png", graphicspack), false);
-    gfx_loadimage(spr_throwblock, convertPath("gfx/packs/blocks/throwblock.png", graphicspack), false);
-    gfx_loadimage(spr_switchblocks, convertPath("gfx/packs/blocks/switchblock.png", graphicspack), false);
-    gfx_loadimage(spr_viewblock, convertPath("gfx/packs/blocks/viewblock.png", graphicspack), false);
-    gfx_loadimage(spr_weaponbreakableblock, convertPath("gfx/packs/blocks/weaponbreakableblock.png", graphicspack), false);
 
     gfx_loadimage(spr_spring, convertPath("gfx/packs/powerups/spring.png", graphicspack), true);
     gfx_loadimage(spr_spike, convertPath("gfx/packs/powerups/spike.png", graphicspack), true);
@@ -86,9 +76,6 @@ void CResourceManager::LoadAllSprites() {
     gfx_loadimage(spr_tileanimation[1], convertPath("gfx/packs/tilesets/tile_animation_preview.png", graphicspack), false);
     gfx_loadimage(spr_tileanimation[2], convertPath("gfx/packs/tilesets/tile_animation_thumbnail.png", graphicspack), false);
 
-    gfx_loadimage(spr_blocks[0], convertPath("gfx/packs/tilesets/blocks.png", graphicspack), false);
-    gfx_loadimage(spr_blocks[1], convertPath("gfx/packs/tilesets/blocks_preview.png", graphicspack), false);
-    gfx_loadimage(spr_blocks[2], convertPath("gfx/packs/tilesets/blocks_thumbnail.png", graphicspack), false);
 
     gfx_loadimage(spr_unknowntile[0], convertPath("gfx/packs/tilesets/unknown_tile.png", graphicspack), false);
     gfx_loadimage(spr_unknowntile[1], convertPath("gfx/packs/tilesets/unknown_tile_preview.png", graphicspack), false);
@@ -289,6 +276,24 @@ void CResourceManager::LoadEyeCandySprites(const std::string& graphicspack)
     gfx_loadimage(spr_overlayhole, convertPath("gfx/packs/eyecandy/overlayholes.png", graphicspack), {0, 255, 0}, true);
 
     gfx_loadimage(spr_abovearrows, convertPath("gfx/packs/eyecandy/abovearrows.png", graphicspack), true);
+}
+
+void CResourceManager::LoadBlockSprites(const std::string& graphicspack)
+{
+    gfx_loadimage(spr_noteblock, convertPath("gfx/packs/blocks/noteblock.png", graphicspack), false);
+    gfx_loadimage(spr_breakableblock, convertPath("gfx/packs/blocks/breakableblock.png", graphicspack), false);
+    gfx_loadimage(spr_powerupblock, convertPath("gfx/packs/blocks/powerupblock.png", graphicspack), false);
+    gfx_loadimage(spr_donutblock, convertPath("gfx/packs/blocks/donutblock.png", graphicspack), false);
+    gfx_loadimage(spr_flipblock, convertPath("gfx/packs/blocks/flipblock.png", graphicspack), false);
+    gfx_loadimage(spr_bounceblock, convertPath("gfx/packs/blocks/bounceblock.png", graphicspack), false);
+    gfx_loadimage(spr_throwblock, convertPath("gfx/packs/blocks/throwblock.png", graphicspack), false);
+    gfx_loadimage(spr_switchblocks, convertPath("gfx/packs/blocks/switchblock.png", graphicspack), false);
+    gfx_loadimage(spr_viewblock, convertPath("gfx/packs/blocks/viewblock.png", graphicspack), false);
+    gfx_loadimage(spr_weaponbreakableblock, convertPath("gfx/packs/blocks/weaponbreakableblock.png", graphicspack), false);
+
+    gfx_loadimage(spr_blocks[0], convertPath("gfx/packs/tilesets/blocks.png", graphicspack), false);
+    gfx_loadimage(spr_blocks[1], convertPath("gfx/packs/tilesets/blocks_preview.png", graphicspack), false);
+    gfx_loadimage(spr_blocks[2], convertPath("gfx/packs/tilesets/blocks_thumbnail.png", graphicspack), false);
 }
 
 bool CResourceManager::LoadMenuGraphics()
