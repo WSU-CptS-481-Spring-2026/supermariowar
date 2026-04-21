@@ -462,12 +462,25 @@ void GameplayState::initEyeCandy()
     }
 }
 
+//Helper Functions
+void initializeWind(short& iWindTimer, float& dNextWind)
+{
+    iWindTimer = 0;
+    dNextWind = static_cast<float>(RANDOM_INT(41) - 20) / 4.0f;
+    game_values.flags.gamewindx = static_cast<float>(RANDOM_INT(41) - 20) / 4.0f;
+}
+
+void initializePlayers()
+{
+    for (CPlayer* player : players)
+        player->Init();
+}
+
 void GameplayState::initRunGame()
 {
     y_shake = 0;
     x_shake = 0;
 
-    //Reset the screen spin variables
     spinangle = 0.0f;
     spinspeed = 0.0f;
     spindirection = 1;
@@ -475,23 +488,18 @@ void GameplayState::initRunGame()
 
     game_values.resetSecretCounters();
 
-    //Reset the keys each time we switch from menu to game and back
+    // Reset the keys each time we switch from menu to game and back
     game_values.playerInput.ResetKeys();
-
 
     createPlayers();
     game_values.resetGameplaySettings();
     initScoreDisplayPosition();
     initEyeCandy();
 
+    initializeWind(iWindTimer, dNextWind);
 
-    iWindTimer = 0;
-    dNextWind = (float)(RANDOM_INT(41) - 20) / 4.0f;
-    game_values.flags.gamewindx = (float)((RANDOM_INT(41)) - 20) / 4.0f;
-
-    //Initialize players after game init has finished
-    for (CPlayer* player : players)
-        player->Init();
+    // Initialize players after game init has finished
+    initializePlayers();
 }
 
 //
