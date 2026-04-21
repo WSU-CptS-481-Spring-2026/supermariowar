@@ -27,8 +27,9 @@ private:
     void LoadMenuSprites(const std::string& graphicspack);
         void LoadEyeCandySprites(const std::string& graphicspack);
     void LoadBlockSprites(const std::string& graphicspack);
+        void LoadPowerupSprites(const std::string& graphicspack);
 
-public:
+    public:
 
 	gfxSprite		** spr_player[4];	//all player sprites
 	gfxSprite		** spr_shyguy[4];

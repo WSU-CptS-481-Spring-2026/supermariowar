@@ -66,11 +66,8 @@ void CResourceManager::LoadAllSprites() {
 
     LoadBlockSprites(graphicspack);
 
+    LoadPowerupSprites(graphicspack);
 
-    gfx_loadimage(spr_spring, convertPath("gfx/packs/powerups/spring.png", graphicspack), true);
-    gfx_loadimage(spr_spike, convertPath("gfx/packs/powerups/spike.png", graphicspack), true);
-    gfx_loadimage(spr_kuriboshoe, convertPath("gfx/packs/powerups/kuriboshoe.png", graphicspack), true);
-    gfx_loadimage(spr_throwbox, convertPath("gfx/packs/powerups/throwbox.png", graphicspack), true);
 
     gfx_loadimage(spr_tileanimation[0], convertPath("gfx/packs/tilesets/tile_animation.png", graphicspack), false);
     gfx_loadimage(spr_tileanimation[1], convertPath("gfx/packs/tilesets/tile_animation_preview.png", graphicspack), false);
@@ -81,39 +78,8 @@ void CResourceManager::LoadAllSprites() {
     gfx_loadimage(spr_unknowntile[1], convertPath("gfx/packs/tilesets/unknown_tile_preview.png", graphicspack), false);
     gfx_loadimage(spr_unknowntile[2], convertPath("gfx/packs/tilesets/unknown_tile_thumbnail.png", graphicspack), false);
 
-
-    gfx_loadimage(spr_tanooki, convertPath("gfx/packs/powerups/tanooki.png", graphicspack), true);
     gfx_loadimage(spr_statue, convertPath("gfx/packs/projectiles/statue.png", graphicspack), true);
-    gfx_loadimage(spr_starpowerup, convertPath("gfx/packs/powerups/starpowerup.png", graphicspack), true);
-    gfx_loadimage(spr_1uppowerup, convertPath("gfx/packs/powerups/1uppowerup.png", graphicspack), true);
-    gfx_loadimage(spr_2uppowerup, convertPath("gfx/packs/powerups/2uppowerup.png", graphicspack), true);
-    gfx_loadimage(spr_3uppowerup, convertPath("gfx/packs/powerups/3uppowerup.png", graphicspack), true);
-    gfx_loadimage(spr_5uppowerup, convertPath("gfx/packs/powerups/5uppowerup.png", graphicspack), true);
-    gfx_loadimage(spr_firepowerup, convertPath("gfx/packs/powerups/fireflower.png", graphicspack), true);
-    gfx_loadimage(spr_hammerpowerup, convertPath("gfx/packs/powerups/hammerpowerup.png", graphicspack), true);
-    gfx_loadimage(spr_icewandpowerup, convertPath("gfx/packs/powerups/icewandpowerup.png", graphicspack), true);
-    gfx_loadimage(spr_podobopowerup, convertPath("gfx/packs/powerups/podobopowerup.png", graphicspack), true);
-    gfx_loadimage(spr_poisonpowerup, convertPath("gfx/packs/powerups/poisonpowerup.png", graphicspack), true);
-    gfx_loadimage(spr_mysterymushroompowerup, convertPath("gfx/packs/powerups/mysterymushroom.png", graphicspack), true);
-    gfx_loadimage(spr_boomerangpowerup, convertPath("gfx/packs/powerups/boomerangpowerup.png", graphicspack), true);
-    gfx_loadimage(spr_clockpowerup, convertPath("gfx/packs/powerups/clockpowerup.png", graphicspack), true);
-    gfx_loadimage(spr_bobombpowerup, convertPath("gfx/packs/powerups/bobombpowerup.png", graphicspack), true);
-    gfx_loadimage(spr_powpowerup, convertPath("gfx/packs/powerups/powpowerup.png", graphicspack), true);
-    gfx_loadimage(spr_modpowerup, convertPath("gfx/packs/powerups/modpowerup.png", graphicspack), true);
-    gfx_loadimage(spr_bulletbillpowerup, convertPath("gfx/packs/powerups/bulletbillpowerup.png", graphicspack), true);
-    gfx_loadimage(spr_featherpowerup, convertPath("gfx/packs/powerups/featherpowerup.png", graphicspack), true);
-    gfx_loadimage(spr_leafpowerup, convertPath("gfx/packs/powerups/leafpowerup.png", graphicspack), true);
-    gfx_loadimage(spr_bombpowerup, convertPath("gfx/packs/powerups/bombpowerup.png", graphicspack), true);
-    gfx_loadimage(spr_pwingspowerup, convertPath("gfx/packs/powerups/pwings.png", graphicspack), true);
 
-    gfx_loadimage(spr_extraheartpowerup, convertPath("gfx/packs/powerups/heartpowerup.png", graphicspack), true);
-    gfx_loadimage(spr_extratimepowerup, convertPath("gfx/packs/powerups/extratimepowerup.png", graphicspack), true);
-    gfx_loadimage(spr_jailkeypowerup, convertPath("gfx/packs/powerups/jailkeypowerup.png", graphicspack), true);
-
-    gfx_loadimage(spr_secret1, convertPath("gfx/packs/powerups/secret1.png", graphicspack), true);
-    gfx_loadimage(spr_secret2, convertPath("gfx/packs/powerups/secret2.png", graphicspack), true);
-    gfx_loadimage(spr_secret3, convertPath("gfx/packs/powerups/secret3.png", graphicspack), true);
-    gfx_loadimage(spr_secret4, convertPath("gfx/packs/powerups/secret4.png", graphicspack), true);
 
     gfx_loadimage(spr_scorehearts, convertPath("gfx/packs/menu/score_hearts.png", graphicspack), false);
     gfx_loadimage(spr_scorecards, convertPath("gfx/packs/menu/score_cards.png", graphicspack), false);
@@ -204,8 +170,6 @@ void CResourceManager::LoadAllSprites() {
     gfx_loadimage(spr_flagbases, convertPath("gfx/packs/modeobjects/flagbases.png", graphicspack), 160, true);
     gfx_loadimage(spr_ownedtags, convertPath("gfx/packs/modeobjects/ownedtags.png", graphicspack), 160, true);
 
-    gfx_loadimage(spr_storedpowerupsmall, convertPath("gfx/packs/powerups/small.png", graphicspack), true);
-    gfx_loadimage(spr_storedpoweruplarge, convertPath("gfx/packs/powerups/large.png", graphicspack), false);
     gfx_loadimage(spr_powerupselector, convertPath("gfx/packs/awards/award.png", graphicspack), false);
 }
 
@@ -294,6 +258,49 @@ void CResourceManager::LoadBlockSprites(const std::string& graphicspack)
     gfx_loadimage(spr_blocks[0], convertPath("gfx/packs/tilesets/blocks.png", graphicspack), false);
     gfx_loadimage(spr_blocks[1], convertPath("gfx/packs/tilesets/blocks_preview.png", graphicspack), false);
     gfx_loadimage(spr_blocks[2], convertPath("gfx/packs/tilesets/blocks_thumbnail.png", graphicspack), false);
+}
+
+void CResourceManager::LoadPowerupSprites(const std::string& graphicspack)
+{
+    gfx_loadimage(spr_spring, convertPath("gfx/packs/powerups/spring.png", graphicspack), true);
+    gfx_loadimage(spr_spike, convertPath("gfx/packs/powerups/spike.png", graphicspack), true);
+    gfx_loadimage(spr_kuriboshoe, convertPath("gfx/packs/powerups/kuriboshoe.png", graphicspack), true);
+    gfx_loadimage(spr_throwbox, convertPath("gfx/packs/powerups/throwbox.png", graphicspack), true);
+
+    gfx_loadimage(spr_tanooki, convertPath("gfx/packs/powerups/tanooki.png", graphicspack), true);
+    gfx_loadimage(spr_starpowerup, convertPath("gfx/packs/powerups/starpowerup.png", graphicspack), true);
+    gfx_loadimage(spr_1uppowerup, convertPath("gfx/packs/powerups/1uppowerup.png", graphicspack), true);
+    gfx_loadimage(spr_2uppowerup, convertPath("gfx/packs/powerups/2uppowerup.png", graphicspack), true);
+    gfx_loadimage(spr_3uppowerup, convertPath("gfx/packs/powerups/3uppowerup.png", graphicspack), true);
+    gfx_loadimage(spr_5uppowerup, convertPath("gfx/packs/powerups/5uppowerup.png", graphicspack), true);
+    gfx_loadimage(spr_firepowerup, convertPath("gfx/packs/powerups/fireflower.png", graphicspack), true);
+    gfx_loadimage(spr_hammerpowerup, convertPath("gfx/packs/powerups/hammerpowerup.png", graphicspack), true);
+    gfx_loadimage(spr_icewandpowerup, convertPath("gfx/packs/powerups/icewandpowerup.png", graphicspack), true);
+    gfx_loadimage(spr_podobopowerup, convertPath("gfx/packs/powerups/podobopowerup.png", graphicspack), true);
+    gfx_loadimage(spr_poisonpowerup, convertPath("gfx/packs/powerups/poisonpowerup.png", graphicspack), true);
+    gfx_loadimage(spr_mysterymushroompowerup, convertPath("gfx/packs/powerups/mysterymushroom.png", graphicspack), true);
+    gfx_loadimage(spr_boomerangpowerup, convertPath("gfx/packs/powerups/boomerangpowerup.png", graphicspack), true);
+    gfx_loadimage(spr_clockpowerup, convertPath("gfx/packs/powerups/clockpowerup.png", graphicspack), true);
+    gfx_loadimage(spr_bobombpowerup, convertPath("gfx/packs/powerups/bobombpowerup.png", graphicspack), true);
+    gfx_loadimage(spr_powpowerup, convertPath("gfx/packs/powerups/powpowerup.png", graphicspack), true);
+    gfx_loadimage(spr_modpowerup, convertPath("gfx/packs/powerups/modpowerup.png", graphicspack), true);
+    gfx_loadimage(spr_bulletbillpowerup, convertPath("gfx/packs/powerups/bulletbillpowerup.png", graphicspack), true);
+    gfx_loadimage(spr_featherpowerup, convertPath("gfx/packs/powerups/featherpowerup.png", graphicspack), true);
+    gfx_loadimage(spr_leafpowerup, convertPath("gfx/packs/powerups/leafpowerup.png", graphicspack), true);
+    gfx_loadimage(spr_bombpowerup, convertPath("gfx/packs/powerups/bombpowerup.png", graphicspack), true);
+    gfx_loadimage(spr_pwingspowerup, convertPath("gfx/packs/powerups/pwings.png", graphicspack), true);
+
+    gfx_loadimage(spr_extraheartpowerup, convertPath("gfx/packs/powerups/heartpowerup.png", graphicspack), true);
+    gfx_loadimage(spr_extratimepowerup, convertPath("gfx/packs/powerups/extratimepowerup.png", graphicspack), true);
+    gfx_loadimage(spr_jailkeypowerup, convertPath("gfx/packs/powerups/jailkeypowerup.png", graphicspack), true);
+
+    gfx_loadimage(spr_secret1, convertPath("gfx/packs/powerups/secret1.png", graphicspack), true);
+    gfx_loadimage(spr_secret2, convertPath("gfx/packs/powerups/secret2.png", graphicspack), true);
+    gfx_loadimage(spr_secret3, convertPath("gfx/packs/powerups/secret3.png", graphicspack), true);
+    gfx_loadimage(spr_secret4, convertPath("gfx/packs/powerups/secret4.png", graphicspack), true);
+
+    gfx_loadimage(spr_storedpowerupsmall, convertPath("gfx/packs/powerups/small.png", graphicspack), true);
+    gfx_loadimage(spr_storedpoweruplarge, convertPath("gfx/packs/powerups/large.png", graphicspack), false);
 }
 
 bool CResourceManager::LoadMenuGraphics()
