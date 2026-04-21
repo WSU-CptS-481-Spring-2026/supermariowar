@@ -579,25 +579,41 @@ void GameplayState::CleanDeadPlayers()
     }
 }
 
+namespace {
+constexpr float WIND_STEP = 0.02f;
+
+short nextWindDelay()
+{
+    return RANDOM_INT(60) + 30;
+}
+
+float randomWindTarget()
+{
+    return static_cast<float>(RANDOM_INT(41) - 20) / 4.0f;
+}
+}
+
 void checkWindEvent(short& iWindTimer, float& dNextWind)
 {
-    if (iWindTimer <= 0) {
-        //Then trigger next wind event
-        if (game_values.flags.gamewindx < dNextWind) {
-            game_values.flags.gamewindx += 0.02f;
+    if (iWindTimer > 0) {
+        if (--iWindTimer <= 0)
+            dNextWind = randomWindTarget();
 
-            if (game_values.flags.gamewindx >= dNextWind)
-                iWindTimer = (RANDOM_INT(60)) + 30;
-        } else if (game_values.flags.gamewindx >= dNextWind) {
-            game_values.flags.gamewindx -= 0.02f;
+        return;
+    }
 
-            if (game_values.flags.gamewindx <= dNextWind)
-                iWindTimer = (RANDOM_INT(60)) + 30;
-        }
-    } else {
-        if (--iWindTimer <= 0) {
-            dNextWind = (float)((RANDOM_INT(41)) - 20) / 4.0f;
-        }
+    if (game_values.flags.gamewindx < dNextWind) {
+        game_values.flags.gamewindx += WIND_STEP;
+        if (game_values.flags.gamewindx >= dNextWind)
+            iWindTimer = nextWindDelay();
+
+        return;
+    }
+
+    if (game_values.flags.gamewindx >= dNextWind) {
+        game_values.flags.gamewindx -= WIND_STEP;
+        if (game_values.flags.gamewindx <= dNextWind)
+            iWindTimer = nextWindDelay();
     }
 }
 
