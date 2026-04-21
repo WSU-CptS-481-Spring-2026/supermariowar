@@ -860,68 +860,16 @@ bool WorldMap::Save(const std::string& szPath) const
     WriteTile(file, [](const WorldMapTile& t){return t.iVehicleBoundary; });
 
     fprintf(file, "#Stages\n");
-    fprintf(file, "#Stage Type 0,Map,Mode,Goal,Points,Bonus List(Max 10),Name,End World, then mode settings (see sample tour file for details)\n");
-    fprintf(file, "#Stage Type 1,Bonus House Name,Sequential/Random Order,Display Text,Powerup List(Max 5)\n");
-
-    fprintf(file, "%d\n", game_values.tourstops.size());
-
-    for (short iStage = 0; iStage < game_values.tourstops.size(); iStage++) {
-        std::string line = WriteTourStopLine(*game_values.tourstops[iStage], true);
-        fprintf(file, "%s", line.c_str());
-    }
-    fprintf(file, "\n");
+    WriteStages(file);
 
     fprintf(file, "#Warps\n");
-    fprintf(file, "#location 1 x, y, location 2 x, y\n");
-
-    fprintf(file, "%d\n", warps.size());
-
-    for (const WorldWarp& warp : warps) {
-        fprintf(file, "%d,", warp.posA.x);
-        fprintf(file, "%d,", warp.posA.y);
-        fprintf(file, "%d,", warp.posB.x);
-        fprintf(file, "%d\n", warp.posB.y);
-    }
-    fprintf(file, "\n");
+    WriteWarps(file);
 
     fprintf(file, "#Vehicles\n");
-    fprintf(file, "#Sprite,Stage Type, Start Column, Start Row, Min Moves, Max Moves, Sprite Paces, Sprite Direction, Boundary\n");
-
-    fprintf(file, "%d\n", vehicles.size());
-
-    for (short iVehicle = 0; iVehicle < vehicles.size(); iVehicle++) {
-        fprintf(file, "%d,", vehicles[iVehicle].iDrawSprite);
-        fprintf(file, "%d,", vehicles[iVehicle].iActionId);
-        fprintf(file, "%d,", vehicles[iVehicle].currentTile.x);
-        fprintf(file, "%d,", vehicles[iVehicle].currentTile.y);
-        fprintf(file, "%d,", vehicles[iVehicle].iMinMoves);
-        fprintf(file, "%d,", vehicles[iVehicle].iMaxMoves);
-        fprintf(file, "%d,", vehicles[iVehicle].fSpritePaces);
-        fprintf(file, "%d,", vehicles[iVehicle].iDrawDirection);
-        fprintf(file, "%d\n", vehicles[iVehicle].iBoundary);
-    }
-    fprintf(file, "\n");
+    WriteVehicles(file);
 
     fprintf(file, "#Initial Items\n");
-
-    for (short iItem = 0; iItem < iNumInitialBonuses; iItem++) {
-        if (iItem != 0)
-            fprintf(file, ",");
-
-        short iBonus = iInitialBonuses[iItem];
-        char cBonusType = 'p';
-        if (iBonus >= NUM_POWERUPS) {
-            iBonus -= NUM_POWERUPS;
-            cBonusType = 'w';
-        }
-
-        fprintf(file, "%c%d", cBonusType, iBonus);
-    }
-
-    if (iNumInitialBonuses == 0)
-        fprintf(file, "0");
-
-    fprintf(file, "\n");
+    WriteInitialItems(file);
 
     fclose(file);
 
@@ -945,6 +893,77 @@ void WorldMap::WriteTile(FILE* file, std::function<int(const WorldMapTile&)> gra
                 fprintf(file, ",");
         }
     }
+    fprintf(file, "\n");
+}
+
+void WorldMap::WriteStages(FILE* file)
+{
+    fprintf(file, "#Stage Type 0,Map,Mode,Goal,Points,Bonus List(Max 10),Name,End World, then mode settings (see sample tour file for details)\n");
+    fprintf(file, "#Stage Type 1,Bonus House Name,Sequential/Random Order,Display Text,Powerup List(Max 5)\n");
+
+    fprintf(file, "%d\n", game_values.tourstops.size());
+
+    for (short iStage = 0; iStage < game_values.tourstops.size(); iStage++) {
+        std::string line = WriteTourStopLine(*game_values.tourstops[iStage], true);
+        fprintf(file, "%s", line.c_str());
+    }
+    fprintf(file, "\n");
+}
+
+void WorldMap::WriteWarps(FILE* file) const
+{
+    fprintf(file, "#location 1 x, y, location 2 x, y\n");
+
+    fprintf(file, "%d\n", warps.size());
+
+    for (const WorldWarp& warp : warps) {
+        fprintf(file, "%d,", warp.posA.x);
+        fprintf(file, "%d,", warp.posA.y);
+        fprintf(file, "%d,", warp.posB.x);
+        fprintf(file, "%d\n", warp.posB.y);
+    }
+    fprintf(file, "\n");
+}
+
+void WorldMap::WriteVehicles(FILE* file) const
+{
+    fprintf(file, "#Sprite,Stage Type, Start Column, Start Row, Min Moves, Max Moves, Sprite Paces, Sprite Direction, Boundary\n");
+
+    fprintf(file, "%d\n", vehicles.size());
+
+    for (short iVehicle = 0; iVehicle < vehicles.size(); iVehicle++) {
+        fprintf(file, "%d,", vehicles[iVehicle].iDrawSprite);
+        fprintf(file, "%d,", vehicles[iVehicle].iActionId);
+        fprintf(file, "%d,", vehicles[iVehicle].currentTile.x);
+        fprintf(file, "%d,", vehicles[iVehicle].currentTile.y);
+        fprintf(file, "%d,", vehicles[iVehicle].iMinMoves);
+        fprintf(file, "%d,", vehicles[iVehicle].iMaxMoves);
+        fprintf(file, "%d,", vehicles[iVehicle].fSpritePaces);
+        fprintf(file, "%d,", vehicles[iVehicle].iDrawDirection);
+        fprintf(file, "%d\n", vehicles[iVehicle].iBoundary);
+    }
+    fprintf(file, "\n");
+}
+
+void WorldMap::WriteInitialItems(FILE* file) const
+{
+    for (short iItem = 0; iItem < iNumInitialBonuses; iItem++) {
+        if (iItem != 0)
+            fprintf(file, ",");
+
+        short iBonus = iInitialBonuses[iItem];
+        char cBonusType = 'p';
+        if (iBonus >= NUM_POWERUPS) {
+            iBonus -= NUM_POWERUPS;
+            cBonusType = 'w';
+        }
+
+        fprintf(file, "%c%d", cBonusType, iBonus);
+    }
+
+    if (iNumInitialBonuses == 0)
+        fprintf(file, "0");
+
     fprintf(file, "\n");
 }
 
