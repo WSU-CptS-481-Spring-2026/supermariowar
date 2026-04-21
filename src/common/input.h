@@ -115,6 +115,14 @@ class CPlayerInput
 		//Updates what commands the user is sending
 		void Update(SDL_Event event, short iGameState);
                 bool GetPlayerControlInput(short iPlayer, short iGameState, CInputControl*& inputControl, COutputControl*& outputControl, short& iDeviceID);
+                bool IsCPUInput(short iGameState, short iPlayer, int iKey);
+                void SetKeyPressed(COutputControl* outputControl, int iKey);
+                void KeyAndMouseHandler(SDL_Event& event, short iGameState, short iPlayer, CInputControl* inputControl, COutputControl* outputControl, bool& fFound);
+                void KeyDownHandler(SDL_Event& event, short iGameState, short iPlayer, CInputControl* inputControl, COutputControl* outputControl, bool& fFound);
+                void KeyUpHandler(SDL_Event& event, short iGameState, short iPlayer, CInputControl* inputControl, COutputControl* outputControl, bool& fFound);
+                void MouseMotionHandler(SDL_Event& event, short iGameState, short iPlayer, CInputControl* inputControl, COutputControl* outputControl, bool& fFound);
+                void MouseButtonDownHandler(SDL_Event& event, short iGameState, short iPlayer, CInputControl* inputControl, COutputControl* outputControl, bool& fFound);
+                void MouseButtonUpHandler(SDL_Event& event, short iGameState, short iPlayer, CInputControl* inputControl, COutputControl* outputControl, bool& fFound);
 
                 // Points to the input controls in the global inputConfiguration class
 		CInputPlayerControl * inputControls[4];

@@ -76,98 +76,7 @@ void CPlayerInput::Update(SDL_Event event, short iGameState)
             continue;
 
         if (iDeviceID == DEVICE_KEYBOARD) {
-            if (SDL_KEYDOWN == event.type) {
-                for (int iKey = 0; iKey < NUM_KEYS && !fFound; iKey++) {
-                    if (inputControl->keys[iKey] == event.key.keysym.sym) {
-						fFound = true;
-
-						//Ignore input for cpu controlled players
-						if (iGameState == 0 && game_values.playercontrol[iPlayer] != 1 && iKey < 6)
-							continue;
-
-						if (!outputControl->keys[iKey].fDown)
-							outputControl->keys[iKey].fPressed = true;
-
-						outputControl->keys[iKey].fDown = true;
-					}
-				}
-
-				iPressedKey = (SDL_KEYTYPE)event.key.keysym.sym;
-            } else if (SDL_KEYUP == event.type) {
-                for (int iKey = 0; iKey < NUM_KEYS && !fFound; iKey++) {
-                    if (inputControl->keys[iKey] == event.key.keysym.sym) {
-						fFound = true;
-
-						//Ignore input for cpu controlled players
-						if (iGameState == 0 && game_values.playercontrol[iPlayer] != 1 && iKey < 6)
-							continue;
-
-						outputControl->keys[iKey].fDown = false;
-					}
-				}
-            } else if (SDL_MOUSEMOTION == event.type) {
-                for (int iKey = 0; iKey < NUM_KEYS && !fFound; iKey++) {
-                    if (inputControl->keys[iKey] >= MOUSE_UP) {
-						if ((inputControl->keys[iKey] == MOUSE_UP && event.motion.yrel < -MOUSE_Y_DEAD_ZONE) ||
-							(inputControl->keys[iKey] == MOUSE_DOWN && event.motion.yrel > MOUSE_Y_DEAD_ZONE) ||
-							(inputControl->keys[iKey] == MOUSE_LEFT && event.motion.xrel < -MOUSE_X_DEAD_ZONE) ||
-							(inputControl->keys[iKey] == MOUSE_RIGHT && event.motion.xrel > MOUSE_X_DEAD_ZONE) ||
-                                (inputControl->keys[iKey] >= MOUSE_BUTTON_START && (event.motion.state & SDL_BUTTON(inputControl->keys[iKey] - MOUSE_BUTTON_START)))) {
-							fFound = true;
-
-							//Ignore input for cpu controlled players
-							if (iGameState == 0 && game_values.playercontrol[iPlayer] != 1 && iKey < 6)
-								continue;
-
-							if (!outputControl->keys[iKey].fDown)
-								outputControl->keys[iKey].fPressed = true;
-
-							outputControl->keys[iKey].fDown = true;
-                        } else {
-							//Ignore input for cpu controlled players
-							if (iGameState == 0 && game_values.playercontrol[iPlayer] != 1 && iKey < 6)
-								continue;
-
-							//Mouse scroll wheel up/down events happen on same frame so ignore up event (and clear it in the ClearPressedKeys() method)
-							if (inputControl->keys[iKey] == MOUSE_BUTTON_START + 4 || inputControl->keys[iKey] == MOUSE_BUTTON_START + 5)
-								continue;
-
-							outputControl->keys[iKey].fDown = false;
-						}
-					}
-				}
-            } else if (SDL_MOUSEBUTTONDOWN == event.type) {
-                for (int iKey = 0; iKey < NUM_KEYS && !fFound; iKey++) {
-                    if (inputControl->keys[iKey] == event.button.button + MOUSE_BUTTON_START) {
-						fFound = true;
-
-						//Ignore input for cpu controlled players
-						if (iGameState == 0 && game_values.playercontrol[iPlayer] != 1 && iKey < 6)
-							continue;
-
-						if (!outputControl->keys[iKey].fDown)
-							outputControl->keys[iKey].fPressed = true;
-
-						outputControl->keys[iKey].fDown = true;
-					}
-				}
-            } else if (SDL_MOUSEBUTTONUP == event.type) {
-                for (int iKey = 0; iKey < NUM_KEYS && !fFound; iKey++) {
-                    if (inputControl->keys[iKey] == event.button.button + MOUSE_BUTTON_START) {
-						fFound = true;
-
-						//Mouse scroll wheel up/down events happen on same frame so ignore up event (and clear it in the ClearPressedKeys() method)
-						if (inputControl->keys[iKey] == MOUSE_BUTTON_START + 4 || inputControl->keys[iKey] == MOUSE_BUTTON_START + 5)
-							continue;
-
-						//Ignore input for cpu controlled players
-						if (iGameState == 0 && game_values.playercontrol[iPlayer] != 1 && iKey < 6)
-							continue;
-
-						outputControl->keys[iKey].fDown = false;
-					}
-				}
-			}
+            KeyAndMouseHandler(event, iGameState, iPlayer, inputControl, outputControl, fFound);
         } else {
             if (SDL_JOYHATMOTION == event.type) {
 				if (iDeviceID != event.jhat.which)
@@ -282,29 +191,29 @@ void CPlayerInput::Update(SDL_Event event, short iGameState)
 					}
 
                     if (fUseJoystickInput) {
-						//Ignore input for cpu controlled players
-						if (iGameState == 0 && game_values.playercontrol[iPlayer] != 1 && iKey < 6)
-							continue;
+			//Ignore input for cpu controlled players
+			if (iGameState == 0 && game_values.playercontrol[iPlayer] != 1 && iKey < 6)
+				continue;
 
                         if (fJoystickDown) {
-							fFound = true;
+			    fFound = true;
 
-							if (!outputControl->keys[iKey].fDown)
-								outputControl->keys[iKey].fPressed = true;
+			    if (!outputControl->keys[iKey].fDown)
+				    outputControl->keys[iKey].fPressed = true;
 
-							outputControl->keys[iKey].fDown = true;
+			    outputControl->keys[iKey].fDown = true;
                         } else {
-							outputControl->keys[iKey].fDown = false;
-						}
-					}
-				}
-			}
-		}
+                            outputControl->keys[iKey].fDown = false;
+                        }
+                    }
+                }
+            }
+        }
 
-		//This line might be causing input from some players not to be read
-		//if (fFound)
-			//break;
-	}
+    //This line might be causing input from some players not to be read
+    //if (fFound)
+        //break;
+    }
 }
 
 bool CPlayerInput::GetPlayerControlInput(short iPlayer, short iGameState, CInputControl*& inputControl, COutputControl*& outputControl, short& iDeviceID)
@@ -328,4 +237,139 @@ bool CPlayerInput::GetPlayerControlInput(short iPlayer, short iGameState, CInput
     outputControl = &outputControls[iPlayer];
     iDeviceID = inputControls[iPlayer]->iDevice;
     return true;
+}
+
+bool CPlayerInput::IsCPUInput(short iGameState, short iPlayer, int iKey)
+{
+    return (iGameState == 0 && game_values.playercontrol[iPlayer] != 1 && iKey < 6);
+}
+
+void CPlayerInput::SetKeyPressed(COutputControl* outputControl, int iKey)
+{
+    if (!outputControl->keys[iKey].fDown)
+        outputControl->keys[iKey].fPressed = true;
+
+    outputControl->keys[iKey].fDown = true;
+}
+
+void CPlayerInput::KeyAndMouseHandler(SDL_Event& event, short iGameState, short iPlayer, CInputControl* inputControl, COutputControl* outputControl, bool& fFound)
+{
+    switch (event.type)
+    {
+        case SDL_KEYDOWN:
+            KeyDownHandler(event, iGameState, iPlayer, inputControl, outputControl, fFound);
+            break;
+        case SDL_KEYUP:
+            KeyUpHandler(event, iGameState, iPlayer, inputControl, outputControl, fFound);
+            break;
+        case SDL_MOUSEMOTION:
+            MouseMotionHandler(event, iGameState, iPlayer, inputControl, outputControl, fFound);
+            break;
+        case SDL_MOUSEBUTTONDOWN:
+            MouseButtonDownHandler(event, iGameState, iPlayer, inputControl, outputControl, fFound);
+            break;
+        case SDL_MOUSEBUTTONUP:
+            MouseButtonUpHandler(event, iGameState, iPlayer, inputControl, outputControl, fFound);
+            break;
+        default:
+            break;
+    }
+}
+
+void CPlayerInput::KeyDownHandler(SDL_Event& event, short iGameState, short iPlayer, CInputControl* inputControl, COutputControl* outputControl, bool& fFound)
+{
+    for (int iKey = 0; iKey < NUM_KEYS && !fFound; iKey++) {
+        if (inputControl->keys[iKey] == event.key.keysym.sym) {
+            fFound = true;
+
+            //Ignore input for cpu controlled players
+            if (IsCPUInput(iGameState, iPlayer, iKey))
+                continue;
+
+            SetKeyPressed(outputControl, iKey);
+        }
+    }
+
+    iPressedKey = (SDL_KEYTYPE)event.key.keysym.sym;
+}
+
+void CPlayerInput::KeyUpHandler(SDL_Event& event, short iGameState, short iPlayer, CInputControl* inputControl, COutputControl* outputControl, bool& fFound)
+{
+    for (int iKey = 0; iKey < NUM_KEYS && !fFound; iKey++) {
+        if (inputControl->keys[iKey] == event.key.keysym.sym) {
+            fFound = true;
+
+            //Ignore input for cpu controlled players
+            if (IsCPUInput(iGameState, iPlayer, iKey))
+                continue;
+
+            outputControl->keys[iKey].fDown = false;
+        }
+    }
+}
+
+void CPlayerInput::MouseMotionHandler(SDL_Event& event, short iGameState, short iPlayer, CInputControl* inputControl, COutputControl* outputControl, bool& fFound)
+{
+    for (int iKey = 0; iKey < NUM_KEYS && !fFound; iKey++) {
+        if (inputControl->keys[iKey] >= MOUSE_UP) {
+            if ((inputControl->keys[iKey] == MOUSE_UP && event.motion.yrel < -MOUSE_Y_DEAD_ZONE) ||
+                (inputControl->keys[iKey] == MOUSE_DOWN && event.motion.yrel > MOUSE_Y_DEAD_ZONE) ||
+                (inputControl->keys[iKey] == MOUSE_LEFT && event.motion.xrel < -MOUSE_X_DEAD_ZONE) ||
+                (inputControl->keys[iKey] == MOUSE_RIGHT && event.motion.xrel > MOUSE_X_DEAD_ZONE) ||
+                (inputControl->keys[iKey] >= MOUSE_BUTTON_START && (event.motion.state & SDL_BUTTON(inputControl->keys[iKey] - MOUSE_BUTTON_START)))) {
+
+                fFound = true;
+
+                //Ignore input for cpu controlled players
+                if (IsCPUInput(iGameState, iPlayer, iKey))
+                    continue;
+
+                SetKeyPressed(outputControl, iKey);
+            } else {
+                //Ignore input for cpu controlled players
+                if (IsCPUInput(iGameState, iPlayer, iKey))
+                    continue;
+
+                //Mouse scroll wheel up/down events happen on same frame so ignore up event (and clear it in the ClearPressedKeys() method)
+                if (inputControl->keys[iKey] == MOUSE_BUTTON_START + 4 || inputControl->keys[iKey] == MOUSE_BUTTON_START + 5)
+                    continue;
+
+                outputControl->keys[iKey].fDown = false;
+            }
+        }
+    }
+}
+
+void CPlayerInput::MouseButtonDownHandler(SDL_Event& event, short iGameState, short iPlayer, CInputControl* inputControl, COutputControl* outputControl, bool& fFound)
+{
+    for (int iKey = 0; iKey < NUM_KEYS && !fFound; iKey++) {
+        if (inputControl->keys[iKey] == event.button.button + MOUSE_BUTTON_START) {
+            fFound = true;
+
+            //Ignore input for cpu controlled players
+            if (IsCPUInput(iGameState, iPlayer, iKey))
+                continue;
+
+            SetKeyPressed(outputControl, iKey);
+        }
+    }
+}
+
+void CPlayerInput::MouseButtonUpHandler(SDL_Event& event, short iGameState, short iPlayer, CInputControl* inputControl, COutputControl* outputControl, bool& fFound)
+{
+    for (int iKey = 0; iKey < NUM_KEYS && !fFound; iKey++) {
+        if (inputControl->keys[iKey] == event.button.button + MOUSE_BUTTON_START) {
+            fFound = true;
+
+            //Mouse scroll wheel up/down events happen on same frame so ignore up event (and clear it in the ClearPressedKeys() method)
+            if (inputControl->keys[iKey] == MOUSE_BUTTON_START + 4 || inputControl->keys[iKey] == MOUSE_BUTTON_START + 5)
+                continue;
+
+            //Ignore input for cpu controlled players
+            if (IsCPUInput(iGameState, iPlayer, iKey))
+                continue;
+
+            outputControl->keys[iKey].fDown = false;
+        }
+    }
 }
