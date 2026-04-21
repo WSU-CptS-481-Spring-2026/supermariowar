@@ -468,26 +468,11 @@ WorldMap::WorldMap(const std::string& path, short tilesize)
 
             iReadType = iNumStages == 0 ? 12 : 11;
         } else if (iReadType == 11) { //stage details
-            TourStop* ts = new TourStop();
-            char* buffer = new char[line.size() + 1];
-            std::copy(line.begin(), line.end(), buffer);
-            buffer[line.size()] = '\0';
-            *ts = ParseTourStopLine(buffer, version, true);
-            delete[] buffer;
 
-            game_values.tourstops.push_back(ts);
+            if (!StageDetailsHelper(line, version, iCurrentStage))
+                goto RETURN;
 
             if (++iCurrentStage >= iNumStages) {
-                //Scan stage IDs and make sure we have a stage for each one
-                short iMaxStage = game_values.tourstops.size() + 5;
-                for (short iRow = 0; iRow < iHeight; iRow++) {
-                    for (short iCol = 0; iCol < iWidth; iCol++) {
-                        short iType = tiles.at(iCol, iRow).iType;
-                        if (iType < 0 || iType > iMaxStage)
-                            goto RETURN;
-                    }
-                }
-
                 iReadType = 12;
             }
         } else if (iReadType == 12) { //number of warps
@@ -734,6 +719,32 @@ bool WorldMap::VehicleBoundaryHelper(const std::string& line, short iMapTileRead
     return TokenTileHelper(line, iMapTileReadRow, [](WorldMapTile& tile, short, short, std::list<std::string_view>& tokens) {
         tile.iVehicleBoundary = popNextInt(tokens);
     });
+}
+
+bool WorldMap::StageDetailsHelper(const std::string& line, Version& version, short iCurrentStage)
+{
+    TourStop* ts = new TourStop();
+    char* buffer = new char[line.size() + 1];
+    std::copy(line.begin(), line.end(), buffer);
+    buffer[line.size()] = '\0';
+    *ts = ParseTourStopLine(buffer, version, true);
+    delete[] buffer;
+
+    game_values.tourstops.push_back(ts);
+
+    if (++iCurrentStage >= iNumStages) {
+        //Scan stage IDs and make sure we have a stage for each one
+        short iMaxStage = game_values.tourstops.size() + 5;
+        for (short iRow = 0; iRow < iHeight; iRow++) {
+            for (short iCol = 0; iCol < iWidth; iCol++) {
+                short iType = tiles.at(iCol, iRow).iType;
+                if (iType < 0 || iType > iMaxStage)
+                    return false;
+            }
+        }
+    }
+
+    return true;
 }
 
 void WorldMap::SetTileConnections(short iCol, short iRow)
