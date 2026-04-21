@@ -1448,7 +1448,7 @@ short WorldMap::GetNextInterestingMove(short iCol, short iRow) const
     const WorldMapTile& currentTile = tiles.at(iCol, iRow);
 
     //Look for stages or vehicles, but not bonus houses
-    if ((currentTile.iType >= 6 && currentTile.iCompleted == -2) || NumVehiclesInTile({iCol, iRow}) > 0)
+    if (IsInterestingTile(currentTile))
         return 4; //Signal to press select on this tile
 
     short iCurrentId = currentTile.iID;
@@ -1467,32 +1467,21 @@ short WorldMap::GetNextInterestingMove(short iCol, short iRow) const
         next.pop();
 
         //Look for stages or vehicles, but not bonus houses
-        if ((tile->iType >= 6 && tile->iCompleted == -2) || NumVehiclesInTile({tile->iCol, tile->iRow}) > 0) {
+        if (IsInterestingTile(*tile)) {
             short iBackTileDirection = visitedTiles[tile->iID];
             short iBackTileId = tile->iID;
 
             while (true) {
-                if (iBackTileDirection == 0)
-                    iBackTileId -= iWidth;
-                else if (iBackTileDirection == 1)
-                    iBackTileId += iWidth;
-                else if (iBackTileDirection == 2)
-                    iBackTileId -= 1;
-                else if (iBackTileDirection == 3)
-                    iBackTileId += 1;
-                else if (iBackTileDirection == 4) {
-                    const Vec2s target(iBackTileId % iWidth, iBackTileId / iWidth);
-                    const Vec2s pos = warps[tiles.at(iCol, iRow).iWarp].getOtherSide(target);
-                    iBackTileId = tiles.at(pos.x, pos.y).iID;
-                }
+                iBackTileId = PreviousTileId(iBackTileId, iBackTileDirection, iCol, iRow);
 
                 if (iBackTileId == iCurrentId) {
                     if (iBackTileDirection == 0 || iBackTileDirection == 1)
                         return 1 - iBackTileDirection;
-                    else if (iBackTileDirection == 2 || iBackTileDirection == 3)
+
+                    if (iBackTileDirection == 2 || iBackTileDirection == 3)
                         return 5 - iBackTileDirection;
-                    else
-                        return iBackTileDirection;
+
+                    return iBackTileDirection;
                 }
 
                 iBackTileDirection = visitedTiles[iBackTileId];
@@ -1505,46 +1494,37 @@ short WorldMap::GetNextInterestingMove(short iCol, short iRow) const
                     const WorldMapTile& topTile = tiles.at(tile->iCol, tile->iRow - 1);
 
                     //Stop at door tiles
-                    if (topTile.iType >= 2 && topTile.iType <= 5)
+                    if (IsDoorTile(topTile))
                         continue;
 
-                    if (visitedTiles.find(topTile.iID) == visitedTiles.end()) {
-                        visitedTiles[topTile.iID] = 1;
-                        next.push(&topTile);
-                    }
+                    AttemptVisitTile(topTile, 1, visitedTiles, next);
+
                 } else if (iNeighbor == 1 && tile->iRow < iHeight - 1) {
                     const WorldMapTile& bottomTile = tiles.at(tile->iCol, tile->iRow + 1);
 
                     //Stop at door tiles
-                    if (bottomTile.iType >= 2 && bottomTile.iType <= 5)
+                    if (IsDoorTile(bottomTile))
                         continue;
 
-                    if (visitedTiles.find(bottomTile.iID) == visitedTiles.end()) {
-                        visitedTiles[bottomTile.iID] = 0;
-                        next.push(&bottomTile);
-                    }
+                    AttemptVisitTile(bottomTile, 0, visitedTiles, next);
+
                 } else if (iNeighbor == 2 && tile->iCol > 0) {
                     const WorldMapTile& leftTile = tiles.at(tile->iCol - 1, tile->iRow);
 
                     //Stop at door tiles
-                    if (leftTile.iType >= 2 && leftTile.iType <= 5)
+                    if (IsDoorTile(leftTile))
                         continue;
 
-                    if (visitedTiles.find(leftTile.iID) == visitedTiles.end()) {
-                        visitedTiles[leftTile.iID] = 3;
-                        next.push(&leftTile);
-                    }
+                    AttemptVisitTile(leftTile, 3, visitedTiles, next);
+
                 } else if (iNeighbor == 3 && tile->iCol < iWidth - 1) {
                     const WorldMapTile& rightTile = tiles.at(tile->iCol + 1, tile->iRow);
 
                     //Stop at door tiles
-                    if (rightTile.iType >= 2 && rightTile.iType <= 5)
+                    if (IsDoorTile(rightTile))
                         continue;
 
-                    if (visitedTiles.find(rightTile.iID) == visitedTiles.end()) {
-                        visitedTiles[rightTile.iID] = 2;
-                        next.push(&rightTile);
-                    }
+                    AttemptVisitTile(rightTile, 2, visitedTiles, next);
                 }
             }
 
@@ -1553,18 +1533,56 @@ short WorldMap::GetNextInterestingMove(short iCol, short iRow) const
                 const WorldMapTile& warpTile = tiles.at(pos.x, pos.y);
 
                 //Stop at door tiles
-                if (warpTile.iType >= 2 && warpTile.iType <= 5)
+                if (IsDoorTile(warpTile))
                     continue;
 
-                if (visitedTiles.find(warpTile.iID) == visitedTiles.end()) {
-                    visitedTiles[warpTile.iID] = 4;
-                    next.push(&warpTile);
-                }
+                AttemptVisitTile(warpTile, 4, visitedTiles, next);
             }
         }
     }
 
     return -1;
+}
+
+bool WorldMap::IsInterestingTile(const WorldMapTile& tile) const
+{
+    return (tile.iType >= 6 && tile.iCompleted == -2) || NumVehiclesInTile({tile.iCol, tile.iRow}) > 0;
+}
+
+short WorldMap::PreviousTileId(short iBackTileId, short iBackTileDirection, short iCol, short iRow) const
+{
+    if (iBackTileDirection == 0)
+        return iBackTileId -= iWidth;
+
+    if (iBackTileDirection == 1)
+        return iBackTileId += iWidth;
+
+    if (iBackTileDirection == 2)
+        return iBackTileId -= 1;
+
+    if (iBackTileDirection == 3)
+        return iBackTileId += 1;
+
+    if (iBackTileDirection == 4) {
+        const Vec2s target(iBackTileId % iWidth, iBackTileId / iWidth);
+        const Vec2s pos = warps[tiles.at(iCol, iRow).iWarp].getOtherSide(target);
+        return tiles.at(pos.x, pos.y).iID;
+    }
+
+    return iBackTileId;
+}
+
+bool WorldMap::IsDoorTile(const WorldMapTile& tile)
+{
+    return tile.iType >= 2 && tile.iType <= 5;
+}
+
+void WorldMap::AttemptVisitTile(const WorldMapTile& tile, short direction, std::map<short, short>& visitedTiles, std::queue<const WorldMapTile*>& next)
+{
+    if (visitedTiles.find(tile.iID) == visitedTiles.end()) {
+        visitedTiles[tile.iID] = direction;
+        next.push(&tile);
+    }
 }
 
 void WorldMap::SetInitialPowerups()

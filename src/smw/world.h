@@ -9,6 +9,8 @@
 
 #include <functional>
 #include <list>
+#include <map>
+#include <queue>
 #include <string>
 #include <vector>
 
@@ -221,6 +223,10 @@ public:
     short UseKey(short iKeytype, short iCol, short iRow, bool fCloud);
 
     short GetNextInterestingMove(short iCol, short iRow) const;
+    bool IsInterestingTile(const WorldMapTile& tile) const;
+    short PreviousTileId(short iBackTileId, short iBackTileDirection, short iCol, short iRow) const;
+    static void AttemptVisitTile(const WorldMapTile& tile, short direction, std::map<short, short>& visitedTiles, std::queue<const WorldMapTile*>& next) ;
+    static bool IsDoorTile(const WorldMapTile& tile) ;
 
     void SetInitialPowerups();
 
