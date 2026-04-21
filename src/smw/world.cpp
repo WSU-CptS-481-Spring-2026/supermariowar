@@ -502,30 +502,8 @@ WorldMap::WorldMap(const std::string& path, short tilesize)
 
             iReadType = iNumVehicles == 0 ? 16 : 15;
         } else if (iReadType == 15) { //vehicles
-            std::list<std::string_view> tokens = tokenize(line, ',');
 
-            short iSprite = popNextInt(tokens);
-
-            short iStage = popNextInt(tokens);
-            if (iStage > iNumStages)
-                iStage = 0;
-
-            short iCol = popNextInt(tokens);
-            short iRow = popNextInt(tokens);
-
-            short iMinMoves = std::max(0, popNextInt(tokens));
-            short iMaxMoves = std::max<short>(iMinMoves, popNextInt(tokens));
-
-            bool fSpritePaces = popNextInt(tokens) == 1;
-
-            short iInitialDirection = popNextInt(tokens);
-            if (iInitialDirection != 0)
-                iInitialDirection = 1;
-
-            short iBoundary = popNextInt(tokens);
-
-            vehicles.emplace_back(WorldVehicle());
-            vehicles.back().Init(iCol, iRow, iStage, iSprite, iMinMoves, iMaxMoves, fSpritePaces, iInitialDirection, iBoundary, iTileSize);
+            VehiclesHelper(line);
 
             if (vehicles.size() >= iNumVehicles)
                 iReadType = 16;
@@ -751,6 +729,34 @@ void WorldMap::WarpDetailHelper(const std::string& line)
 
     tiles.at(iCol1, iRow1).iWarp = warpId;
     tiles.at(iCol2, iRow2).iWarp = warpId;
+}
+
+void WorldMap::VehiclesHelper(const std::string& line)
+{
+    std::list<std::string_view> tokens = tokenize(line, ',');
+
+    short iSprite = popNextInt(tokens);
+
+    short iStage = popNextInt(tokens);
+    if (iStage > iNumStages)
+        iStage = 0;
+
+    short iCol = popNextInt(tokens);
+    short iRow = popNextInt(tokens);
+
+    short iMinMoves = std::max(0, popNextInt(tokens));
+    short iMaxMoves = std::max<short>(iMinMoves, popNextInt(tokens));
+
+    bool fSpritePaces = popNextInt(tokens) == 1;
+
+    short iInitialDirection = popNextInt(tokens);
+    if (iInitialDirection != 0)
+        iInitialDirection = 1;
+
+    short iBoundary = popNextInt(tokens);
+
+    vehicles.emplace_back(WorldVehicle());
+    vehicles.back().Init(iCol, iRow, iStage, iSprite, iMinMoves, iMaxMoves, fSpritePaces, iInitialDirection, iBoundary, iTileSize);
 }
 
 void WorldMap::SetTileConnections(short iCol, short iRow)
