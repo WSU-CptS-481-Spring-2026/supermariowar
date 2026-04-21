@@ -78,15 +78,7 @@ void CResourceManager::LoadAllSprites() {
 
     LoadTileSetSprites(graphicspack);
 
-
-
-    gfx_loadimage(spr_scoretext, convertPath("gfx/packs/fonts/score.png", graphicspack), false);
-    gfx_loadimage(spr_racetext, convertPath("gfx/packs/fonts/race.png", graphicspack), false);
-
-
-
-
-
+    LoadFontSprites(graphicspack);
 }
 
 void CResourceManager::LoadMenuSprites(const std::string& graphicspack)
@@ -330,6 +322,12 @@ void CResourceManager::LoadTileSetSprites(const std::string& graphicspack)
     gfx_loadimage(spr_unknowntile[0], convertPath("gfx/packs/tilesets/unknown_tile.png", graphicspack), false);
     gfx_loadimage(spr_unknowntile[1], convertPath("gfx/packs/tilesets/unknown_tile_preview.png", graphicspack), false);
     gfx_loadimage(spr_unknowntile[2], convertPath("gfx/packs/tilesets/unknown_tile_thumbnail.png", graphicspack), false);
+}
+
+void CResourceManager::LoadFontSprites(const std::string& graphicspack)
+{
+    gfx_loadimage(spr_scoretext, convertPath("gfx/packs/fonts/score.png", graphicspack), false);
+    gfx_loadimage(spr_racetext, convertPath("gfx/packs/fonts/race.png", graphicspack), false);
 }
 
 bool CResourceManager::LoadMenuGraphics()
