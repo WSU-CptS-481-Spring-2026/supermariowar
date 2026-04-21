@@ -160,6 +160,7 @@ public:
     bool StageTypeHelper(const std::string& line, short iMapTileReadRow);
     bool VehicleBoundaryHelper(const std::string& line, short iMapTileReadRow);
     bool StageDetailsHelper(const std::string& line, Version& version, short iCurrentStage);
+    void WarpDetailHelper(const std::string& line);
 
     WorldMap(const WorldMap&) = delete;
     WorldMap& operator=(const WorldMap&) = delete;

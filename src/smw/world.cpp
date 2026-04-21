@@ -486,18 +486,8 @@ WorldMap::WorldMap(const std::string& path, short tilesize)
 
             iReadType = iNumWarps == 0 ? 14 : 13;
         } else if (iReadType == 13) { //warp details
-            std::list<std::string_view> tokens = tokenize(line, ',');
 
-            short iCol1 = std::max(0, popNextInt(tokens));
-            short iRow1 = std::max(0, popNextInt(tokens));
-            short iCol2 = std::max(0, popNextInt(tokens));
-            short iRow2 = std::max(0, popNextInt(tokens));
-
-            short warpId = warps.size();
-            warps.emplace_back(WorldWarp(warpId, {iCol1, iRow1}, {iCol2, iRow2}));
-
-            tiles.at(iCol1, iRow1).iWarp = warpId;
-            tiles.at(iCol2, iRow2).iWarp = warpId;
+            WarpDetailHelper(line);
 
             if (warps.size() >= iNumWarps)
                 iReadType = 14;
@@ -745,6 +735,22 @@ bool WorldMap::StageDetailsHelper(const std::string& line, Version& version, sho
     }
 
     return true;
+}
+
+void WorldMap::WarpDetailHelper(const std::string& line)
+{
+    std::list<std::string_view> tokens = tokenize(line, ',');
+
+    short iCol1 = std::max(0, popNextInt(tokens));
+    short iRow1 = std::max(0, popNextInt(tokens));
+    short iCol2 = std::max(0, popNextInt(tokens));
+    short iRow2 = std::max(0, popNextInt(tokens));
+
+    short warpId = warps.size();
+    warps.emplace_back(WorldWarp(warpId, {iCol1, iRow1}, {iCol2, iRow2}));
+
+    tiles.at(iCol1, iRow1).iWarp = warpId;
+    tiles.at(iCol2, iRow2).iWarp = warpId;
 }
 
 void WorldMap::SetTileConnections(short iCol, short iRow)
