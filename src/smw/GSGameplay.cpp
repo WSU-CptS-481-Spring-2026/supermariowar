@@ -280,40 +280,48 @@ short GetModeIconIndexFromMode(short iMode)
     return iMode;
 }
 
+//Helper Function
+namespace {
+bool shouldCreatePlayer(short iPlayer)
+{
+    return (game_values.singleplayermode == -1 || game_values.singleplayermode == iPlayer) &&
+           game_values.playercontrol[iPlayer] > 0;
+}
+
+CPlayerAI* createPlayerAI(short iPlayer)
+{
+    if (game_values.playercontrol[iPlayer] == 2)
+        return new CPlayerAI();
+
+    return nullptr;
+}
+}
+
 //
 // INIT
 //
 void GameplayState::createPlayers()
 {
-    //Create players for this game
+    // Create players for this game
     for (short iPlayer = 0; iPlayer < 4; iPlayer++) {
         respawnCount[iPlayer] = 0;
 
-        if (game_values.singleplayermode == -1 || game_values.singleplayermode == iPlayer) {
-            if (game_values.playercontrol[iPlayer] > 0) {
-                short teamid, subteamid;
-                LookupTeamID(iPlayer, &teamid, &subteamid);
+        if (!shouldCreatePlayer(iPlayer))
+            continue;
 
-                CPlayerAI * ai = NULL;
-                if (game_values.playercontrol[iPlayer] == 2)
-                    ai = new CPlayerAI();
+        short teamid, subteamid;
+        LookupTeamID(iPlayer, &teamid, &subteamid);
 
-                players.emplace_back(new CPlayer(iPlayer, players.size(), teamid, subteamid, game_values.colorids[iPlayer], rm->spr_player[iPlayer], score[teamid], &(respawnCount[iPlayer]), ai));
-            } else if (!game_values.keeppowerup) {
-                //Reset off player's stored powerups if they are not playing
-                game_values.storedpowerups[iPlayer] = -1;
-            }
-        }
-
-        //If the gamemode allows stored powerups, then assign the game stored slot to the powerup this player has
-        if (game_values.gamemode->HasStoredPowerups())
-            game_values.gamepowerups[iPlayer] = game_values.storedpowerups[iPlayer];
-        else {
-            game_values.gamepowerups[iPlayer] = -1;
-        }
-
-        game_values.bulletbilltimer[iPlayer] = 0;
-        game_values.bulletbillspawntimer[iPlayer] = 0;
+        players.emplace_back(new CPlayer(
+            iPlayer,
+            players.size(),
+            teamid,
+            subteamid,
+            game_values.colorids[iPlayer],
+            rm->spr_player[iPlayer],
+            score[teamid],
+            &(respawnCount[iPlayer]),
+            createPlayerAI(iPlayer)));
     }
 }
 
@@ -454,12 +462,25 @@ void GameplayState::initEyeCandy()
     }
 }
 
+//Helper Functions
+void initializeWind(short& iWindTimer, float& dNextWind)
+{
+    iWindTimer = 0;
+    dNextWind = static_cast<float>(RANDOM_INT(41) - 20) / 4.0f;
+    game_values.flags.gamewindx = static_cast<float>(RANDOM_INT(41) - 20) / 4.0f;
+}
+
+void initializePlayers()
+{
+    for (CPlayer* player : players)
+        player->Init();
+}
+
 void GameplayState::initRunGame()
 {
     y_shake = 0;
     x_shake = 0;
 
-    //Reset the screen spin variables
     spinangle = 0.0f;
     spinspeed = 0.0f;
     spindirection = 1;
@@ -467,34 +488,29 @@ void GameplayState::initRunGame()
 
     game_values.resetSecretCounters();
 
-    //Reset the keys each time we switch from menu to game and back
+    // Reset the keys each time we switch from menu to game and back
     game_values.playerInput.ResetKeys();
-
 
     createPlayers();
     game_values.resetGameplaySettings();
     initScoreDisplayPosition();
     initEyeCandy();
 
+    initializeWind(iWindTimer, dNextWind);
 
-    iWindTimer = 0;
-    dNextWind = (float)(RANDOM_INT(41) - 20) / 4.0f;
-    game_values.flags.gamewindx = (float)((RANDOM_INT(41)) - 20) / 4.0f;
-
-    //Initialize players after game init has finished
-    for (CPlayer* player : players)
-        player->Init();
+    // Initialize players after game init has finished
+    initializePlayers();
 }
 
 //
 // RUNNING
 //
 
-short CountAliveTeams(short * lastteam)
+short CountAliveTeams(short* lastteam)
 {
     short findlastteam = 0;
-
     bool teamalive[4] = {false, false, false, false};
+
     for (CPlayer* player : players) {
         if (!player->isdead())
             teamalive[player->teamID] = true;
@@ -502,18 +518,15 @@ short CountAliveTeams(short * lastteam)
 
     short numteams = 0;
     for (short k = 0; k < 4; k++) {
-        if (teamalive[k]) {
-            findlastteam = k;
-            numteams++;
-        }
+        if (!teamalive[k])
+            continue;
+
+        findlastteam = k;
+        numteams++;
     }
 
-    if (lastteam != NULL) {
-        if (numteams == 1)
-            *lastteam = findlastteam;
-        else
-            *lastteam = -1;
-    }
+    if (lastteam != nullptr)
+        *lastteam = (numteams == 1) ? findlastteam : -1;
 
     return numteams;
 }
@@ -563,25 +576,41 @@ void GameplayState::CleanDeadPlayers()
     }
 }
 
+namespace {
+constexpr float WIND_STEP = 0.02f;
+
+short nextWindDelay()
+{
+    return RANDOM_INT(60) + 30;
+}
+
+float randomWindTarget()
+{
+    return static_cast<float>(RANDOM_INT(41) - 20) / 4.0f;
+}
+}
+
 void checkWindEvent(short& iWindTimer, float& dNextWind)
 {
-    if (iWindTimer <= 0) {
-        //Then trigger next wind event
-        if (game_values.flags.gamewindx < dNextWind) {
-            game_values.flags.gamewindx += 0.02f;
+    if (iWindTimer > 0) {
+        if (--iWindTimer <= 0)
+            dNextWind = randomWindTarget();
 
-            if (game_values.flags.gamewindx >= dNextWind)
-                iWindTimer = (RANDOM_INT(60)) + 30;
-        } else if (game_values.flags.gamewindx >= dNextWind) {
-            game_values.flags.gamewindx -= 0.02f;
+        return;
+    }
 
-            if (game_values.flags.gamewindx <= dNextWind)
-                iWindTimer = (RANDOM_INT(60)) + 30;
-        }
-    } else {
-        if (--iWindTimer <= 0) {
-            dNextWind = (float)((RANDOM_INT(41)) - 20) / 4.0f;
-        }
+    if (game_values.flags.gamewindx < dNextWind) {
+        game_values.flags.gamewindx += WIND_STEP;
+        if (game_values.flags.gamewindx >= dNextWind)
+            iWindTimer = nextWindDelay();
+
+        return;
+    }
+
+    if (game_values.flags.gamewindx >= dNextWind) {
+        game_values.flags.gamewindx -= WIND_STEP;
+        if (game_values.flags.gamewindx <= dNextWind)
+            iWindTimer = nextWindDelay();
     }
 }
 
