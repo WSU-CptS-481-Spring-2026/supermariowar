@@ -63,6 +63,9 @@
 #include <cassert>
 #include <sstream>
 
+namespace {
+constexpr int TOURNAMENT_AI_DELAY = 60;
+}
 
 bool LoadStartGraphics();
 
@@ -115,6 +118,8 @@ extern short currentgamemode;
 // to the complete types.
 MenuState::MenuState() = default;
 MenuState::~MenuState() = default;
+
+
 
 MenuState& MenuState::instance()
 {
@@ -475,32 +480,41 @@ void MenuState::update()
         if (--iTournamentAITimer == 0) {
             iTournamentAIStep++;
 
-            if (iTournamentAIStep == 1) {
+            switch (iTournamentAIStep) {
+            case 1:
                 mGameSettingsMenu->miMapField->ChooseRandomMap();
+                iTournamentAITimer = TOURNAMENT_AI_DELAY;
+                break;
 
-                iTournamentAITimer = 60;
-            } else if (iTournamentAIStep == 2) {
+            case 2:
                 currentgamemode = RANDOM_INT(GAMEMODE_LAST);
                 game_values.gamemode = gamemodes[currentgamemode];
                 mGameSettingsMenu->GameModeChanged(currentgamemode);
                 game_values.gamemode = gamemodes[mGameSettingsMenu->GetCurrentGameModeID()];
+                iTournamentAITimer = TOURNAMENT_AI_DELAY;
+                break;
 
-                iTournamentAITimer = 60;
-            } else if (iTournamentAIStep == 3) {
-                SModeOption * options = game_values.gamemode->GetOptions();
+            case 3: {
+                SModeOption* options = game_values.gamemode->GetOptions();
 
-                //Choose a goal from the lower values for a quicker game
-                short iRandOption = (RANDOM_INT(6)) + 1;
-                game_values.gamemode->goal  = options[iRandOption].iValue;
+                // Choose a goal from the lower values for a quicker game
+                short iRandOption = RANDOM_INT(6) + 1;
+                game_values.gamemode->goal = options[iRandOption].iValue;
 
                 mGameSettingsMenu->miGoalField[currentgamemode]->setCurrentValue(gamemodes[currentgamemode]->goal);
-
                 mModeOptionsMenu->SetRandomGameModeSettings(game_values.gamemode->gamemode);
 
-                iTournamentAITimer = 60;
-            } else if (iTournamentAIStep == 4) {
+                iTournamentAITimer = TOURNAMENT_AI_DELAY;
+                break;
+            }
+
+            case 4:
                 iTournamentAIStep = 0;
                 StartGame();
+                break;
+
+            default:
+                break;
             }
         }
     }
@@ -1646,7 +1660,7 @@ void MenuState::SetControllingTeamForSettingsMenu(short iControlTeam, bool fDisp
         }
 
         if (fNeedAI) {
-            iTournamentAITimer = 60;
+            iTournamentAITimer = TOURNAMENT_AI_DELAY;
             mGameSettingsMenu->SetAllowExit(true);
         }
     }
