@@ -372,24 +372,11 @@ WorldMap::WorldMap(const std::string& path, short tilesize)
 {
     ResetDrawCycle();
 
-    iTileSize = tilesize;
-
-    if (iTileSize == TILESIZE) {
-        iTileSizeShift = 5;
-        iTileSheet = 0;
-    } else if (iTileSize == PREVIEWTILESIZE) {
-        iTileSizeShift = 4;
-        iTileSheet = 1;
-    } else if (iTileSize == THUMBTILESIZE) {
-        iTileSizeShift = 3;
-        iTileSheet = 2;
-    }
+    ConfigureTileSize(tilesize); //configures the tile size
 
     worldName = stripPathAndExtension(path);
 
-    std::ifstream file(path);
-    if (!file)
-        throw std::runtime_error("Could not open the world file");
+    std::ifstream file = OpenWorldFile(path); //opens the world file
 
     std::string line;
     short iReadType = 0;
@@ -400,18 +387,11 @@ WorldMap::WorldMap(const std::string& path, short tilesize)
     short iNumVehicles = 0;
 
     while (std::getline(file, line)) {
-        if (line.empty())
-            continue;
-
-        if (line[0] == '#' || line[0] == '\r' || line[0] == ' ' || line[0] == '\t')
+        if (TrashLine(line)) //determines if we need to skip (trash) the current line
             continue;
 
         if (iReadType == 0) { //Read version number
-            std::list<std::string_view> tokens = tokenize(line, '.');
-            version.major = popNextInt(tokens);
-            version.minor = popNextInt(tokens);
-            version.patch = popNextInt(tokens);
-            version.build = popNextInt(tokens);
+            GetVersion(line, version);
             iReadType = 1;
         } else if (iReadType == 1) { //music category
             iMusicCategory = static_cast<WorldMusicCategory>(std::stoi(line));  // FIXME
@@ -420,89 +400,39 @@ WorldMap::WorldMap(const std::string& path, short tilesize)
             iWidth = std::stoi(line);
             iReadType = 3;
         } else if (iReadType == 3) { //world height
-            iHeight = std::stoi(line);
+            GetWorldHeight(line);
             iReadType = 4;
-
-            tiles = decltype(tiles)(iWidth, iHeight);
-
-            short iDrawSurfaceTiles = iWidth * iHeight;
-
-            if (iDrawSurfaceTiles > 456)
-                iDrawSurfaceTiles = 456; //19 * 24 = 456 max tiles in world surface
-
-            iTilesPerCycle = iDrawSurfaceTiles / 8;
         } else if (iReadType == 4) { //background water
-            std::list<std::string_view> tokens = tokenize(line, ',');
-            if (tokens.size() < iWidth)
-                goto RETURN;
 
-            for (short iMapTileReadCol = 0; iMapTileReadCol < iWidth; iMapTileReadCol++) {
-                WorldMapTile& tile = tiles.at(iMapTileReadCol, iMapTileReadRow);
-                tile.iBackgroundWater = popNextInt(tokens);
-            }
+            if (!BackgroundWaterHelper(line, iMapTileReadRow))
+                goto RETURN;
 
             if (++iMapTileReadRow == iHeight) {
                 iReadType = 5;
                 iMapTileReadRow = 0;
             }
         } else if (iReadType == 5) { //background sprites
-            std::list<std::string_view> tokens = tokenize(line, ',');
-            if (tokens.size() < iWidth)
+
+            if (!BackgroundSpritesHelper(line, iMapTileReadRow))
                 goto RETURN;
-
-            for (short iMapTileReadCol = 0; iMapTileReadCol < iWidth; iMapTileReadCol++) {
-                WorldMapTile& tile = tiles.at(iMapTileReadCol, iMapTileReadRow);
-                tile.iBackgroundSprite = popNextInt(tokens);
-                tile.fAnimated = (tile.iBackgroundSprite % WORLD_BACKGROUND_SPRITE_SET_SIZE) != 1;
-
-                tile.iID = iMapTileReadRow * iWidth + iMapTileReadCol;
-                tile.iCol = iMapTileReadCol;
-                tile.iRow = iMapTileReadRow;
-            }
 
             if (++iMapTileReadRow == iHeight) {
                 iReadType = 6;
                 iMapTileReadRow = 0;
             }
         } else if (iReadType == 6) { //foreground sprites
-            std::list<std::string_view> tokens = tokenize(line, ',');
-            if (tokens.size() < iWidth)
+
+            if (!ForegroundSpritesHelper(line, iMapTileReadRow))
                 goto RETURN;
-
-            for (short iMapTileReadCol = 0; iMapTileReadCol < iWidth; iMapTileReadCol++) {
-                WorldMapTile& tile = tiles.at(iMapTileReadCol, iMapTileReadRow);
-                tile.iForegroundSprite = popNextInt(tokens);
-
-                short iForegroundSprite = tile.iForegroundSprite;
-
-                //Animated parts of paths
-                if (!tile.fAnimated && iForegroundSprite >= 0 && iForegroundSprite <= 8 * WORLD_PATH_SPRITE_SET_SIZE) {
-                    short iForeground = iForegroundSprite % WORLD_PATH_SPRITE_SET_SIZE;
-                    tile.fAnimated = iForeground >= 3 && iForeground <= 10;
-                }
-
-                //Animated 1-100 stages
-                if (!tile.fAnimated)
-                    tile.fAnimated = iForegroundSprite >= WORLD_FOREGROUND_STAGE_OFFSET && iForegroundSprite <= WORLD_FOREGROUND_STAGE_OFFSET + 399;
-
-                //Animated foreground tiles
-                if (!tile.fAnimated)
-                    tile.fAnimated = iForegroundSprite >= WORLD_FOREGROUND_SPRITE_ANIMATED_OFFSET && iForegroundSprite <= WORLD_FOREGROUND_SPRITE_ANIMATED_OFFSET + 29;
-            }
 
             if (++iMapTileReadRow == iHeight) {
                 iReadType = 7;
                 iMapTileReadRow = 0;
             }
         } else if (iReadType == 7) { //path connections
-            std::list<std::string_view> tokens = tokenize(line, ',');
-            if (tokens.size() < iWidth)
-                goto RETURN;
 
-            for (short iMapTileReadCol = 0; iMapTileReadCol < iWidth; iMapTileReadCol++) {
-                WorldMapTile& tile = tiles.at(iMapTileReadCol, iMapTileReadRow);
-                tile.iConnectionType = popNextInt(tokens);
-            }
+            if (!PathConnectionsHelper(line, iMapTileReadRow))
+                goto RETURN;
 
             if (++iMapTileReadRow == iHeight) {
                 iReadType = 8;
@@ -519,37 +449,18 @@ WorldMap::WorldMap(const std::string& path, short tilesize)
                 }
             }
         } else if (iReadType == 8) { //stages
-            std::list<std::string_view> tokens = tokenize(line, ',');
-            if (tokens.size() < iWidth)
+
+            if (!StageTypeHelper(line, iMapTileReadRow))
                 goto RETURN;
-
-            for (short iMapTileReadCol = 0; iMapTileReadCol < iWidth; iMapTileReadCol++) {
-                WorldMapTile& tile = tiles.at(iMapTileReadCol, iMapTileReadRow);
-                tile.iType = popNextInt(tokens);
-                tile.iWarp = -1;
-
-                if (tile.iType == 1) {
-                    iStartX = iMapTileReadCol;
-                    iStartY = iMapTileReadRow;
-                    player.SetPosition(iStartX, iStartY);
-                }
-
-                tile.iCompleted = tile.iType <= 5 ? -1 : -2;
-            }
 
             if (++iMapTileReadRow == iHeight) {
                 iReadType = 9;
                 iMapTileReadRow = 0;
             }
         } else if (iReadType == 9) { //vehicle boundaries
-            std::list<std::string_view> tokens = tokenize(line, ',');
-            if (tokens.size() < iWidth)
-                goto RETURN;
 
-            for (short iMapTileReadCol = 0; iMapTileReadCol < iWidth; iMapTileReadCol++) {
-                WorldMapTile& tile = tiles.at(iMapTileReadCol, iMapTileReadRow);
-                tile.iVehicleBoundary = popNextInt(tokens);
-            }
+            if (!VehicleBoundaryHelper(line, iMapTileReadRow))
+                goto RETURN;
 
             if (++iMapTileReadRow == iHeight)
                 iReadType = 10;
@@ -558,26 +469,11 @@ WorldMap::WorldMap(const std::string& path, short tilesize)
 
             iReadType = iNumStages == 0 ? 12 : 11;
         } else if (iReadType == 11) { //stage details
-            TourStop* ts = new TourStop();
-            char* buffer = new char[line.size() + 1];
-            std::copy(line.begin(), line.end(), buffer);
-            buffer[line.size()] = '\0';
-            *ts = ParseTourStopLine(buffer, version, true);
-            delete[] buffer;
 
-            game_values.tourstops.push_back(ts);
+            if (!StageDetailsHelper(line, version, iCurrentStage))
+                goto RETURN;
 
             if (++iCurrentStage >= iNumStages) {
-                //Scan stage IDs and make sure we have a stage for each one
-                short iMaxStage = game_values.tourstops.size() + 5;
-                for (short iRow = 0; iRow < iHeight; iRow++) {
-                    for (short iCol = 0; iCol < iWidth; iCol++) {
-                        short iType = tiles.at(iCol, iRow).iType;
-                        if (iType < 0 || iType > iMaxStage)
-                            goto RETURN;
-                    }
-                }
-
                 iReadType = 12;
             }
         } else if (iReadType == 12) { //number of warps
@@ -591,18 +487,8 @@ WorldMap::WorldMap(const std::string& path, short tilesize)
 
             iReadType = iNumWarps == 0 ? 14 : 13;
         } else if (iReadType == 13) { //warp details
-            std::list<std::string_view> tokens = tokenize(line, ',');
 
-            short iCol1 = std::max(0, popNextInt(tokens));
-            short iRow1 = std::max(0, popNextInt(tokens));
-            short iCol2 = std::max(0, popNextInt(tokens));
-            short iRow2 = std::max(0, popNextInt(tokens));
-
-            short warpId = warps.size();
-            warps.emplace_back(WorldWarp(warpId, {iCol1, iRow1}, {iCol2, iRow2}));
-
-            tiles.at(iCol1, iRow1).iWarp = warpId;
-            tiles.at(iCol2, iRow2).iWarp = warpId;
+            WarpDetailHelper(line);
 
             if (warps.size() >= iNumWarps)
                 iReadType = 14;
@@ -617,60 +503,14 @@ WorldMap::WorldMap(const std::string& path, short tilesize)
 
             iReadType = iNumVehicles == 0 ? 16 : 15;
         } else if (iReadType == 15) { //vehicles
-            std::list<std::string_view> tokens = tokenize(line, ',');
 
-            short iSprite = popNextInt(tokens);
-
-            short iStage = popNextInt(tokens);
-            if (iStage > iNumStages)
-                iStage = 0;
-
-            short iCol = popNextInt(tokens);
-            short iRow = popNextInt(tokens);
-
-            short iMinMoves = std::max(0, popNextInt(tokens));
-            short iMaxMoves = std::max<short>(iMinMoves, popNextInt(tokens));
-
-            bool fSpritePaces = popNextInt(tokens) == 1;
-
-            short iInitialDirection = popNextInt(tokens);
-            if (iInitialDirection != 0)
-                iInitialDirection = 1;
-
-            short iBoundary = popNextInt(tokens);
-
-            vehicles.emplace_back(WorldVehicle());
-            vehicles.back().Init(iCol, iRow, iStage, iSprite, iMinMoves, iMaxMoves, fSpritePaces, iInitialDirection, iBoundary, iTileSize);
+            VehiclesHelper(line);
 
             if (vehicles.size() >= iNumVehicles)
                 iReadType = 16;
         } else if (iReadType == 16) { //initial bonus items
-            std::list<std::string_view> tokens = tokenize(line, ',');
 
-            iNumInitialBonuses = 0;
-
-            while (!tokens.empty()) {
-                std::string_view token = popNext(tokens);
-                if (token.empty())
-                    break;
-
-                //0 indicates no initial bonuses
-                if (token[0] == '0')
-                    break;
-
-                short iBonusOffset = 0;
-                if (token[0] == 'w' || token[0] == 'W')
-                    iBonusOffset += NUM_POWERUPS;
-
-                short iBonus = toInt(token.substr(1)) + iBonusOffset;
-                if (iBonus < 0 || iBonus >= NUM_POWERUPS + NUM_WORLD_POWERUPS)
-                    iBonus = 0;
-
-                if (iNumInitialBonuses < 32)
-                    iInitialBonuses[iNumInitialBonuses++] = iBonus;
-                else
-                    iInitialBonuses[31] = iBonus;
-            }
+            InitialBonusItemsHelper(line);
 
             iReadType = 17;
         }
@@ -681,6 +521,249 @@ RETURN:
         throw std::runtime_error("Invalid world file");
 
     ResetTourStops();  // FIXME
+}
+
+void WorldMap::ConfigureTileSize(short tilesize) {
+    iTileSize = tilesize;
+
+    if (iTileSize == TILESIZE) {
+        iTileSizeShift = 5;
+        iTileSheet = 0;
+    } else if (iTileSize == PREVIEWTILESIZE) {
+        iTileSizeShift = 4;
+        iTileSheet = 1;
+    } else if (iTileSize == THUMBTILESIZE) {
+        iTileSizeShift = 3;
+        iTileSheet = 2;
+    }
+}
+
+std::ifstream WorldMap::OpenWorldFile(const std::string & path)
+{
+    std::ifstream file(path);
+    if (!file)
+        throw std::runtime_error("Could not open the world file");
+
+    return file;
+}
+
+bool WorldMap::TrashLine(const std::string& line)
+{
+    if (line.empty())
+        return true;
+    else {
+        const char grab = line[0];
+        return grab == '#' || grab == '\r' || grab == ' ' || grab == '\t';
+    }
+}
+
+void WorldMap::GetVersion(const std::string& line, Version& version) {
+    std::list<std::string_view> tokens = tokenize(line, '.');
+    version.major = popNextInt(tokens);
+    version.minor = popNextInt(tokens);
+    version.patch = popNextInt(tokens);
+    version.build = popNextInt(tokens);
+}
+
+void WorldMap::GetWorldHeight(const std::string& line)
+{
+    iHeight = std::stoi(line);
+
+    tiles = decltype(tiles)(iWidth, iHeight);
+
+    short iDrawSurfaceTiles = iWidth * iHeight;
+
+    if (iDrawSurfaceTiles > 456)
+        iDrawSurfaceTiles = 456; //19 * 24 = 456 max tiles in world surface
+
+    iTilesPerCycle = iDrawSurfaceTiles / 8;
+}
+
+bool WorldMap::TokenTileHelper(const std::string& line, short iMapTileReadRow, std::function<void(WorldMapTile&, short, short, std::list<std::string_view>&)> helper)
+{
+    std::list<std::string_view> tokens = tokenize(line, ',');
+
+    if (tokens.size() < iWidth)
+        return false;
+
+    for (short iMapTileReadCol = 0; iMapTileReadCol < iWidth; iMapTileReadCol++) {
+        WorldMapTile& tile = tiles.at(iMapTileReadCol, iMapTileReadRow);
+        helper(tile, iMapTileReadCol, iMapTileReadRow, tokens);
+    }
+
+    return true;
+}
+
+bool WorldMap::BackgroundWaterHelper(const std::string& line, short iMapTileReadRow)
+{
+    return TokenTileHelper(line, iMapTileReadRow, [](WorldMapTile& tile, short, short, std::list<std::string_view> &tokens) {
+        tile.iBackgroundWater = popNextInt(tokens);
+    });
+}
+
+bool WorldMap::BackgroundSpritesHelper(const std::string& line, short iMapTileReadRow)
+{
+    return TokenTileHelper(line, iMapTileReadRow, [&](WorldMapTile& tile, short col, short row, std::list<std::string_view>& tokens) {
+        tile.iBackgroundSprite = popNextInt(tokens);
+        tile.fAnimated = (tile.iBackgroundSprite % WORLD_BACKGROUND_SPRITE_SET_SIZE) != 1;
+
+        tile.iID = row * iWidth + tile.iCol;
+        tile.iCol = col;
+        tile.iRow = row;
+    });
+}
+
+bool WorldMap::ForegroundSpritesHelper(const std::string& line, short iMapTileReadRow)
+{
+    return TokenTileHelper(line, iMapTileReadRow, [](WorldMapTile& tile, short, short, std::list<std::string_view>& tokens) {
+        tile.iForegroundSprite = popNextInt(tokens);
+
+        short iForegroundSprite = tile.iForegroundSprite;
+
+        //Animated parts of paths
+        if (!tile.fAnimated && iForegroundSprite >= 0 && iForegroundSprite <= 8 * WORLD_PATH_SPRITE_SET_SIZE) {
+            short iForeground = iForegroundSprite % WORLD_PATH_SPRITE_SET_SIZE;
+            tile.fAnimated = iForeground >= 3 && iForeground <= 10;
+        }
+
+        //Animated 1-100 stages
+        if (!tile.fAnimated)
+            tile.fAnimated = iForegroundSprite >= WORLD_FOREGROUND_STAGE_OFFSET && iForegroundSprite <= WORLD_FOREGROUND_STAGE_OFFSET + 399;
+
+        //Animated foreground tiles
+        if (!tile.fAnimated)
+            tile.fAnimated = iForegroundSprite >= WORLD_FOREGROUND_SPRITE_ANIMATED_OFFSET && iForegroundSprite <= WORLD_FOREGROUND_SPRITE_ANIMATED_OFFSET + 29;
+    });
+}
+
+bool WorldMap::PathConnectionsHelper(const std::string& line, short iMapTileReadRow)
+{
+    return TokenTileHelper(line, iMapTileReadRow, [](WorldMapTile& tile, short, short, std::list<std::string_view>& tokens) {
+        tile.iConnectionType = popNextInt(tokens);
+    });
+}
+
+bool WorldMap::StageTypeHelper(const std::string& line, short iMapTileReadRow)
+{
+    return TokenTileHelper(line, iMapTileReadRow, [&](WorldMapTile& tile, short col, short row, std::list<std::string_view>& tokens) {
+        tile.iType = popNextInt(tokens);
+        tile.iWarp = -1;
+
+        if (tile.iType == 1) {
+            iStartX = col;
+            iStartY = row;
+            player.SetPosition(iStartX, iStartY);
+        }
+
+        tile.iCompleted = tile.iType <= 5 ? -1 : -2;
+    });
+}
+
+bool WorldMap::VehicleBoundaryHelper(const std::string& line, short iMapTileReadRow)
+{
+    return TokenTileHelper(line, iMapTileReadRow, [](WorldMapTile& tile, short, short, std::list<std::string_view>& tokens) {
+        tile.iVehicleBoundary = popNextInt(tokens);
+    });
+}
+
+bool WorldMap::StageDetailsHelper(const std::string& line, Version& version, short iCurrentStage)
+{
+    TourStop* ts = new TourStop();
+    char* buffer = new char[line.size() + 1];
+    std::copy(line.begin(), line.end(), buffer);
+    buffer[line.size()] = '\0';
+    *ts = ParseTourStopLine(buffer, version, true);
+    delete[] buffer;
+
+    game_values.tourstops.push_back(ts);
+
+    if (++iCurrentStage >= iNumStages) {
+        //Scan stage IDs and make sure we have a stage for each one
+        short iMaxStage = game_values.tourstops.size() + 5;
+        for (short iRow = 0; iRow < iHeight; iRow++) {
+            for (short iCol = 0; iCol < iWidth; iCol++) {
+                short iType = tiles.at(iCol, iRow).iType;
+                if (iType < 0 || iType > iMaxStage)
+                    return false;
+            }
+        }
+    }
+
+    return true;
+}
+
+void WorldMap::WarpDetailHelper(const std::string& line)
+{
+    std::list<std::string_view> tokens = tokenize(line, ',');
+
+    short iCol1 = std::max(0, popNextInt(tokens));
+    short iRow1 = std::max(0, popNextInt(tokens));
+    short iCol2 = std::max(0, popNextInt(tokens));
+    short iRow2 = std::max(0, popNextInt(tokens));
+
+    short warpId = warps.size();
+    warps.emplace_back(WorldWarp(warpId, {iCol1, iRow1}, {iCol2, iRow2}));
+
+    tiles.at(iCol1, iRow1).iWarp = warpId;
+    tiles.at(iCol2, iRow2).iWarp = warpId;
+}
+
+void WorldMap::VehiclesHelper(const std::string& line)
+{
+    std::list<std::string_view> tokens = tokenize(line, ',');
+
+    short iSprite = popNextInt(tokens);
+
+    short iStage = popNextInt(tokens);
+    if (iStage > iNumStages)
+        iStage = 0;
+
+    short iCol = popNextInt(tokens);
+    short iRow = popNextInt(tokens);
+
+    short iMinMoves = std::max(0, popNextInt(tokens));
+    short iMaxMoves = std::max<short>(iMinMoves, popNextInt(tokens));
+
+    bool fSpritePaces = popNextInt(tokens) == 1;
+
+    short iInitialDirection = popNextInt(tokens);
+    if (iInitialDirection != 0)
+        iInitialDirection = 1;
+
+    short iBoundary = popNextInt(tokens);
+
+    vehicles.emplace_back(WorldVehicle());
+    vehicles.back().Init(iCol, iRow, iStage, iSprite, iMinMoves, iMaxMoves, fSpritePaces, iInitialDirection, iBoundary, iTileSize);
+}
+
+void WorldMap::InitialBonusItemsHelper(const std::string& line)
+{
+    std::list<std::string_view> tokens = tokenize(line, ',');
+
+    iNumInitialBonuses = 0;
+
+    while (!tokens.empty()) {
+        std::string_view token = popNext(tokens);
+        if (token.empty())
+            break;
+
+        //0 indicates no initial bonuses
+        if (token[0] == '0')
+            break;
+
+        short iBonusOffset = 0;
+        if (token[0] == 'w' || token[0] == 'W')
+            iBonusOffset += NUM_POWERUPS;
+
+        short iBonus = toInt(token.substr(1)) + iBonusOffset;
+        if (iBonus < 0 || iBonus >= NUM_POWERUPS + NUM_WORLD_POWERUPS)
+            iBonus = 0;
+
+        if (iNumInitialBonuses < 32)
+            iInitialBonuses[iNumInitialBonuses++] = iBonus;
+        else
+            iInitialBonuses[31] = iBonus;
+    }
 }
 
 void WorldMap::SetTileConnections(short iCol, short iRow)
@@ -759,97 +842,68 @@ bool WorldMap::Save(const std::string& szPath) const
     fprintf(file, "#Height\n");
     fprintf(file, "%d\n\n", iHeight);
 
-    fprintf(file, "#Sprite Water Layer\n");
-
-    for (short iMapTileReadRow = 0; iMapTileReadRow < iHeight; iMapTileReadRow++) {
-        for (short iMapTileReadCol = 0; iMapTileReadCol < iWidth; iMapTileReadCol++) {
-            const WorldMapTile& tile = tiles.at(iMapTileReadCol, iMapTileReadRow);
-            fprintf(file, "%d", tile.iBackgroundWater);
-
-            if (iMapTileReadCol == iWidth - 1)
-                fprintf(file, "\n");
-            else
-                fprintf(file, ",");
-        }
-    }
-    fprintf(file, "\n");
-
-    fprintf(file, "#Sprite Background Layer\n");
-
-    for (short iMapTileReadRow = 0; iMapTileReadRow < iHeight; iMapTileReadRow++) {
-        for (short iMapTileReadCol = 0; iMapTileReadCol < iWidth; iMapTileReadCol++) {
-            const WorldMapTile& tile = tiles.at(iMapTileReadCol, iMapTileReadRow);
-            fprintf(file, "%d", tile.iBackgroundSprite);
-
-            if (iMapTileReadCol == iWidth - 1)
-                fprintf(file, "\n");
-            else
-                fprintf(file, ",");
-        }
-    }
-    fprintf(file, "\n");
-
-    fprintf(file, "#Sprite Foreground Layer\n");
-
-    for (short iMapTileReadRow = 0; iMapTileReadRow < iHeight; iMapTileReadRow++) {
-        for (short iMapTileReadCol = 0; iMapTileReadCol < iWidth; iMapTileReadCol++) {
-            const WorldMapTile& tile = tiles.at(iMapTileReadCol, iMapTileReadRow);
-            fprintf(file, "%d", tile.iForegroundSprite);
-
-            if (iMapTileReadCol == iWidth - 1)
-                fprintf(file, "\n");
-            else
-                fprintf(file, ",");
-        }
-    }
-    fprintf(file, "\n");
-
-    fprintf(file, "#Connections\n");
-
-    for (short iMapTileReadRow = 0; iMapTileReadRow < iHeight; iMapTileReadRow++) {
-        for (short iMapTileReadCol = 0; iMapTileReadCol < iWidth; iMapTileReadCol++) {
-            const WorldMapTile& tile = tiles.at(iMapTileReadCol, iMapTileReadRow);
-            fprintf(file, "%d", tile.iConnectionType);
-
-            if (iMapTileReadCol == iWidth - 1)
-                fprintf(file, "\n");
-            else
-                fprintf(file, ",");
-        }
-    }
-    fprintf(file, "\n");
-
-    fprintf(file, "#Tile Types (Stages, Doors, Start Tiles)\n");
-
-    for (short iMapTileReadRow = 0; iMapTileReadRow < iHeight; iMapTileReadRow++) {
-        for (short iMapTileReadCol = 0; iMapTileReadCol < iWidth; iMapTileReadCol++) {
-            const WorldMapTile& tile = tiles.at(iMapTileReadCol, iMapTileReadRow);
-            fprintf(file, "%d", tile.iType);
-
-            if (iMapTileReadCol == iWidth - 1)
-                fprintf(file, "\n");
-            else
-                fprintf(file, ",");
-        }
-    }
-    fprintf(file, "\n");
-
-    fprintf(file, "#Vehicle Boundaries\n");
-
-    for (short iMapTileReadRow = 0; iMapTileReadRow < iHeight; iMapTileReadRow++) {
-        for (short iMapTileReadCol = 0; iMapTileReadCol < iWidth; iMapTileReadCol++) {
-            const WorldMapTile& tile = tiles.at(iMapTileReadCol, iMapTileReadRow);
-            fprintf(file, "%d", tile.iVehicleBoundary);
-
-            if (iMapTileReadCol == iWidth - 1)
-                fprintf(file, "\n");
-            else
-                fprintf(file, ",");
-        }
-    }
-    fprintf(file, "\n");
+    WriteAllTiles(file);
 
     fprintf(file, "#Stages\n");
+    WriteStages(file);
+
+    fprintf(file, "#Warps\n");
+    WriteWarps(file);
+
+    fprintf(file, "#Vehicles\n");
+    WriteVehicles(file);
+
+    fprintf(file, "#Initial Items\n");
+    WriteInitialItems(file);
+
+    fclose(file);
+
+#if defined(__APPLE__)
+    chmod(szPath.c_str(), S_IRWXU | S_IRWXG | S_IROTH);
+#endif
+
+    return true;
+}
+
+void WorldMap::WriteTile(FILE* file, std::function<int(const WorldMapTile&)> grabber) const
+{
+    for (short iMapTileReadRow = 0; iMapTileReadRow < iHeight; iMapTileReadRow++) {
+        for (short iMapTileReadCol = 0; iMapTileReadCol < iWidth; iMapTileReadCol++) {
+            const WorldMapTile& tile = tiles.at(iMapTileReadCol, iMapTileReadRow);
+            fprintf(file, "%d", grabber(tile));
+
+            if (iMapTileReadCol == iWidth - 1)
+                fprintf(file, "\n");
+            else
+                fprintf(file, ",");
+        }
+    }
+    fprintf(file, "\n");
+}
+
+void WorldMap::WriteAllTiles(FILE* file) const
+{
+    fprintf(file, "#Sprite Water Layer\n");
+    WriteTile(file, [](const WorldMapTile& t){return t.iBackgroundWater; });
+
+    fprintf(file, "#Sprite Background Layer\n");
+    WriteTile(file, [](const WorldMapTile& t){return t.iBackgroundSprite; });
+
+    fprintf(file, "#Sprite Foreground Layer\n");
+    WriteTile(file, [](const WorldMapTile& t){return t.iForegroundSprite; });
+
+    fprintf(file, "#Connections\n");
+    WriteTile(file, [](const WorldMapTile& t){return t.iConnectionType; });
+
+    fprintf(file, "#Tile Types (Stages, Doors, Start Tiles)\n");
+    WriteTile(file, [](const WorldMapTile& t){return t.iType; });
+
+    fprintf(file, "#Vehicle Boundaries\n");
+    WriteTile(file, [](const WorldMapTile& t){return t.iVehicleBoundary; });
+}
+
+void WorldMap::WriteStages(FILE* file)
+{
     fprintf(file, "#Stage Type 0,Map,Mode,Goal,Points,Bonus List(Max 10),Name,End World, then mode settings (see sample tour file for details)\n");
     fprintf(file, "#Stage Type 1,Bonus House Name,Sequential/Random Order,Display Text,Powerup List(Max 5)\n");
 
@@ -860,8 +914,10 @@ bool WorldMap::Save(const std::string& szPath) const
         fprintf(file, "%s", line.c_str());
     }
     fprintf(file, "\n");
+}
 
-    fprintf(file, "#Warps\n");
+void WorldMap::WriteWarps(FILE* file) const
+{
     fprintf(file, "#location 1 x, y, location 2 x, y\n");
 
     fprintf(file, "%d\n", warps.size());
@@ -873,8 +929,10 @@ bool WorldMap::Save(const std::string& szPath) const
         fprintf(file, "%d\n", warp.posB.y);
     }
     fprintf(file, "\n");
+}
 
-    fprintf(file, "#Vehicles\n");
+void WorldMap::WriteVehicles(FILE* file) const
+{
     fprintf(file, "#Sprite,Stage Type, Start Column, Start Row, Min Moves, Max Moves, Sprite Paces, Sprite Direction, Boundary\n");
 
     fprintf(file, "%d\n", vehicles.size());
@@ -891,9 +949,10 @@ bool WorldMap::Save(const std::string& szPath) const
         fprintf(file, "%d\n", vehicles[iVehicle].iBoundary);
     }
     fprintf(file, "\n");
+}
 
-    fprintf(file, "#Initial Items\n");
-
+void WorldMap::WriteInitialItems(FILE* file) const
+{
     for (short iItem = 0; iItem < iNumInitialBonuses; iItem++) {
         if (iItem != 0)
             fprintf(file, ",");
@@ -912,14 +971,6 @@ bool WorldMap::Save(const std::string& szPath) const
         fprintf(file, "0");
 
     fprintf(file, "\n");
-
-    fclose(file);
-
-#if defined(__APPLE__)
-    chmod(szPath.c_str(), S_IRWXU | S_IRWXG | S_IROTH);
-#endif
-
-    return true;
 }
 
 void WorldMap::Clear()
@@ -1078,86 +1129,96 @@ void WorldMap::DrawTileToSurface(SDL_Surface* surface, short iCol, short iRow, s
 
     //The solid background tile is not animated, but all the rest are
     if (iLayer != 2) {
-        if (iBackgroundSprite == 1) {
-            SDL_Rect rSrc = {iTileSize + iBackgroundStyleOffset, iTileSize, iTileSize, iTileSize};
-            SDL_BlitSurface(rm->spr_worldbackground[iTileSheet].getSurface(), &rSrc, surface, &r);
-        } else {
-            SDL_Rect rSrc = {iAnimationFrame + (iBackgroundWater << (2 + iTileSizeShift)), 0, iTileSize, iTileSize};
-            SDL_BlitSurface(rm->spr_worldbackground[iTileSheet].getSurface(), &rSrc, surface, &r);
-
-            if ((iBackgroundSprite >= 2 && iBackgroundSprite <= 48)) {
-                if (iBackgroundSprite >= 45) {
-                    rSrc = {(3 << iTileSizeShift) + iBackgroundStyleOffset, (iBackgroundSprite - 44) << iTileSizeShift, iTileSize, iTileSize};
-                    SDL_BlitSurface(rm->spr_worldbackground[iTileSheet].getSurface(), &rSrc, surface, &r);
-                } else if (iBackgroundSprite >= 30) {
-                    rSrc = {(2 << iTileSizeShift) + iBackgroundStyleOffset, (iBackgroundSprite - 29) << iTileSizeShift, iTileSize, iTileSize};
-                    SDL_BlitSurface(rm->spr_worldbackground[iTileSheet].getSurface(), &rSrc, surface, &r);
-                } else if (iBackgroundSprite >= 16) {
-                    rSrc = {iTileSize + iBackgroundStyleOffset, (iBackgroundSprite - 14) << iTileSizeShift, iTileSize, iTileSize};
-                    SDL_BlitSurface(rm->spr_worldbackground[iTileSheet].getSurface(), &rSrc, surface, &r);
-                } else {
-                    rSrc = {iBackgroundStyleOffset, iBackgroundSprite << iTileSizeShift, iTileSize, iTileSize};
-                    SDL_BlitSurface(rm->spr_worldbackground[iTileSheet].getSurface(), &rSrc, surface, &r);
-                }
-            }
-        }
+        DrawBackgroundTileHelper(iBackgroundWater, iBackgroundSprite, iBackgroundStyleOffset, iAnimationFrame, r, surface);
     }
 
-    if (iLayer != 1) {
-        if (tile.iCompleted >= 0) {
-            SDL_Rect rSrc = {(tile.iCompleted + 10) << iTileSizeShift, 5 << iTileSizeShift, iTileSize, iTileSize};
-            SDL_BlitSurface(rm->spr_worldforegroundspecial[iTileSheet].getSurface(), &rSrc, surface, &r);
-        } else {
-            if (iForegroundSprite >= 0 && iForegroundSprite < WORLD_FOREGROUND_STAGE_OFFSET) {
-                short iPathStyle = iForegroundSprite / WORLD_PATH_SPRITE_SET_SIZE;
-                short iPathOffsetX = (iPathStyle % 4) * (5 << iTileSizeShift);
-                short iPathOffsetY = (iPathStyle >> 2) * (10 << iTileSizeShift);
-                iForegroundSprite %= WORLD_PATH_SPRITE_SET_SIZE;
-
-                if (iForegroundSprite == 1 || iForegroundSprite == 2) { //Non-animated straight paths
-                    SDL_Rect rSrc = {iPathOffsetX, ((iForegroundSprite - 1) << iTileSizeShift) + iPathOffsetY, iTileSize, iTileSize};
-                    SDL_BlitSurface(rm->spr_worldpaths[iTileSheet].getSurface(), &rSrc, surface, &r);
-                } else if (iForegroundSprite >= 3 && iForegroundSprite <= 10) { //Animated paths with "coins" in them
-                    SDL_Rect rSrc = {iPathOffsetX + iAnimationFrame, ((iForegroundSprite - 1) << iTileSizeShift) + iPathOffsetY, iTileSize, iTileSize};
-                    SDL_BlitSurface(rm->spr_worldpaths[iTileSheet].getSurface(), &rSrc, surface, &r);
-                } else if (iForegroundSprite >= 11 && iForegroundSprite <= 18) { //Non-animated straight paths over water
-                    short iSpriteX = (((iForegroundSprite - 11) / 2) + 1) << iTileSizeShift;
-                    short iSpriteY = ((iForegroundSprite - 11) % 2) << iTileSizeShift;
-
-                    SDL_Rect rSrc = {iPathOffsetX + iSpriteX, iSpriteY + iPathOffsetY, iTileSize, iTileSize};
-                    SDL_BlitSurface(rm->spr_worldpaths[iTileSheet].getSurface(), &rSrc, surface, &r);
-                }
-            } else if (iForegroundSprite >= WORLD_FOREGROUND_STAGE_OFFSET && iForegroundSprite <= WORLD_FOREGROUND_STAGE_OFFSET + 399) {
-                short iTileColor = (iForegroundSprite - WORLD_FOREGROUND_STAGE_OFFSET) / 100;
-                SDL_Rect rSrc = {(10 << iTileSizeShift) + iAnimationFrame, iTileColor << iTileSizeShift, iTileSize, iTileSize};
-                SDL_BlitSurface(rm->spr_worldforegroundspecial[iTileSheet].getSurface(), &rSrc, surface, &r);
-
-                short iTileNumber = (iForegroundSprite - WORLD_FOREGROUND_STAGE_OFFSET) % 100;
-                rSrc.x = (iTileNumber % 10) << iTileSizeShift;
-                rSrc.y = (iTileNumber / 10) << iTileSizeShift;
-                SDL_BlitSurface(rm->spr_worldforegroundspecial[iTileSheet].getSurface(), &rSrc, surface, &r);
-            } else if (iForegroundSprite >= WORLD_BRIDGE_SPRITE_OFFSET && iForegroundSprite <= WORLD_BRIDGE_SPRITE_OFFSET + 3) {
-                SDL_Rect rSrc = {(iForegroundSprite - WORLD_BRIDGE_SPRITE_OFFSET + 10) << iTileSizeShift, 7 << iTileSizeShift, iTileSize, iTileSize};
-                SDL_BlitSurface(rm->spr_worldforegroundspecial[iTileSheet].getSurface(), &rSrc, surface, &r);
-            } else if (iForegroundSprite >= WORLD_START_SPRITE_OFFSET && iForegroundSprite <= WORLD_START_SPRITE_OFFSET + 1) {
-                SDL_Rect rSrc = {(iForegroundSprite - WORLD_START_SPRITE_OFFSET + 10) << iTileSizeShift, 4 << iTileSizeShift, iTileSize, iTileSize};
-                SDL_BlitSurface(rm->spr_worldforegroundspecial[iTileSheet].getSurface(), &rSrc, surface, &r);
-            } else if (iForegroundSprite >= WORLD_FOREGROUND_SPRITE_OFFSET && iForegroundSprite <= WORLD_FOREGROUND_SPRITE_OFFSET + 179) {
-                short iSprite = iForegroundSprite - WORLD_FOREGROUND_SPRITE_OFFSET;
-                SDL_Rect rSrc = {(iSprite % 12) << iTileSizeShift, (iSprite / 12) << iTileSizeShift, iTileSize, iTileSize};
-                SDL_BlitSurface(rm->spr_worldforeground[iTileSheet].getSurface(), &rSrc, surface, &r);
-            } else if (iForegroundSprite >= WORLD_FOREGROUND_SPRITE_ANIMATED_OFFSET && iForegroundSprite <= WORLD_FOREGROUND_SPRITE_ANIMATED_OFFSET + 29) {
-                short iSprite = iForegroundSprite - WORLD_FOREGROUND_SPRITE_ANIMATED_OFFSET;
-                SDL_Rect rSrc = {(iSprite >= 15 ? (16 << iTileSizeShift) : (12 << iTileSizeShift)) + iAnimationFrame, (iSprite % 15) << iTileSizeShift, iTileSize, iTileSize};
-                SDL_BlitSurface(rm->spr_worldforeground[iTileSheet].getSurface(), &rSrc, surface, &r);
-            }
-        }
+    if (iLayer != 1){
+        DrawForegroundTileHelper(tile, r, surface, iForegroundSprite, iAnimationFrame);
 
         //Draw doors
         short iType = tile.iType;
         if (iType >= 2 && iType <= 5) {
             SDL_Rect rSrc = {(iType + 8) << iTileSizeShift, 6 << iTileSizeShift, iTileSize, iTileSize};
             SDL_BlitSurface(rm->spr_worldforegroundspecial[iTileSheet].getSurface(), &rSrc, surface, &r);
+        }
+    }
+}
+
+void WorldMap::DrawBackgroundTileHelper(short iBackgroundWater, short iBackgroundSprite, short iBackgroundStyleOffset, short iAnimationFrame, SDL_Rect r, SDL_Surface* surface) const
+{
+    if (iBackgroundSprite == 1) {
+        SDL_Rect rSrc = {iTileSize + iBackgroundStyleOffset, iTileSize, iTileSize, iTileSize};
+        SDL_BlitSurface(rm->spr_worldbackground[iTileSheet].getSurface(), &rSrc, surface, &r);
+    } else {
+        SDL_Rect rSrc = {iAnimationFrame + (iBackgroundWater << (2 + iTileSizeShift)), 0, iTileSize, iTileSize};
+        SDL_BlitSurface(rm->spr_worldbackground[iTileSheet].getSurface(), &rSrc, surface, &r);
+
+        if ((iBackgroundSprite >= 2 && iBackgroundSprite <= 48)) {
+            if (iBackgroundSprite >= 45) {
+                rSrc = {(3 << iTileSizeShift) + iBackgroundStyleOffset, (iBackgroundSprite - 44) << iTileSizeShift, iTileSize, iTileSize};
+                SDL_BlitSurface(rm->spr_worldbackground[iTileSheet].getSurface(), &rSrc, surface, &r);
+            } else if (iBackgroundSprite >= 30) {
+                rSrc = {(2 << iTileSizeShift) + iBackgroundStyleOffset, (iBackgroundSprite - 29) << iTileSizeShift, iTileSize, iTileSize};
+                SDL_BlitSurface(rm->spr_worldbackground[iTileSheet].getSurface(), &rSrc, surface, &r);
+            } else if (iBackgroundSprite >= 16) {
+                rSrc = {iTileSize + iBackgroundStyleOffset, (iBackgroundSprite - 14) << iTileSizeShift, iTileSize, iTileSize};
+                SDL_BlitSurface(rm->spr_worldbackground[iTileSheet].getSurface(), &rSrc, surface, &r);
+            } else {
+                rSrc = {iBackgroundStyleOffset, iBackgroundSprite << iTileSizeShift, iTileSize, iTileSize};
+                SDL_BlitSurface(rm->spr_worldbackground[iTileSheet].getSurface(), &rSrc, surface, &r);
+            }
+        }
+    }
+}
+
+void WorldMap::DrawForegroundTileHelper(WorldMapTile tile, SDL_Rect r, SDL_Surface* surface, short iForegroundSprite, short iAnimationFrame) const
+{
+    if (tile.iCompleted >= 0) {
+        SDL_Rect rSrc = {(tile.iCompleted + 10) << iTileSizeShift, 5 << iTileSizeShift, iTileSize, iTileSize};
+        SDL_BlitSurface(rm->spr_worldforegroundspecial[iTileSheet].getSurface(), &rSrc, surface, &r);
+    } else {
+        if (iForegroundSprite >= 0 && iForegroundSprite < WORLD_FOREGROUND_STAGE_OFFSET) {
+            short iPathStyle = iForegroundSprite / WORLD_PATH_SPRITE_SET_SIZE;
+            short iPathOffsetX = (iPathStyle % 4) * (5 << iTileSizeShift);
+            short iPathOffsetY = (iPathStyle >> 2) * (10 << iTileSizeShift);
+            iForegroundSprite %= WORLD_PATH_SPRITE_SET_SIZE;
+
+            if (iForegroundSprite == 1 || iForegroundSprite == 2) { //Non-animated straight paths
+                SDL_Rect rSrc = {iPathOffsetX, ((iForegroundSprite - 1) << iTileSizeShift) + iPathOffsetY, iTileSize, iTileSize};
+                SDL_BlitSurface(rm->spr_worldpaths[iTileSheet].getSurface(), &rSrc, surface, &r);
+            } else if (iForegroundSprite >= 3 && iForegroundSprite <= 10) { //Animated paths with "coins" in them
+                SDL_Rect rSrc = {iPathOffsetX + iAnimationFrame, ((iForegroundSprite - 1) << iTileSizeShift) + iPathOffsetY, iTileSize, iTileSize};
+                SDL_BlitSurface(rm->spr_worldpaths[iTileSheet].getSurface(), &rSrc, surface, &r);
+            } else if (iForegroundSprite >= 11 && iForegroundSprite <= 18) { //Non-animated straight paths over water
+                short iSpriteX = (((iForegroundSprite - 11) / 2) + 1) << iTileSizeShift;
+                short iSpriteY = ((iForegroundSprite - 11) % 2) << iTileSizeShift;
+
+                SDL_Rect rSrc = {iPathOffsetX + iSpriteX, iSpriteY + iPathOffsetY, iTileSize, iTileSize};
+                SDL_BlitSurface(rm->spr_worldpaths[iTileSheet].getSurface(), &rSrc, surface, &r);
+            }
+        } else if (iForegroundSprite >= WORLD_FOREGROUND_STAGE_OFFSET && iForegroundSprite <= WORLD_FOREGROUND_STAGE_OFFSET + 399) {
+            short iTileColor = (iForegroundSprite - WORLD_FOREGROUND_STAGE_OFFSET) / 100;
+            SDL_Rect rSrc = {(10 << iTileSizeShift) + iAnimationFrame, iTileColor << iTileSizeShift, iTileSize, iTileSize};
+            SDL_BlitSurface(rm->spr_worldforegroundspecial[iTileSheet].getSurface(), &rSrc, surface, &r);
+
+            short iTileNumber = (iForegroundSprite - WORLD_FOREGROUND_STAGE_OFFSET) % 100;
+            rSrc.x = (iTileNumber % 10) << iTileSizeShift;
+            rSrc.y = (iTileNumber / 10) << iTileSizeShift;
+            SDL_BlitSurface(rm->spr_worldforegroundspecial[iTileSheet].getSurface(), &rSrc, surface, &r);
+        } else if (iForegroundSprite >= WORLD_BRIDGE_SPRITE_OFFSET && iForegroundSprite <= WORLD_BRIDGE_SPRITE_OFFSET + 3) {
+            SDL_Rect rSrc = {(iForegroundSprite - WORLD_BRIDGE_SPRITE_OFFSET + 10) << iTileSizeShift, 7 << iTileSizeShift, iTileSize, iTileSize};
+            SDL_BlitSurface(rm->spr_worldforegroundspecial[iTileSheet].getSurface(), &rSrc, surface, &r);
+        } else if (iForegroundSprite >= WORLD_START_SPRITE_OFFSET && iForegroundSprite <= WORLD_START_SPRITE_OFFSET + 1) {
+            SDL_Rect rSrc = {(iForegroundSprite - WORLD_START_SPRITE_OFFSET + 10) << iTileSizeShift, 4 << iTileSizeShift, iTileSize, iTileSize};
+            SDL_BlitSurface(rm->spr_worldforegroundspecial[iTileSheet].getSurface(), &rSrc, surface, &r);
+        } else if (iForegroundSprite >= WORLD_FOREGROUND_SPRITE_OFFSET && iForegroundSprite <= WORLD_FOREGROUND_SPRITE_OFFSET + 179) {
+            short iSprite = iForegroundSprite - WORLD_FOREGROUND_SPRITE_OFFSET;
+            SDL_Rect rSrc = {(iSprite % 12) << iTileSizeShift, (iSprite / 12) << iTileSizeShift, iTileSize, iTileSize};
+            SDL_BlitSurface(rm->spr_worldforeground[iTileSheet].getSurface(), &rSrc, surface, &r);
+        } else if (iForegroundSprite >= WORLD_FOREGROUND_SPRITE_ANIMATED_OFFSET && iForegroundSprite <= WORLD_FOREGROUND_SPRITE_ANIMATED_OFFSET + 29) {
+            short iSprite = iForegroundSprite - WORLD_FOREGROUND_SPRITE_ANIMATED_OFFSET;
+            SDL_Rect rSrc = {(iSprite >= 15 ? (16 << iTileSizeShift) : (12 << iTileSizeShift)) + iAnimationFrame, (iSprite % 15) << iTileSizeShift, iTileSize, iTileSize};
+            SDL_BlitSurface(rm->spr_worldforeground[iTileSheet].getSurface(), &rSrc, surface, &r);
         }
     }
 }
@@ -1388,7 +1449,7 @@ short WorldMap::GetNextInterestingMove(short iCol, short iRow) const
     const WorldMapTile& currentTile = tiles.at(iCol, iRow);
 
     //Look for stages or vehicles, but not bonus houses
-    if ((currentTile.iType >= 6 && currentTile.iCompleted == -2) || NumVehiclesInTile({iCol, iRow}) > 0)
+    if (IsInterestingTile(currentTile))
         return 4; //Signal to press select on this tile
 
     short iCurrentId = currentTile.iID;
@@ -1407,32 +1468,21 @@ short WorldMap::GetNextInterestingMove(short iCol, short iRow) const
         next.pop();
 
         //Look for stages or vehicles, but not bonus houses
-        if ((tile->iType >= 6 && tile->iCompleted == -2) || NumVehiclesInTile({tile->iCol, tile->iRow}) > 0) {
+        if (IsInterestingTile(*tile)) {
             short iBackTileDirection = visitedTiles[tile->iID];
             short iBackTileId = tile->iID;
 
             while (true) {
-                if (iBackTileDirection == 0)
-                    iBackTileId -= iWidth;
-                else if (iBackTileDirection == 1)
-                    iBackTileId += iWidth;
-                else if (iBackTileDirection == 2)
-                    iBackTileId -= 1;
-                else if (iBackTileDirection == 3)
-                    iBackTileId += 1;
-                else if (iBackTileDirection == 4) {
-                    const Vec2s target(iBackTileId % iWidth, iBackTileId / iWidth);
-                    const Vec2s pos = warps[tiles.at(iCol, iRow).iWarp].getOtherSide(target);
-                    iBackTileId = tiles.at(pos.x, pos.y).iID;
-                }
+                iBackTileId = PreviousTileId(iBackTileId, iBackTileDirection, iCol, iRow);
 
                 if (iBackTileId == iCurrentId) {
                     if (iBackTileDirection == 0 || iBackTileDirection == 1)
                         return 1 - iBackTileDirection;
-                    else if (iBackTileDirection == 2 || iBackTileDirection == 3)
+
+                    if (iBackTileDirection == 2 || iBackTileDirection == 3)
                         return 5 - iBackTileDirection;
-                    else
-                        return iBackTileDirection;
+
+                    return iBackTileDirection;
                 }
 
                 iBackTileDirection = visitedTiles[iBackTileId];
@@ -1445,46 +1495,37 @@ short WorldMap::GetNextInterestingMove(short iCol, short iRow) const
                     const WorldMapTile& topTile = tiles.at(tile->iCol, tile->iRow - 1);
 
                     //Stop at door tiles
-                    if (topTile.iType >= 2 && topTile.iType <= 5)
+                    if (IsDoorTile(topTile))
                         continue;
 
-                    if (visitedTiles.find(topTile.iID) == visitedTiles.end()) {
-                        visitedTiles[topTile.iID] = 1;
-                        next.push(&topTile);
-                    }
+                    AttemptVisitTile(topTile, 1, visitedTiles, next);
+
                 } else if (iNeighbor == 1 && tile->iRow < iHeight - 1) {
                     const WorldMapTile& bottomTile = tiles.at(tile->iCol, tile->iRow + 1);
 
                     //Stop at door tiles
-                    if (bottomTile.iType >= 2 && bottomTile.iType <= 5)
+                    if (IsDoorTile(bottomTile))
                         continue;
 
-                    if (visitedTiles.find(bottomTile.iID) == visitedTiles.end()) {
-                        visitedTiles[bottomTile.iID] = 0;
-                        next.push(&bottomTile);
-                    }
+                    AttemptVisitTile(bottomTile, 0, visitedTiles, next);
+
                 } else if (iNeighbor == 2 && tile->iCol > 0) {
                     const WorldMapTile& leftTile = tiles.at(tile->iCol - 1, tile->iRow);
 
                     //Stop at door tiles
-                    if (leftTile.iType >= 2 && leftTile.iType <= 5)
+                    if (IsDoorTile(leftTile))
                         continue;
 
-                    if (visitedTiles.find(leftTile.iID) == visitedTiles.end()) {
-                        visitedTiles[leftTile.iID] = 3;
-                        next.push(&leftTile);
-                    }
+                    AttemptVisitTile(leftTile, 3, visitedTiles, next);
+
                 } else if (iNeighbor == 3 && tile->iCol < iWidth - 1) {
                     const WorldMapTile& rightTile = tiles.at(tile->iCol + 1, tile->iRow);
 
                     //Stop at door tiles
-                    if (rightTile.iType >= 2 && rightTile.iType <= 5)
+                    if (IsDoorTile(rightTile))
                         continue;
 
-                    if (visitedTiles.find(rightTile.iID) == visitedTiles.end()) {
-                        visitedTiles[rightTile.iID] = 2;
-                        next.push(&rightTile);
-                    }
+                    AttemptVisitTile(rightTile, 2, visitedTiles, next);
                 }
             }
 
@@ -1493,18 +1534,56 @@ short WorldMap::GetNextInterestingMove(short iCol, short iRow) const
                 const WorldMapTile& warpTile = tiles.at(pos.x, pos.y);
 
                 //Stop at door tiles
-                if (warpTile.iType >= 2 && warpTile.iType <= 5)
+                if (IsDoorTile(warpTile))
                     continue;
 
-                if (visitedTiles.find(warpTile.iID) == visitedTiles.end()) {
-                    visitedTiles[warpTile.iID] = 4;
-                    next.push(&warpTile);
-                }
+                AttemptVisitTile(warpTile, 4, visitedTiles, next);
             }
         }
     }
 
     return -1;
+}
+
+bool WorldMap::IsInterestingTile(const WorldMapTile& tile) const
+{
+    return (tile.iType >= 6 && tile.iCompleted == -2) || NumVehiclesInTile({tile.iCol, tile.iRow}) > 0;
+}
+
+short WorldMap::PreviousTileId(short iBackTileId, short iBackTileDirection, short iCol, short iRow) const
+{
+    if (iBackTileDirection == 0)
+        return iBackTileId -= iWidth;
+
+    if (iBackTileDirection == 1)
+        return iBackTileId += iWidth;
+
+    if (iBackTileDirection == 2)
+        return iBackTileId -= 1;
+
+    if (iBackTileDirection == 3)
+        return iBackTileId += 1;
+
+    if (iBackTileDirection == 4) {
+        const Vec2s target(iBackTileId % iWidth, iBackTileId / iWidth);
+        const Vec2s pos = warps[tiles.at(iCol, iRow).iWarp].getOtherSide(target);
+        return tiles.at(pos.x, pos.y).iID;
+    }
+
+    return iBackTileId;
+}
+
+bool WorldMap::IsDoorTile(const WorldMapTile& tile)
+{
+    return tile.iType >= 2 && tile.iType <= 5;
+}
+
+void WorldMap::AttemptVisitTile(const WorldMapTile& tile, short direction, std::map<short, short>& visitedTiles, std::queue<const WorldMapTile*>& next)
+{
+    if (visitedTiles.find(tile.iID) == visitedTiles.end()) {
+        visitedTiles[tile.iID] = direction;
+        next.push(&tile);
+    }
 }
 
 void WorldMap::SetInitialPowerups()

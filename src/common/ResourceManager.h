@@ -21,11 +21,28 @@ public:
 	bool LoadGameGraphics();
 
 	bool LoadGameSounds();
+        void LoadPlayerSounds(const std::string& soundpack);
+        void LoadEnvironmentSounds(const std::string& soundpack);
+        void LoadItemSounds(const std::string& soundpack);
+        void LoadPowerUpSounds(const std::string& soundpack);
+        void LoadGamemodeSounds(const std::string& soundpack);
+        void LoadInteractSounds(const std::string& soundpack);
+        void LoadMiscSounds(const std::string& soundpack);
 
-private:
+    private:
 	void LoadAllSprites();
+    void LoadMenuSprites(const std::string& graphicspack);
+        void LoadEyeCandySprites(const std::string& graphicspack);
+    void LoadBlockSprites(const std::string& graphicspack);
+        void LoadPowerupSprites(const std::string& graphicspack);
+    void LoadProjectileSprites(const std::string& graphicspack);
+        void LoadModeObjectSprites(const std::string& graphicspack);
+    void LoadHazardSprites(const std::string& graphicspack);
+        void LoadAwardSprites(const std::string& graphicspack);
+    void LoadTileSetSprites(const std::string& graphicspack);
+        void LoadFontSprites(const std::string& graphicspack);
 
-public:
+    public:
 
 	gfxSprite		** spr_player[4];	//all player sprites
 	gfxSprite		** spr_shyguy[4];

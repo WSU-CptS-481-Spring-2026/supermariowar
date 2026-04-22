@@ -2,9 +2,15 @@
 #define WORLD_H
 
 #include "SDL.h"
+#include "Version.h"
+
 #include "math/Vec2.h"
 #include "util/Grid.h"
 
+#include <functional>
+#include <list>
+#include <map>
+#include <queue>
 #include <string>
 #include <vector>
 
@@ -143,6 +149,22 @@ class WorldMap {
 public:
     WorldMap(short w, short h);
     WorldMap(const std::string& path, short iTileSize);
+    void ConfigureTileSize(short tilesize);
+    static std::ifstream OpenWorldFile(const std::string& path);
+    static bool TrashLine(const std::string& line);
+    static void GetVersion(const std::string& line, Version& version);
+    void GetWorldHeight(const std::string& line);
+    bool TokenTileHelper(const std::string& line, short row, std::function<void(WorldMapTile&, short, short, std::list<std::string_view>&)> helper);
+    bool BackgroundWaterHelper(const std::string& line, short iMapTileReadRow);
+    bool BackgroundSpritesHelper(const std::string& line, short iMapTileReadRow);
+    bool ForegroundSpritesHelper(const std::string& line, short iMapTileReadRow);
+    bool PathConnectionsHelper(const std::string& line, short iMapTileReadRow);
+    bool StageTypeHelper(const std::string& line, short iMapTileReadRow);
+    bool VehicleBoundaryHelper(const std::string& line, short iMapTileReadRow);
+    bool StageDetailsHelper(const std::string& line, Version& version, short iCurrentStage);
+    void WarpDetailHelper(const std::string& line);
+    void VehiclesHelper(const std::string& line);
+    void InitialBonusItemsHelper(const std::string& line);
 
     WorldMap(const WorldMap&) = delete;
     WorldMap& operator=(const WorldMap&) = delete;
@@ -150,6 +172,12 @@ public:
     WorldMap& operator=(WorldMap&&) = default;
 
     bool Save(const std::string& szPath) const;
+    void WriteTile(FILE* file, std::function<int(const WorldMapTile&)> grabber) const;
+    void WriteAllTiles(FILE* file) const;
+    static void WriteStages(FILE* file);
+    void WriteWarps(FILE* file) const;
+    void WriteVehicles(FILE* file) const;
+    void WriteInitialItems(FILE* file) const;
 
     void Resize(short iWidth, short iHeight);
     void Clear();
@@ -162,6 +190,8 @@ public:
     void ResetDrawCycle();
     void DrawMapToSurface(SDL_Surface* surface) const;
     void DrawMapToSurface(short iCycleIndex, bool fFullRefresh, SDL_Surface* surface, short iMapDrawOffsetCol, short iMapDrawOffsetRow, short iAnimationFrame);
+    void DrawBackgroundTileHelper(short iBackgroundWater, short iBackgroundSprite, short iBackgroundStyleOffset, short iAnimationFrame, SDL_Rect r, SDL_Surface* surface) const;
+    void DrawForegroundTileHelper(WorldMapTile tile, SDL_Rect r, SDL_Surface* surface, short iForegroundSprite, short iAnimationFrame) const;
 
     void GetWorldSize(short * w, short * h) const {
         *w = iWidth;
@@ -193,6 +223,10 @@ public:
     short UseKey(short iKeytype, short iCol, short iRow, bool fCloud);
 
     short GetNextInterestingMove(short iCol, short iRow) const;
+    bool IsInterestingTile(const WorldMapTile& tile) const;
+    short PreviousTileId(short iBackTileId, short iBackTileDirection, short iCol, short iRow) const;
+    static void AttemptVisitTile(const WorldMapTile& tile, short direction, std::map<short, short>& visitedTiles, std::queue<const WorldMapTile*>& next) ;
+    static bool IsDoorTile(const WorldMapTile& tile) ;
 
     void SetInitialPowerups();
 

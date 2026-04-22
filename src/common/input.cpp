@@ -69,256 +69,333 @@ void CPlayerInput::Update(SDL_Event event, short iGameState)
 {
 	bool fFound = false;
     for (short iPlayer = -1; iPlayer < MAX_PLAYERS; iPlayer++) {
-		CInputControl * inputControl;
-		COutputControl * outputControl;
-		short iDeviceID = DEVICE_KEYBOARD;
+	CInputControl * inputControl;
+	COutputControl * outputControl;
+	short iDeviceID = DEVICE_KEYBOARD;
 
-		//Allow keyboard input from player 1 at all times (even when he is configured to use joystick)
-        if (iPlayer == -1) {
-            if (iGameState == 1 && inputControls[0]->iDevice != DEVICE_KEYBOARD) {
-				inputControl = &game_values.inputConfiguration[0][0].inputGameControls[1];
-				outputControl = &outputControls[0];
-				iDeviceID = game_values.inputConfiguration[0][0].iDevice;
-            } else {
-				continue;
-			}
-        } else {
-			if (!inputControls[iPlayer])
-				continue;
-
-			inputControl = &inputControls[iPlayer]->inputGameControls[iGameState];
-			outputControl = &outputControls[iPlayer];
-			iDeviceID = inputControls[iPlayer]->iDevice;
-		}
+        if (!GetPlayerControlInput(iPlayer, iGameState, inputControl, outputControl, iDeviceID))
+            continue;
 
         if (iDeviceID == DEVICE_KEYBOARD) {
-            if (SDL_KEYDOWN == event.type) {
-                for (int iKey = 0; iKey < NUM_KEYS && !fFound; iKey++) {
-                    if (inputControl->keys[iKey] == event.key.keysym.sym) {
-						fFound = true;
-
-						//Ignore input for cpu controlled players
-						if (iGameState == 0 && game_values.playercontrol[iPlayer] != 1 && iKey < 6)
-							continue;
-
-						if (!outputControl->keys[iKey].fDown)
-							outputControl->keys[iKey].fPressed = true;
-
-						outputControl->keys[iKey].fDown = true;
-					}
-				}
-
-				iPressedKey = (SDL_KEYTYPE)event.key.keysym.sym;
-            } else if (SDL_KEYUP == event.type) {
-                for (int iKey = 0; iKey < NUM_KEYS && !fFound; iKey++) {
-                    if (inputControl->keys[iKey] == event.key.keysym.sym) {
-						fFound = true;
-
-						//Ignore input for cpu controlled players
-						if (iGameState == 0 && game_values.playercontrol[iPlayer] != 1 && iKey < 6)
-							continue;
-
-						outputControl->keys[iKey].fDown = false;
-					}
-				}
-            } else if (SDL_MOUSEMOTION == event.type) {
-                for (int iKey = 0; iKey < NUM_KEYS && !fFound; iKey++) {
-                    if (inputControl->keys[iKey] >= MOUSE_UP) {
-						if ((inputControl->keys[iKey] == MOUSE_UP && event.motion.yrel < -MOUSE_Y_DEAD_ZONE) ||
-							(inputControl->keys[iKey] == MOUSE_DOWN && event.motion.yrel > MOUSE_Y_DEAD_ZONE) ||
-							(inputControl->keys[iKey] == MOUSE_LEFT && event.motion.xrel < -MOUSE_X_DEAD_ZONE) ||
-							(inputControl->keys[iKey] == MOUSE_RIGHT && event.motion.xrel > MOUSE_X_DEAD_ZONE) ||
-                                (inputControl->keys[iKey] >= MOUSE_BUTTON_START && (event.motion.state & SDL_BUTTON(inputControl->keys[iKey] - MOUSE_BUTTON_START)))) {
-							fFound = true;
-
-							//Ignore input for cpu controlled players
-							if (iGameState == 0 && game_values.playercontrol[iPlayer] != 1 && iKey < 6)
-								continue;
-
-							if (!outputControl->keys[iKey].fDown)
-								outputControl->keys[iKey].fPressed = true;
-
-							outputControl->keys[iKey].fDown = true;
-                        } else {
-							//Ignore input for cpu controlled players
-							if (iGameState == 0 && game_values.playercontrol[iPlayer] != 1 && iKey < 6)
-								continue;
-
-							//Mouse scroll wheel up/down events happen on same frame so ignore up event (and clear it in the ClearPressedKeys() method)
-							if (inputControl->keys[iKey] == MOUSE_BUTTON_START + 4 || inputControl->keys[iKey] == MOUSE_BUTTON_START + 5)
-								continue;
-
-							outputControl->keys[iKey].fDown = false;
-						}
-					}
-				}
-            } else if (SDL_MOUSEBUTTONDOWN == event.type) {
-                for (int iKey = 0; iKey < NUM_KEYS && !fFound; iKey++) {
-                    if (inputControl->keys[iKey] == event.button.button + MOUSE_BUTTON_START) {
-						fFound = true;
-
-						//Ignore input for cpu controlled players
-						if (iGameState == 0 && game_values.playercontrol[iPlayer] != 1 && iKey < 6)
-							continue;
-
-						if (!outputControl->keys[iKey].fDown)
-							outputControl->keys[iKey].fPressed = true;
-
-						outputControl->keys[iKey].fDown = true;
-					}
-				}
-            } else if (SDL_MOUSEBUTTONUP == event.type) {
-                for (int iKey = 0; iKey < NUM_KEYS && !fFound; iKey++) {
-                    if (inputControl->keys[iKey] == event.button.button + MOUSE_BUTTON_START) {
-						fFound = true;
-
-						//Mouse scroll wheel up/down events happen on same frame so ignore up event (and clear it in the ClearPressedKeys() method)
-						if (inputControl->keys[iKey] == MOUSE_BUTTON_START + 4 || inputControl->keys[iKey] == MOUSE_BUTTON_START + 5)
-							continue;
-
-						//Ignore input for cpu controlled players
-						if (iGameState == 0 && game_values.playercontrol[iPlayer] != 1 && iKey < 6)
-							continue;
-
-						outputControl->keys[iKey].fDown = false;
-					}
-				}
-			}
+            KeyAndMouseHandler(event, iGameState, iPlayer, inputControl, outputControl, fFound);
         } else {
-            if (SDL_JOYHATMOTION == event.type) {
-				if (iDeviceID != event.jhat.which)
-					continue;
+            JoystickHandler(event, iGameState, iPlayer, inputControl, outputControl, iDeviceID, fFound);
+        }
 
-                for (int iKey = 0; iKey < NUM_KEYS; iKey++) {
-                    if (inputControl->keys[iKey] >= JOY_HAT_UP && inputControl->keys[iKey] <= JOY_HAT_RIGHT) {
-						if ((inputControl->keys[iKey] == JOY_HAT_UP && (event.jhat.value & SDL_HAT_UP)) ||
-							(inputControl->keys[iKey] == JOY_HAT_DOWN && (event.jhat.value & SDL_HAT_DOWN)) ||
-							(inputControl->keys[iKey] == JOY_HAT_LEFT && (event.jhat.value & SDL_HAT_LEFT)) ||
-                                (inputControl->keys[iKey] == JOY_HAT_RIGHT && (event.jhat.value & SDL_HAT_RIGHT))) {
-							fFound = true;
+    //This line might be causing input from some players not to be read
+    //if (fFound)
+        //break;
+    }
+}
 
-							//Ignore input for cpu controlled players
-							if (iGameState == 0 && game_values.playercontrol[iPlayer] != 1 && iKey < 6)
-								continue;
+bool CPlayerInput::GetPlayerControlInput(short iPlayer, short iGameState, CInputControl*& inputControl, COutputControl*& outputControl, short& iDeviceID)
+{
+    //Allow keyboard input from player 1 at all times (even when he is configured to use joystick)
+    if (iPlayer == -1) {
+        if (iGameState == 1 && inputControls[0]->iDevice != DEVICE_KEYBOARD) {
+            inputControl = &game_values.inputConfiguration[0][0].inputGameControls[1];
+            outputControl = &outputControls[0];
+            iDeviceID = game_values.inputConfiguration[0][0].iDevice;
+            return true;
+        }
 
-							if (!outputControl->keys[iKey].fDown)
-								outputControl->keys[iKey].fPressed = true;
+        return false;
+    }
 
-							outputControl->keys[iKey].fDown = true;
-                        } else {
-							//Ignore input for cpu controlled players
-							if (iGameState == 0 && game_values.playercontrol[iPlayer] != 1 && iKey < 6)
-								continue;
+    if (!inputControls[iPlayer])
+        return false;
 
-							outputControl->keys[iKey].fDown = false;
-						}
-					}
-				}
-            } else if (SDL_JOYBUTTONDOWN == event.type) {
-				if (iDeviceID != event.jbutton.which)
-					continue;
+    inputControl = &inputControls[iPlayer]->inputGameControls[iGameState];
+    outputControl = &outputControls[iPlayer];
+    iDeviceID = inputControls[iPlayer]->iDevice;
+    return true;
+}
 
-                for (int iKey = 0; iKey < NUM_KEYS && !fFound; iKey++) {
-                    if (inputControl->keys[iKey] == event.jbutton.button + JOY_BUTTON_START) {
-						fFound = true;
+bool CPlayerInput::IsCPUInput(short iGameState, short iPlayer, int iKey)
+{
+    return (iGameState == 0 && game_values.playercontrol[iPlayer] != 1 && iKey < 6);
+}
 
-						//Ignore input for cpu controlled players
-						if (iGameState == 0 && game_values.playercontrol[iPlayer] != 1 && iKey < 6)
-							continue;
+void CPlayerInput::SetKeyPressed(COutputControl* outputControl, int iKey)
+{
+    if (!outputControl->keys[iKey].fDown)
+        outputControl->keys[iKey].fPressed = true;
 
-						if (!outputControl->keys[iKey].fDown)
-							outputControl->keys[iKey].fPressed = true;
+    outputControl->keys[iKey].fDown = true;
+}
 
-						outputControl->keys[iKey].fDown = true;
-					}
-				}
-            } else if (SDL_JOYBUTTONUP == event.type) {
-				if (iDeviceID != event.jbutton.which)
-					continue;
+void CPlayerInput::KeyAndMouseHandler(SDL_Event& event, short iGameState, short iPlayer, CInputControl* inputControl, COutputControl* outputControl, bool& fFound)
+{
+    switch (event.type)
+    {
+        case SDL_KEYDOWN:
+            KeyDownHandler(event, iGameState, iPlayer, inputControl, outputControl, fFound);
+            break;
+        case SDL_KEYUP:
+            KeyUpHandler(event, iGameState, iPlayer, inputControl, outputControl, fFound);
+            break;
+        case SDL_MOUSEMOTION:
+            MouseMotionHandler(event, iGameState, iPlayer, inputControl, outputControl, fFound);
+            break;
+        case SDL_MOUSEBUTTONDOWN:
+            MouseButtonDownHandler(event, iGameState, iPlayer, inputControl, outputControl, fFound);
+            break;
+        case SDL_MOUSEBUTTONUP:
+            MouseButtonUpHandler(event, iGameState, iPlayer, inputControl, outputControl, fFound);
+            break;
+        default:
+            break;
+    }
+}
 
-                for (int iKey = 0; iKey < NUM_KEYS && !fFound; iKey++) {
-                    if (inputControl->keys[iKey] == event.jbutton.button + JOY_BUTTON_START) {
-						fFound = true;
+void CPlayerInput::KeyDownHandler(SDL_Event& event, short iGameState, short iPlayer, CInputControl* inputControl, COutputControl* outputControl, bool& fFound)
+{
+    for (int iKey = 0; iKey < NUM_KEYS && !fFound; iKey++) {
+        if (inputControl->keys[iKey] == event.key.keysym.sym) {
+            fFound = true;
 
-						//Ignore input for cpu controlled players
-						if (iGameState == 0 && game_values.playercontrol[iPlayer] != 1 && iKey < 6)
-							continue;
+            //Ignore input for cpu controlled players
+            if (IsCPUInput(iGameState, iPlayer, iKey))
+                continue;
 
-						outputControl->keys[iKey].fDown = false;
-					}
-				}
-            } else if (SDL_JOYAXISMOTION == event.type) {
-				if (iDeviceID != event.jaxis.which)
-					continue;
+            SetKeyPressed(outputControl, iKey);
+        }
+    }
 
-                for (int iKey = 0; iKey < NUM_KEYS; iKey++) {
-					bool fUseJoystickInput = false;
-					bool fJoystickDown = false;
+    iPressedKey = (SDL_KEYTYPE)event.key.keysym.sym;
+}
 
-                    if (event.jaxis.axis == 0 && inputControl->keys[iKey] == JOY_STICK_1_LEFT) {
-						fUseJoystickInput = true;
+void CPlayerInput::KeyUpHandler(SDL_Event& event, short iGameState, short iPlayer, CInputControl* inputControl, COutputControl* outputControl, bool& fFound)
+{
+    for (int iKey = 0; iKey < NUM_KEYS && !fFound; iKey++) {
+        if (inputControl->keys[iKey] == event.key.keysym.sym) {
+            fFound = true;
 
-						if (event.jaxis.value < -JOYSTICK_DEAD_ZONE)
-							fJoystickDown = true;
-                    } else if (event.jaxis.axis == 0 && inputControl->keys[iKey] == JOY_STICK_1_RIGHT) {
-						fUseJoystickInput = true;
+            //Ignore input for cpu controlled players
+            if (IsCPUInput(iGameState, iPlayer, iKey))
+                continue;
 
-						if (event.jaxis.value > JOYSTICK_DEAD_ZONE)
-							fJoystickDown = true;
-                    } else if (event.jaxis.axis == 1 && inputControl->keys[iKey] == JOY_STICK_1_UP) {
-						fUseJoystickInput = true;
+            outputControl->keys[iKey].fDown = false;
+        }
+    }
+}
 
-						if (event.jaxis.value < -JOYSTICK_DEAD_ZONE)
-							fJoystickDown = true;
-                    } else if (event.jaxis.axis == 1 && inputControl->keys[iKey] == JOY_STICK_1_DOWN) {
-						fUseJoystickInput = true;
+void CPlayerInput::MouseMotionHandler(SDL_Event& event, short iGameState, short iPlayer, CInputControl* inputControl, COutputControl* outputControl, bool& fFound)
+{
+    for (int iKey = 0; iKey < NUM_KEYS && !fFound; iKey++) {
+        if (inputControl->keys[iKey] >= MOUSE_UP) {
+            if ((inputControl->keys[iKey] == MOUSE_UP && event.motion.yrel < -MOUSE_Y_DEAD_ZONE) ||
+                (inputControl->keys[iKey] == MOUSE_DOWN && event.motion.yrel > MOUSE_Y_DEAD_ZONE) ||
+                (inputControl->keys[iKey] == MOUSE_LEFT && event.motion.xrel < -MOUSE_X_DEAD_ZONE) ||
+                (inputControl->keys[iKey] == MOUSE_RIGHT && event.motion.xrel > MOUSE_X_DEAD_ZONE) ||
+                (inputControl->keys[iKey] >= MOUSE_BUTTON_START && (event.motion.state & SDL_BUTTON(inputControl->keys[iKey] - MOUSE_BUTTON_START)))) {
 
-						if (event.jaxis.value > JOYSTICK_DEAD_ZONE)
-							fJoystickDown = true;
-                    } else if (event.jaxis.axis == 2 && inputControl->keys[iKey] == JOY_STICK_2_LEFT) {
-						fUseJoystickInput = true;
+                fFound = true;
 
-						if (event.jaxis.value < -JOYSTICK_DEAD_ZONE)
-							fJoystickDown = true;
-                    } else if (event.jaxis.axis == 2 && inputControl->keys[iKey] == JOY_STICK_2_RIGHT) {
-						fUseJoystickInput = true;
+                //Ignore input for cpu controlled players
+                if (IsCPUInput(iGameState, iPlayer, iKey))
+                    continue;
 
-						if (event.jaxis.value > JOYSTICK_DEAD_ZONE)
-							fJoystickDown = true;
-                    } else if (event.jaxis.axis == 3 && inputControl->keys[iKey] == JOY_STICK_2_UP) {
-						fUseJoystickInput = true;
+                SetKeyPressed(outputControl, iKey);
+            } else {
+                //Ignore input for cpu controlled players
+                if (IsCPUInput(iGameState, iPlayer, iKey))
+                    continue;
 
-						if (event.jaxis.value < -JOYSTICK_DEAD_ZONE)
-							fJoystickDown = true;
-                    } else if (event.jaxis.axis == 3 && inputControl->keys[iKey] == JOY_STICK_2_DOWN) {
-						fUseJoystickInput = true;
+                //Mouse scroll wheel up/down events happen on same frame so ignore up event (and clear it in the ClearPressedKeys() method)
+                if (inputControl->keys[iKey] == MOUSE_BUTTON_START + 4 || inputControl->keys[iKey] == MOUSE_BUTTON_START + 5)
+                    continue;
 
-						if (event.jaxis.value > JOYSTICK_DEAD_ZONE)
-							fJoystickDown = true;
-					}
+                outputControl->keys[iKey].fDown = false;
+            }
+        }
+    }
+}
 
-                    if (fUseJoystickInput) {
-						//Ignore input for cpu controlled players
-						if (iGameState == 0 && game_values.playercontrol[iPlayer] != 1 && iKey < 6)
-							continue;
+void CPlayerInput::MouseButtonDownHandler(SDL_Event& event, short iGameState, short iPlayer, CInputControl* inputControl, COutputControl* outputControl, bool& fFound)
+{
+    for (int iKey = 0; iKey < NUM_KEYS && !fFound; iKey++) {
+        if (inputControl->keys[iKey] == event.button.button + MOUSE_BUTTON_START) {
+            fFound = true;
 
-                        if (fJoystickDown) {
-							fFound = true;
+            //Ignore input for cpu controlled players
+            if (IsCPUInput(iGameState, iPlayer, iKey))
+                continue;
 
-							if (!outputControl->keys[iKey].fDown)
-								outputControl->keys[iKey].fPressed = true;
+            SetKeyPressed(outputControl, iKey);
+        }
+    }
+}
 
-							outputControl->keys[iKey].fDown = true;
-                        } else {
-							outputControl->keys[iKey].fDown = false;
-						}
-					}
-				}
-			}
-		}
+void CPlayerInput::MouseButtonUpHandler(SDL_Event& event, short iGameState, short iPlayer, CInputControl* inputControl, COutputControl* outputControl, bool& fFound)
+{
+    for (int iKey = 0; iKey < NUM_KEYS && !fFound; iKey++) {
+        if (inputControl->keys[iKey] == event.button.button + MOUSE_BUTTON_START) {
+            fFound = true;
 
-		//This line might be causing input from some players not to be read
-		//if (fFound)
-			//break;
-	}
+            //Mouse scroll wheel up/down events happen on same frame so ignore up event (and clear it in the ClearPressedKeys() method)
+            if (inputControl->keys[iKey] == MOUSE_BUTTON_START + 4 || inputControl->keys[iKey] == MOUSE_BUTTON_START + 5)
+                continue;
+
+            //Ignore input for cpu controlled players
+            if (IsCPUInput(iGameState, iPlayer, iKey))
+                continue;
+
+            outputControl->keys[iKey].fDown = false;
+        }
+    }
+}
+
+void CPlayerInput::JoystickHandler(SDL_Event& event, short iGameState, short iPlayer, CInputControl* inputControl, COutputControl* outputControl, short iDeviceID, bool& fFound)
+{
+    switch(event.type) 
+    {
+        case SDL_JOYHATMOTION:
+            JoyHatMotionHandler(event, iGameState, iPlayer, inputControl, outputControl, iDeviceID, fFound);
+            break;
+        case SDL_JOYBUTTONDOWN:
+            JoyButtonDownHandler(event, iGameState, iPlayer, inputControl, outputControl, iDeviceID, fFound);
+            break;
+        case SDL_JOYBUTTONUP:
+            JoyButtonUpHandler(event, iGameState, iPlayer, inputControl, outputControl, iDeviceID, fFound);
+            break;
+        case SDL_JOYAXISMOTION:
+            JoyAxisHandler(event, iGameState, iPlayer, inputControl, outputControl, iDeviceID, fFound);
+            break;
+        default:
+            break;
+    }
+}
+
+void CPlayerInput::JoyHatMotionHandler(SDL_Event& event, short iGameState, short iPlayer, CInputControl* inputControl, COutputControl* outputControl, short iDeviceID, bool& fFound)
+{
+    if (iDeviceID != event.jhat.which)
+        return;
+
+    for (int iKey = 0; iKey < NUM_KEYS; iKey++) {
+        if (inputControl->keys[iKey] >= JOY_HAT_UP && inputControl->keys[iKey] <= JOY_HAT_RIGHT) {
+            if ((inputControl->keys[iKey] == JOY_HAT_UP && (event.jhat.value & SDL_HAT_UP)) ||
+                (inputControl->keys[iKey] == JOY_HAT_DOWN && (event.jhat.value & SDL_HAT_DOWN)) ||
+                (inputControl->keys[iKey] == JOY_HAT_LEFT && (event.jhat.value & SDL_HAT_LEFT)) ||
+                (inputControl->keys[iKey] == JOY_HAT_RIGHT && (event.jhat.value & SDL_HAT_RIGHT))) {
+
+                fFound = true;
+
+                //Ignore input for cpu controlled players
+                if (IsCPUInput(iGameState, iPlayer, iKey))
+                    continue;
+
+                SetKeyPressed(outputControl, iKey);
+            } else {
+                //Ignore input for cpu controlled players
+                if (IsCPUInput(iGameState, iPlayer, iKey))
+                    continue;
+
+                outputControl->keys[iKey].fDown = false;
+            }
+        }
+    }
+}
+
+void CPlayerInput::JoyButtonDownHandler(SDL_Event& event, short iGameState, short iPlayer, CInputControl* inputControl, COutputControl* outputControl, short iDeviceID, bool& fFound)
+{
+    if (iDeviceID != event.jbutton.which)
+        return;
+
+    for (int iKey = 0; iKey < NUM_KEYS && !fFound; iKey++) {
+        if (inputControl->keys[iKey] == event.jbutton.button + JOY_BUTTON_START) {
+            fFound = true;
+
+            //Ignore input for cpu controlled players
+            if (IsCPUInput(iGameState, iPlayer, iKey))
+                continue;
+
+            SetKeyPressed(outputControl, iKey);
+        }
+    }
+}
+
+void CPlayerInput::JoyButtonUpHandler(SDL_Event& event, short iGameState, short iPlayer, CInputControl* inputControl, COutputControl* outputControl, short iDeviceID, bool& fFound)
+{
+    if (iDeviceID != event.jbutton.which)
+        return;
+
+    for (int iKey = 0; iKey < NUM_KEYS && !fFound; iKey++) {
+        if (inputControl->keys[iKey] == event.jbutton.button + JOY_BUTTON_START) {
+            fFound = true;
+
+            //Ignore input for cpu controlled players
+            if (IsCPUInput(iGameState, iPlayer, iKey))
+                continue;
+
+            outputControl->keys[iKey].fDown = false;
+        }
+    }
+}
+
+void CPlayerInput::JoyAxisHandler(SDL_Event& event, short iGameState, short iPlayer, CInputControl* inputControl, COutputControl* outputControl, short iDeviceID, bool& fFound)
+{
+    if (iDeviceID != event.jaxis.which)
+	return;
+
+    for (int iKey = 0; iKey < NUM_KEYS; iKey++) {
+        bool fUseJoystickInput = false;
+        bool fJoystickDown = false;
+
+        if (event.jaxis.axis == 0 && inputControl->keys[iKey] == JOY_STICK_1_LEFT) {
+            fUseJoystickInput = true;
+
+            if (event.jaxis.value < -JOYSTICK_DEAD_ZONE)
+                fJoystickDown = true;
+        } else if (event.jaxis.axis == 0 && inputControl->keys[iKey] == JOY_STICK_1_RIGHT) {
+            fUseJoystickInput = true;
+
+            if (event.jaxis.value > JOYSTICK_DEAD_ZONE)
+                fJoystickDown = true;
+        } else if (event.jaxis.axis == 1 && inputControl->keys[iKey] == JOY_STICK_1_UP) {
+            fUseJoystickInput = true;
+
+            if (event.jaxis.value < -JOYSTICK_DEAD_ZONE)
+                fJoystickDown = true;
+        } else if (event.jaxis.axis == 1 && inputControl->keys[iKey] == JOY_STICK_1_DOWN) {
+            fUseJoystickInput = true;
+
+            if (event.jaxis.value > JOYSTICK_DEAD_ZONE)
+                fJoystickDown = true;
+        } else if (event.jaxis.axis == 2 && inputControl->keys[iKey] == JOY_STICK_2_LEFT) {
+            fUseJoystickInput = true;
+
+            if (event.jaxis.value < -JOYSTICK_DEAD_ZONE)
+                fJoystickDown = true;
+        } else if (event.jaxis.axis == 2 && inputControl->keys[iKey] == JOY_STICK_2_RIGHT) {
+            fUseJoystickInput = true;
+
+            if (event.jaxis.value > JOYSTICK_DEAD_ZONE)
+                fJoystickDown = true;
+        } else if (event.jaxis.axis == 3 && inputControl->keys[iKey] == JOY_STICK_2_UP) {
+            fUseJoystickInput = true;
+
+            if (event.jaxis.value < -JOYSTICK_DEAD_ZONE)
+                fJoystickDown = true;
+        } else if (event.jaxis.axis == 3 && inputControl->keys[iKey] == JOY_STICK_2_DOWN) {
+            fUseJoystickInput = true;
+
+            if (event.jaxis.value > JOYSTICK_DEAD_ZONE)
+                fJoystickDown = true;
+        }
+
+        if (fUseJoystickInput) {
+            //Ignore input for cpu controlled players
+            if (IsCPUInput(iGameState, iPlayer, iKey))
+                continue;
+
+            if (fJoystickDown) {
+                fFound = true;
+
+                SetKeyPressed(outputControl, iKey);
+            } else {
+                outputControl->keys[iKey].fDown = false;
+            }
+        }
+    }
 }

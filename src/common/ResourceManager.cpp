@@ -61,10 +61,36 @@ void CResourceManager::LoadAllSprites() {
         LoadFullSkin(spr_bobomb[k], bobombPath, k);
     }
 
-    gfx_loadimage(menu_survival, convertPath("gfx/packs/modeobjects/menu_survival.png", graphicspack), false);
-    gfx_loadimage(menu_stomp, convertPath("gfx/packs/modeobjects/menu_stomp.png", graphicspack), false);
-    gfx_loadimage(menu_egg, convertPath("gfx/packs/modeobjects/menu_egg.png", graphicspack), false);
+    LoadMenuSprites(graphicspack);
 
+    LoadEyeCandySprites(graphicspack);
+
+    LoadBlockSprites(graphicspack);
+
+    LoadPowerupSprites(graphicspack);
+
+    LoadProjectileSprites(graphicspack);
+
+    LoadModeObjectSprites(graphicspack);
+
+    LoadHazardSprites(graphicspack);
+
+    LoadAwardSprites(graphicspack);
+
+    LoadTileSetSprites(graphicspack);
+
+    LoadFontSprites(graphicspack);
+}
+
+void CResourceManager::LoadMenuSprites(const std::string& graphicspack)
+{
+    gfx_loadimage(spr_scorehearts, convertPath("gfx/packs/menu/score_hearts.png", graphicspack), false);
+    gfx_loadimage(spr_scorecards, convertPath("gfx/packs/menu/score_cards.png", graphicspack), false);
+    gfx_loadimage(spr_scorecoins, convertPath("gfx/packs/menu/score_coins.png", graphicspack), false);
+}
+
+void CResourceManager::LoadEyeCandySprites(const std::string& graphicspack)
+{
     gfx_loadimage(spr_clouds, convertPath("gfx/packs/eyecandy/cloud.png", graphicspack), 255, true);
     gfx_loadimage(spr_ghosts, convertPath("gfx/packs/eyecandy/ghost.png", graphicspack), 128, true);
     gfx_loadimage(spr_fish, convertPath("gfx/packs/eyecandy/fish.png", graphicspack), 128, true);
@@ -72,6 +98,61 @@ void CResourceManager::LoadAllSprites() {
     gfx_loadimage(spr_snow, convertPath("gfx/packs/eyecandy/snow.png", graphicspack), true);
     gfx_loadimage(spr_rain, convertPath("gfx/packs/eyecandy/rain.png", graphicspack), true);
 
+    gfx_loadimage(spr_brokenyellowblock, convertPath("gfx/packs/eyecandy/brokenyellowblock.png", graphicspack), true);
+    gfx_loadimage(spr_brokenflipblock, convertPath("gfx/packs/eyecandy/brokenflipblock.png", graphicspack), true);
+    gfx_loadimage(spr_brokenblueblock, convertPath("gfx/packs/eyecandy/brokenblueblock.png", graphicspack), true);
+    gfx_loadimage(spr_brokengrayblock, convertPath("gfx/packs/eyecandy/brokengrayblock.png", graphicspack), true);
+
+    gfx_loadimage(spr_brokeniceblock, convertPath("gfx/packs/eyecandy/icecube.png", graphicspack), true);
+    gfx_loadimage(spr_iceblock, convertPath("gfx/packs/eyecandy/iceblock.png", graphicspack), true);
+
+    gfx_loadimage(spr_shade[0], convertPath("gfx/packs/eyecandy/shade1.png", graphicspack), 64, false);
+    gfx_loadimage(spr_shade[1], convertPath("gfx/packs/eyecandy/shade2.png", graphicspack), 64, false);
+    gfx_loadimage(spr_shade[2], convertPath("gfx/packs/eyecandy/shade3.png", graphicspack), 64, false);
+    gfx_loadimage(spr_timershade, convertPath("gfx/packs/eyecandy/timershade.png", graphicspack), 64, false);
+
+    gfx_loadimage(spr_crown, convertPath("gfx/packs/eyecandy/crown.png", graphicspack), true);
+    gfx_loadimage(spr_cape, convertPath("gfx/packs/eyecandy/cape.png", graphicspack), true);
+    gfx_loadimage(spr_tail, convertPath("gfx/packs/eyecandy/tail.png", graphicspack), true);
+    gfx_loadimage(spr_wings, convertPath("gfx/packs/eyecandy/wings.png", graphicspack), true);
+
+    gfx_loadimage(spr_warplock, convertPath("gfx/packs/eyecandy/warplock.png", graphicspack), false);
+    gfx_loadimage(spr_coinsparkle, convertPath("gfx/packs/eyecandy/coinsparks.png", graphicspack), true);
+    gfx_loadimage(spr_shinesparkle, convertPath("gfx/packs/eyecandy/shinesparks.png", graphicspack), true);
+    gfx_loadimage(spr_shellbounce, convertPath("gfx/packs/eyecandy/shellbounce.png", graphicspack), true);
+    gfx_loadimage(spr_superstomp, convertPath("gfx/packs/eyecandy/supersmash.png", graphicspack), true);
+
+    gfx_loadimage(spr_goombadead, convertPath("gfx/packs/eyecandy/goombadead.png", graphicspack), true);
+    gfx_loadimage(spr_goombadeadflying, convertPath("gfx/packs/eyecandy/goombadeadflying.png", graphicspack), true);
+    gfx_loadimage(spr_cheepcheepdead, convertPath("gfx/packs/eyecandy/cheepcheepdead.png", graphicspack), true);
+    gfx_loadimage(spr_sledgebrothersdead, convertPath("gfx/packs/eyecandy/sledgebrothersdead.png", graphicspack), true);
+    gfx_loadimage(spr_bulletbilldead, convertPath("gfx/packs/eyecandy/bulletbilldead.png", graphicspack), false);
+    gfx_loadimage(spr_shelldead, convertPath("gfx/packs/eyecandy/shelldead.png", graphicspack), true);
+
+    gfx_loadimage(spr_teleportstar, convertPath("gfx/packs/eyecandy/teleportstar.png", graphicspack), false);
+
+    gfx_loadimage(spr_fireballexplosion, convertPath("gfx/packs/eyecandy/fireballexplosion.png", graphicspack), 160, true);
+    gfx_loadimage(spr_frictionsmoke, convertPath("gfx/packs/eyecandy/frictionsmoke.png", graphicspack), 160, true);
+    gfx_loadimage(spr_bobombsmoke, convertPath("gfx/packs/eyecandy/bobombsmoke.png", graphicspack), 160, true);
+    gfx_loadimage(spr_explosion, convertPath("gfx/packs/eyecandy/explosion.png", graphicspack), true);
+    gfx_loadimage(spr_burnup, convertPath("gfx/packs/eyecandy/burnup.png", graphicspack), 192, true);
+    gfx_loadimage(spr_fireworks, convertPath("gfx/packs/eyecandy/fireworks.png", graphicspack), true);
+    gfx_loadimage(spr_poof, convertPath("gfx/packs/eyecandy/poof.png", graphicspack), true);
+
+    gfx_loadimage(spr_spawnsmoke, convertPath("gfx/packs/eyecandy/spawnsmoke.png", graphicspack), 128, true);
+    gfx_loadimage(spr_spawndoor, convertPath("gfx/packs/eyecandy/spawndoor.png", graphicspack), true);
+
+    gfx_loadimage(spr_bonus, convertPath("gfx/packs/eyecandy/bonus.png", graphicspack), true);
+    gfx_loadimage(spr_extralife, convertPath("gfx/packs/eyecandy/extralife.png", graphicspack), true);
+
+    gfx_loadimage(spr_windmeter, convertPath("gfx/packs/eyecandy/wind_meter.png", graphicspack), 192, true);
+    gfx_loadimage(spr_overlayhole, convertPath("gfx/packs/eyecandy/overlayholes.png", graphicspack), {0, 255, 0}, true);
+
+    gfx_loadimage(spr_abovearrows, convertPath("gfx/packs/eyecandy/abovearrows.png", graphicspack), true);
+}
+
+void CResourceManager::LoadBlockSprites(const std::string& graphicspack)
+{
     gfx_loadimage(spr_noteblock, convertPath("gfx/packs/blocks/noteblock.png", graphicspack), false);
     gfx_loadimage(spr_breakableblock, convertPath("gfx/packs/blocks/breakableblock.png", graphicspack), false);
     gfx_loadimage(spr_powerupblock, convertPath("gfx/packs/blocks/powerupblock.png", graphicspack), false);
@@ -83,33 +164,19 @@ void CResourceManager::LoadAllSprites() {
     gfx_loadimage(spr_viewblock, convertPath("gfx/packs/blocks/viewblock.png", graphicspack), false);
     gfx_loadimage(spr_weaponbreakableblock, convertPath("gfx/packs/blocks/weaponbreakableblock.png", graphicspack), false);
 
+    gfx_loadimage(spr_blocks[0], convertPath("gfx/packs/tilesets/blocks.png", graphicspack), false);
+    gfx_loadimage(spr_blocks[1], convertPath("gfx/packs/tilesets/blocks_preview.png", graphicspack), false);
+    gfx_loadimage(spr_blocks[2], convertPath("gfx/packs/tilesets/blocks_thumbnail.png", graphicspack), false);
+}
+
+void CResourceManager::LoadPowerupSprites(const std::string& graphicspack)
+{
     gfx_loadimage(spr_spring, convertPath("gfx/packs/powerups/spring.png", graphicspack), true);
     gfx_loadimage(spr_spike, convertPath("gfx/packs/powerups/spike.png", graphicspack), true);
     gfx_loadimage(spr_kuriboshoe, convertPath("gfx/packs/powerups/kuriboshoe.png", graphicspack), true);
     gfx_loadimage(spr_throwbox, convertPath("gfx/packs/powerups/throwbox.png", graphicspack), true);
 
-    gfx_loadimage(spr_tileanimation[0], convertPath("gfx/packs/tilesets/tile_animation.png", graphicspack), false);
-    gfx_loadimage(spr_tileanimation[1], convertPath("gfx/packs/tilesets/tile_animation_preview.png", graphicspack), false);
-    gfx_loadimage(spr_tileanimation[2], convertPath("gfx/packs/tilesets/tile_animation_thumbnail.png", graphicspack), false);
-
-    gfx_loadimage(spr_blocks[0], convertPath("gfx/packs/tilesets/blocks.png", graphicspack), false);
-    gfx_loadimage(spr_blocks[1], convertPath("gfx/packs/tilesets/blocks_preview.png", graphicspack), false);
-    gfx_loadimage(spr_blocks[2], convertPath("gfx/packs/tilesets/blocks_thumbnail.png", graphicspack), false);
-
-    gfx_loadimage(spr_unknowntile[0], convertPath("gfx/packs/tilesets/unknown_tile.png", graphicspack), false);
-    gfx_loadimage(spr_unknowntile[1], convertPath("gfx/packs/tilesets/unknown_tile_preview.png", graphicspack), false);
-    gfx_loadimage(spr_unknowntile[2], convertPath("gfx/packs/tilesets/unknown_tile_thumbnail.png", graphicspack), false);
-
-    gfx_loadimage(spr_brokenyellowblock, convertPath("gfx/packs/eyecandy/brokenyellowblock.png", graphicspack), true);
-    gfx_loadimage(spr_brokenflipblock, convertPath("gfx/packs/eyecandy/brokenflipblock.png", graphicspack), true);
-    gfx_loadimage(spr_brokenblueblock, convertPath("gfx/packs/eyecandy/brokenblueblock.png", graphicspack), true);
-    gfx_loadimage(spr_brokengrayblock, convertPath("gfx/packs/eyecandy/brokengrayblock.png", graphicspack), true);
-
-    gfx_loadimage(spr_brokeniceblock, convertPath("gfx/packs/eyecandy/icecube.png", graphicspack), true);
-    gfx_loadimage(spr_iceblock, convertPath("gfx/packs/eyecandy/iceblock.png", graphicspack), true);
-
     gfx_loadimage(spr_tanooki, convertPath("gfx/packs/powerups/tanooki.png", graphicspack), true);
-    gfx_loadimage(spr_statue, convertPath("gfx/packs/projectiles/statue.png", graphicspack), true);
     gfx_loadimage(spr_starpowerup, convertPath("gfx/packs/powerups/starpowerup.png", graphicspack), true);
     gfx_loadimage(spr_1uppowerup, convertPath("gfx/packs/powerups/1uppowerup.png", graphicspack), true);
     gfx_loadimage(spr_2uppowerup, convertPath("gfx/packs/powerups/2uppowerup.png", graphicspack), true);
@@ -141,27 +208,30 @@ void CResourceManager::LoadAllSprites() {
     gfx_loadimage(spr_secret3, convertPath("gfx/packs/powerups/secret3.png", graphicspack), true);
     gfx_loadimage(spr_secret4, convertPath("gfx/packs/powerups/secret4.png", graphicspack), true);
 
-    gfx_loadimage(spr_shade[0], convertPath("gfx/packs/eyecandy/shade1.png", graphicspack), 64, false);
-    gfx_loadimage(spr_shade[1], convertPath("gfx/packs/eyecandy/shade2.png", graphicspack), 64, false);
-    gfx_loadimage(spr_shade[2], convertPath("gfx/packs/eyecandy/shade3.png", graphicspack), 64, false);
-    gfx_loadimage(spr_scorehearts, convertPath("gfx/packs/menu/score_hearts.png", graphicspack), false);
-    gfx_loadimage(spr_scorecards, convertPath("gfx/packs/menu/score_cards.png", graphicspack), false);
-    gfx_loadimage(spr_scorecoins, convertPath("gfx/packs/menu/score_coins.png", graphicspack), false);
+    gfx_loadimage(spr_storedpowerupsmall, convertPath("gfx/packs/powerups/small.png", graphicspack), true);
+    gfx_loadimage(spr_storedpoweruplarge, convertPath("gfx/packs/powerups/large.png", graphicspack), false);
+}
 
-    gfx_loadimage(spr_timershade, convertPath("gfx/packs/eyecandy/timershade.png", graphicspack), 64, false);
-    gfx_loadimage(spr_scoretext, convertPath("gfx/packs/fonts/score.png", graphicspack), false);
-    gfx_loadimage(spr_racetext, convertPath("gfx/packs/fonts/race.png", graphicspack), false);
+void CResourceManager::LoadProjectileSprites(const std::string& graphicspack)
+{
+    gfx_loadimage(spr_statue, convertPath("gfx/packs/projectiles/statue.png", graphicspack), true);
 
-    gfx_loadimage(spr_crown, convertPath("gfx/packs/eyecandy/crown.png", graphicspack), true);
-    gfx_loadimage(spr_cape, convertPath("gfx/packs/eyecandy/cape.png", graphicspack), true);
-    gfx_loadimage(spr_tail, convertPath("gfx/packs/eyecandy/tail.png", graphicspack), true);
-    gfx_loadimage(spr_wings, convertPath("gfx/packs/eyecandy/wings.png", graphicspack), true);
+    gfx_loadimage(spr_bulletbill, convertPath("gfx/packs/projectiles/bulletbill.png", graphicspack), false);
 
-    gfx_loadimage(spr_warplock, convertPath("gfx/packs/eyecandy/warplock.png", graphicspack), false);
-    gfx_loadimage(spr_coinsparkle, convertPath("gfx/packs/eyecandy/coinsparks.png", graphicspack), true);
-    gfx_loadimage(spr_shinesparkle, convertPath("gfx/packs/eyecandy/shinesparks.png", graphicspack), true);
-    gfx_loadimage(spr_shellbounce, convertPath("gfx/packs/eyecandy/shellbounce.png", graphicspack), true);
-    gfx_loadimage(spr_superstomp, convertPath("gfx/packs/eyecandy/supersmash.png", graphicspack), true);
+    gfx_loadimage(spr_fireball, convertPath("gfx/packs/projectiles/fireball.png", graphicspack), true);
+    gfx_loadimage(spr_hammer, convertPath("gfx/packs/projectiles/hammer.png", graphicspack), true);
+    gfx_loadimage(spr_iceblast, convertPath("gfx/packs/projectiles/wandblast.png", graphicspack), true);
+    gfx_loadimage(spr_boomerang, convertPath("gfx/packs/projectiles/boomerang.png", graphicspack), true);
+    gfx_loadimage(spr_shell, convertPath("gfx/packs/projectiles/shell.png", graphicspack), true);
+    gfx_loadimage(spr_blueblock, convertPath("gfx/packs/projectiles/throwblock.png", graphicspack), true);
+    gfx_loadimage(spr_bomb, convertPath("gfx/packs/projectiles/bomb.png", graphicspack), true);
+}
+
+void CResourceManager::LoadModeObjectSprites(const std::string& graphicspack)
+{
+    gfx_loadimage(menu_survival, convertPath("gfx/packs/modeobjects/menu_survival.png", graphicspack), false);
+    gfx_loadimage(menu_stomp, convertPath("gfx/packs/modeobjects/menu_stomp.png", graphicspack), false);
+    gfx_loadimage(menu_egg, convertPath("gfx/packs/modeobjects/menu_egg.png", graphicspack), false);
 
     gfx_loadimage(spr_egg, convertPath("gfx/packs/modeobjects/egg.png", graphicspack), true);
     gfx_loadimage(spr_eggnumbers, convertPath("gfx/packs/modeobjects/eggnumbers.png", graphicspack), true);
@@ -179,8 +249,6 @@ void CResourceManager::LoadAllSprites() {
     gfx_loadimage(spr_kingofthehillarea, convertPath("gfx/packs/modeobjects/kingofthehill.png", graphicspack), 128, false);
     gfx_loadimage(spr_jail, convertPath("gfx/packs/modeobjects/jail.png", graphicspack), 160, true);
     gfx_loadimage(spr_goomba, convertPath("gfx/packs/modeobjects/goomba.png", graphicspack), true);
-    gfx_loadimage(spr_goombadead, convertPath("gfx/packs/eyecandy/goombadead.png", graphicspack), true);
-    gfx_loadimage(spr_goombadeadflying, convertPath("gfx/packs/eyecandy/goombadeadflying.png", graphicspack), true);
     gfx_loadimage(spr_koopa, convertPath("gfx/packs/modeobjects/koopa.png", graphicspack), true);
     gfx_loadimage(spr_buzzybeetle, convertPath("gfx/packs/modeobjects/buzzybeetle.png", graphicspack), true);
     gfx_loadimage(spr_spiny, convertPath("gfx/packs/modeobjects/spiny.png", graphicspack), true);
@@ -189,13 +257,9 @@ void CResourceManager::LoadAllSprites() {
     gfx_loadimage(spr_redparakoopa, convertPath("gfx/packs/modeobjects/redparakoopa.png", graphicspack), true);
     gfx_loadimage(spr_redkoopa, convertPath("gfx/packs/modeobjects/redkoopa.png", graphicspack), true);
     gfx_loadimage(spr_cheepcheep, convertPath("gfx/packs/modeobjects/cheepcheep.png", graphicspack), true);
-    gfx_loadimage(spr_cheepcheepdead, convertPath("gfx/packs/eyecandy/cheepcheepdead.png", graphicspack), true);
 
     gfx_loadimage(spr_sledgebrothers, convertPath("gfx/packs/modeobjects/sledgebrothers.png", graphicspack), true);
-    gfx_loadimage(spr_sledgebrothersdead, convertPath("gfx/packs/eyecandy/sledgebrothersdead.png", graphicspack), true);
 
-    gfx_loadimage(spr_bulletbill, convertPath("gfx/packs/projectiles/bulletbill.png", graphicspack), false);
-    gfx_loadimage(spr_bulletbilldead, convertPath("gfx/packs/eyecandy/bulletbilldead.png", graphicspack), false);
     gfx_loadimage(spr_chicken, convertPath("gfx/packs/modeobjects/chicken.png", graphicspack), 160, true);
     gfx_loadimage(spr_racegoal, convertPath("gfx/packs/modeobjects/racegoal.png", graphicspack), false);
     gfx_loadimage(spr_pipegamebonus, convertPath("gfx/packs/modeobjects/pipeminigamebonuses.png", graphicspack), true);
@@ -204,20 +268,17 @@ void CResourceManager::LoadAllSprites() {
     gfx_loadimage(spr_phantokey, convertPath("gfx/packs/modeobjects/key.png", graphicspack), true);
 
     gfx_loadimage(spr_bonuschest, convertPath("gfx/packs/modeobjects/bonuschest.png", graphicspack), true);
-    gfx_loadimage(spr_teleportstar, convertPath("gfx/packs/eyecandy/teleportstar.png", graphicspack), false);
 
-    gfx_loadimage(spr_fireball, convertPath("gfx/packs/projectiles/fireball.png", graphicspack), true);
-    gfx_loadimage(spr_hammer, convertPath("gfx/packs/projectiles/hammer.png", graphicspack), true);
-    gfx_loadimage(spr_iceblast, convertPath("gfx/packs/projectiles/wandblast.png", graphicspack), true);
-    gfx_loadimage(spr_boomerang, convertPath("gfx/packs/projectiles/boomerang.png", graphicspack), true);
-    gfx_loadimage(spr_shell, convertPath("gfx/packs/projectiles/shell.png", graphicspack), true);
-    gfx_loadimage(spr_shelldead, convertPath("gfx/packs/eyecandy/shelldead.png", graphicspack), true);
-    gfx_loadimage(spr_blueblock, convertPath("gfx/packs/projectiles/throwblock.png", graphicspack), true);
-    gfx_loadimage(spr_bomb, convertPath("gfx/packs/projectiles/bomb.png", graphicspack), true);
 
     gfx_loadimage(spr_superfireball, convertPath("gfx/packs/modeobjects/superfire.png", graphicspack), true);
     gfx_loadimage(spr_sledgehammer, convertPath("gfx/packs/modeobjects/sledgehammer.png", graphicspack), true);
 
+    gfx_loadimage(spr_flagbases, convertPath("gfx/packs/modeobjects/flagbases.png", graphicspack), 160, true);
+    gfx_loadimage(spr_ownedtags, convertPath("gfx/packs/modeobjects/ownedtags.png", graphicspack), 160, true);
+}
+
+void CResourceManager::LoadHazardSprites(const std::string& graphicspack)
+{
     gfx_loadimage(spr_hazard_fireball[0], convertPath("gfx/packs/hazards/fireball.png", graphicspack), true);
     gfx_loadimage(spr_hazard_fireball[1], convertPath("gfx/packs/hazards/fireball_preview.png", graphicspack), true);
     gfx_loadimage(spr_hazard_fireball[2], convertPath("gfx/packs/hazards/fireball_thumbnail.png", graphicspack), true);
@@ -239,24 +300,10 @@ void CResourceManager::LoadAllSprites() {
     gfx_loadimage(spr_hazard_pirhanaplant[2], convertPath("gfx/packs/hazards/pirhanaplant_thumbnail.png", graphicspack), true);
 
     gfx_loadimage(spr_hazard_bulletbilldead, convertPath("gfx/packs/hazards/bulletbilldead.png", graphicspack), false);
+}
 
-    gfx_loadimage(spr_fireballexplosion, convertPath("gfx/packs/eyecandy/fireballexplosion.png", graphicspack), 160, true);
-    gfx_loadimage(spr_frictionsmoke, convertPath("gfx/packs/eyecandy/frictionsmoke.png", graphicspack), 160, true);
-    gfx_loadimage(spr_bobombsmoke, convertPath("gfx/packs/eyecandy/bobombsmoke.png", graphicspack), 160, true);
-    gfx_loadimage(spr_explosion, convertPath("gfx/packs/eyecandy/explosion.png", graphicspack), true);
-    gfx_loadimage(spr_burnup, convertPath("gfx/packs/eyecandy/burnup.png", graphicspack), 192, true);
-    gfx_loadimage(spr_fireworks, convertPath("gfx/packs/eyecandy/fireworks.png", graphicspack), true);
-    gfx_loadimage(spr_poof, convertPath("gfx/packs/eyecandy/poof.png", graphicspack), true);
-
-    gfx_loadimage(spr_spawnsmoke, convertPath("gfx/packs/eyecandy/spawnsmoke.png", graphicspack), 128, true);
-    gfx_loadimage(spr_spawndoor, convertPath("gfx/packs/eyecandy/spawndoor.png", graphicspack), true);
-
-    gfx_loadimage(spr_bonus, convertPath("gfx/packs/eyecandy/bonus.png", graphicspack), true);
-    gfx_loadimage(spr_extralife, convertPath("gfx/packs/eyecandy/extralife.png", graphicspack), true);
-
-    gfx_loadimage(spr_windmeter, convertPath("gfx/packs/eyecandy/wind_meter.png", graphicspack), 192, true);
-    gfx_loadimage(spr_overlayhole, convertPath("gfx/packs/eyecandy/overlayholes.png", graphicspack), {0, 255, 0}, true);
-
+void CResourceManager::LoadAwardSprites(const std::string& graphicspack)
+{
     gfx_loadimage(spr_award, convertPath("gfx/packs/awards/killsinrow.png", graphicspack), 128, true);
     gfx_loadimage(spr_awardsolid, convertPath("gfx/packs/awards/killsinrow.png", graphicspack), true);
     gfx_loadimage(spr_awardsouls, convertPath("gfx/packs/awards/souls.png", graphicspack), true);
@@ -264,14 +311,24 @@ void CResourceManager::LoadAllSprites() {
 
     gfx_loadimage(spr_awardkillsinrow, convertPath("gfx/packs/awards/killsinrownumbers.png", graphicspack), true);
 
-    gfx_loadimage(spr_flagbases, convertPath("gfx/packs/modeobjects/flagbases.png", graphicspack), 160, true);
-    gfx_loadimage(spr_ownedtags, convertPath("gfx/packs/modeobjects/ownedtags.png", graphicspack), 160, true);
-
-    gfx_loadimage(spr_storedpowerupsmall, convertPath("gfx/packs/powerups/small.png", graphicspack), true);
-    gfx_loadimage(spr_storedpoweruplarge, convertPath("gfx/packs/powerups/large.png", graphicspack), false);
     gfx_loadimage(spr_powerupselector, convertPath("gfx/packs/awards/award.png", graphicspack), false);
+}
 
-    gfx_loadimage(spr_abovearrows, convertPath("gfx/packs/eyecandy/abovearrows.png", graphicspack), true);
+void CResourceManager::LoadTileSetSprites(const std::string& graphicspack)
+{
+    gfx_loadimage(spr_tileanimation[0], convertPath("gfx/packs/tilesets/tile_animation.png", graphicspack), false);
+    gfx_loadimage(spr_tileanimation[1], convertPath("gfx/packs/tilesets/tile_animation_preview.png", graphicspack), false);
+    gfx_loadimage(spr_tileanimation[2], convertPath("gfx/packs/tilesets/tile_animation_thumbnail.png", graphicspack), false);
+
+    gfx_loadimage(spr_unknowntile[0], convertPath("gfx/packs/tilesets/unknown_tile.png", graphicspack), false);
+    gfx_loadimage(spr_unknowntile[1], convertPath("gfx/packs/tilesets/unknown_tile_preview.png", graphicspack), false);
+    gfx_loadimage(spr_unknowntile[2], convertPath("gfx/packs/tilesets/unknown_tile_thumbnail.png", graphicspack), false);
+}
+
+void CResourceManager::LoadFontSprites(const std::string& graphicspack)
+{
+    gfx_loadimage(spr_scoretext, convertPath("gfx/packs/fonts/score.png", graphicspack), false);
+    gfx_loadimage(spr_racetext, convertPath("gfx/packs/fonts/race.png", graphicspack), false);
 }
 
 bool CResourceManager::LoadMenuGraphics()
@@ -413,57 +470,99 @@ bool CResourceManager::LoadGameSounds()
 
     std::string soundpack = soundpacklist->currentPath().string();
 
-    sfx_mip.init(convertPath("sfx/packs/mip.wav", soundpack));
-    sfx_deathsound.init(convertPath("sfx/packs/death.wav", soundpack));
-    sfx_jump.init(convertPath("sfx/packs/jump.wav", soundpack));
-    sfx_skid.init(convertPath("sfx/packs/skid.wav", soundpack));
-    sfx_capejump.init(convertPath("sfx/packs/capejump.wav", soundpack));
-    sfx_invinciblemusic.init(convertPath("sfx/packs/invincible.wav", soundpack));
-    sfx_extraguysound.init(convertPath("sfx/packs/1up.wav", soundpack));
-    sfx_sprout.init(convertPath("sfx/packs/sprout.wav", soundpack));
-    sfx_collectpowerup.init(convertPath("sfx/packs/collectpowerup.wav", soundpack));
-    sfx_collectfeather.init(convertPath("sfx/packs/feather.wav", soundpack));
-    sfx_tailspin.init(convertPath("sfx/packs/tail.wav", soundpack));
-    sfx_storepowerup.init(convertPath("sfx/packs/storeitem.wav", soundpack));
-    sfx_breakblock.init(convertPath("sfx/packs/breakblock.wav", soundpack));
-    sfx_bump.init(convertPath("sfx/packs/bump.wav", soundpack));
-    sfx_coin.init(convertPath("sfx/packs/coin.wav", soundpack));
-    sfx_fireball.init(convertPath("sfx/packs/fireball.wav", soundpack));
-    sfx_springjump.init(convertPath("sfx/packs/springjump.wav", soundpack));
-    sfx_timewarning.init(convertPath("sfx/packs/timewarning.wav", soundpack));
-    sfx_hit.init(convertPath("sfx/packs/hit.wav", soundpack));
-    sfx_chicken.init(convertPath("sfx/packs/chicken.wav", soundpack));
-    sfx_transform.init(convertPath("sfx/packs/transform.wav", soundpack));
-    sfx_yoshi.init(convertPath("sfx/packs/yoshi.wav", soundpack));
-    sfx_pause.init(convertPath("sfx/packs/pause.wav", soundpack));
-    sfx_bobombsound.init(convertPath("sfx/packs/bob-omb.wav", soundpack));
-    sfx_areatag.init(convertPath("sfx/packs/dcoin.wav", soundpack));
-    sfx_cannon.init(convertPath("sfx/packs/cannon.wav", soundpack));
-    sfx_burnup.init(convertPath("sfx/packs/burnup.wav", soundpack));
-    sfx_pipe.init(convertPath("sfx/packs/warp.wav", soundpack));
-    sfx_thunder.init(convertPath("sfx/packs/thunder.wav", soundpack));
-    sfx_slowdownmusic.init(convertPath("sfx/packs/clock.wav", soundpack));
-    sfx_flyingsound.init(convertPath("sfx/packs/slowdown.wav", soundpack));
-    sfx_storedpowerupsound.init(convertPath("sfx/packs/storedpowerup.wav", soundpack));
-    sfx_kicksound.init(convertPath("sfx/packs/kick.wav", soundpack));
-    sfx_racesound.init(convertPath("sfx/packs/race.wav", soundpack));
-    sfx_bulletbillsound.init(convertPath("sfx/packs/bulletbill.wav", soundpack));
-    sfx_boomerang.init(convertPath("sfx/packs/boomerang.wav", soundpack));
-    sfx_spit.init(convertPath("sfx/packs/spit.wav", soundpack));
-    sfx_starwarning.init(convertPath("sfx/packs/starwarning.wav", soundpack));
-    sfx_powerdown.init(convertPath("sfx/packs/powerdown.wav", soundpack));
-    sfx_switchpress.init(convertPath("sfx/packs/switchpress.wav", soundpack));
-    sfx_superspring.init(convertPath("sfx/packs/superspring.wav", soundpack));
-    sfx_stun.init(convertPath("sfx/packs/stun.wav", soundpack));
-    sfx_inventory.init(convertPath("sfx/packs/inventory.wav", soundpack));
-    sfx_worldmove.init(convertPath("sfx/packs/mapmove.wav", soundpack));
-    sfx_treasurechest.init(convertPath("sfx/packs/treasurechest.wav", soundpack));
-    sfx_flamecannon.init(convertPath("sfx/packs/flamecannon.wav", soundpack));
-    sfx_wand.init(convertPath("sfx/packs/wand.wav", soundpack));
-    sfx_enterstage.init(convertPath("sfx/packs/enter-stage.wav", soundpack));
-    sfx_gameover.init(convertPath("sfx/packs/gameover.wav", soundpack));
-    sfx_pickup.init(convertPath("sfx/packs/pickup.wav", soundpack));
+    LoadPlayerSounds(soundpack);
+
+    LoadEnvironmentSounds(soundpack);
+
+    LoadItemSounds(soundpack);
+
+    LoadPowerUpSounds(soundpack);
+
+    LoadGamemodeSounds(soundpack);
+
+    LoadInteractSounds(soundpack);
+
+    LoadMiscSounds(soundpack);
 
     game_values.soundcapable = true;
     return true;
+}
+
+void CResourceManager::LoadPlayerSounds(const std::string& soundpack)
+{
+    sfx_jump.init(convertPath("sfx/packs/jump.wav", soundpack));
+    sfx_skid.init(convertPath("sfx/packs/skid.wav", soundpack));
+    sfx_capejump.init(convertPath("sfx/packs/capejump.wav", soundpack));
+    sfx_tailspin.init(convertPath("sfx/packs/tail.wav", soundpack));
+    sfx_kicksound.init(convertPath("sfx/packs/kick.wav", soundpack));
+    sfx_stun.init(convertPath("sfx/packs/stun.wav", soundpack));
+}
+
+void CResourceManager::LoadEnvironmentSounds(const std::string& soundpack)
+{
+    sfx_breakblock.init(convertPath("sfx/packs/breakblock.wav", soundpack));
+    sfx_pipe.init(convertPath("sfx/packs/warp.wav", soundpack));
+    sfx_thunder.init(convertPath("sfx/packs/thunder.wav", soundpack));
+    sfx_cannon.init(convertPath("sfx/packs/cannon.wav", soundpack));
+    sfx_flamecannon.init(convertPath("sfx/packs/flamecannon.wav", soundpack));
+}
+
+void CResourceManager::LoadItemSounds(const std::string& soundpack)
+{
+    sfx_extraguysound.init(convertPath("sfx/packs/1up.wav", soundpack));
+    sfx_storepowerup.init(convertPath("sfx/packs/storeitem.wav", soundpack));
+    sfx_coin.init(convertPath("sfx/packs/coin.wav", soundpack));
+    sfx_bobombsound.init(convertPath("sfx/packs/bob-omb.wav", soundpack));
+    sfx_slowdownmusic.init(convertPath("sfx/packs/clock.wav", soundpack));
+}
+
+void CResourceManager::LoadPowerUpSounds(const std::string& soundpack)
+{
+    sfx_invinciblemusic.init(convertPath("sfx/packs/invincible.wav", soundpack));
+    sfx_collectpowerup.init(convertPath("sfx/packs/collectpowerup.wav", soundpack));
+    sfx_collectfeather.init(convertPath("sfx/packs/feather.wav", soundpack));
+    sfx_transform.init(convertPath("sfx/packs/transform.wav", soundpack));
+    sfx_powerdown.init(convertPath("sfx/packs/powerdown.wav", soundpack));
+    sfx_boomerang.init(convertPath("sfx/packs/boomerang.wav", soundpack));
+    sfx_starwarning.init(convertPath("sfx/packs/starwarning.wav", soundpack));
+    sfx_storedpowerupsound.init(convertPath("sfx/packs/storedpowerup.wav", soundpack));
+
+}
+
+void CResourceManager::LoadGamemodeSounds(const std::string& soundpack)
+{
+    sfx_gameover.init(convertPath("sfx/packs/gameover.wav", soundpack));
+    sfx_enterstage.init(convertPath("sfx/packs/enter-stage.wav", soundpack));
+    sfx_racesound.init(convertPath("sfx/packs/race.wav", soundpack));
+    sfx_timewarning.init(convertPath("sfx/packs/timewarning.wav", soundpack));
+    sfx_chicken.init(convertPath("sfx/packs/chicken.wav", soundpack));
+    sfx_yoshi.init(convertPath("sfx/packs/yoshi.wav", soundpack));
+    sfx_treasurechest.init(convertPath("sfx/packs/treasurechest.wav", soundpack));
+}
+
+void CResourceManager::LoadInteractSounds(const std::string& soundpack)
+{
+    sfx_deathsound.init(convertPath("sfx/packs/death.wav", soundpack));
+    sfx_bump.init(convertPath("sfx/packs/bump.wav", soundpack));
+    sfx_springjump.init(convertPath("sfx/packs/springjump.wav", soundpack));
+    sfx_hit.init(convertPath("sfx/packs/hit.wav", soundpack));
+    sfx_burnup.init(convertPath("sfx/packs/burnup.wav", soundpack));
+    sfx_spit.init(convertPath("sfx/packs/spit.wav", soundpack));
+    sfx_switchpress.init(convertPath("sfx/packs/switchpress.wav", soundpack));
+    sfx_superspring.init(convertPath("sfx/packs/superspring.wav", soundpack));
+    sfx_pickup.init(convertPath("sfx/packs/pickup.wav", soundpack));
+}
+
+void CResourceManager::LoadMiscSounds(const std::string& soundpack)
+{
+    sfx_mip.init(convertPath("sfx/packs/mip.wav", soundpack));
+    sfx_sprout.init(convertPath("sfx/packs/sprout.wav", soundpack));
+    sfx_fireball.init(convertPath("sfx/packs/fireball.wav", soundpack));
+    sfx_pause.init(convertPath("sfx/packs/pause.wav", soundpack));
+    sfx_areatag.init(convertPath("sfx/packs/dcoin.wav", soundpack));
+    sfx_flyingsound.init(convertPath("sfx/packs/slowdown.wav", soundpack));
+    sfx_bulletbillsound.init(convertPath("sfx/packs/bulletbill.wav", soundpack));
+    sfx_inventory.init(convertPath("sfx/packs/inventory.wav", soundpack));
+    sfx_worldmove.init(convertPath("sfx/packs/mapmove.wav", soundpack));
+    sfx_wand.init(convertPath("sfx/packs/wand.wav", soundpack));
 }
