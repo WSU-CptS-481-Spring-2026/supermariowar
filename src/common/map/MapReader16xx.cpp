@@ -1,4 +1,4 @@
-#include "MapReader.h"
+#include "MapReader16xx.h"
 
 #include "GameValues.h"
 #include "map.h"

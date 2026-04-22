@@ -1,4 +1,4 @@
-#include "MapReader.h"
+#include "MapReader18xx.h"
 
 #include "map.h"
 #include "MapReaderConstants.h"
